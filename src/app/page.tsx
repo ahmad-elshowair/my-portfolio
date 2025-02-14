@@ -1,12 +1,9 @@
-import Navbar from "@/components/Navbar";
+import Hero from "@/components/Hero";
 
 export default function Home() {
-	return (
-		<>
-		<Navbar/>
-		<main className="flex items-center justify-center h-[calc(100vh-70px)]">
-			<h1 className="text-4xl font-bold text-center">Hi, There !</h1>
-		</main>
-		</>
-	);
+  return (
+    <main className="flex flex-col bg-[#2c3531] text-white p-4">
+      <Hero />
+    </main>
+  );
 }

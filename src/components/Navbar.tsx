@@ -1,17 +1,17 @@
 "use client";
 
-import { useState } from "react";
-import Image from "next/image";
-import { FiMenu, FiX } from "react-icons/fi";
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
+import { FiMenu, FiX } from "react-icons/fi";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
     <>
-      <nav className="sticky top-0 w-full z-50">
+      <nav className="sticky top-0 w-full z-50 bg-[#2c3531]">
         <div className="max-w-5xl mx-auto px-4">
           <div className="flex items-center justify-between h-20">
             <Link href={"/"}>
