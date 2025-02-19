@@ -47,7 +47,7 @@ const Experiences: React.FC = () => {
       ],
     },
     {
-      title: "front-end developer",
+      title: "web developer",
       company: "coins for change vietnam",
       companyUrl: "https://www.catalystforchangevietnam.com/",
       period: "sep 2019 - Mar 2020",
@@ -59,19 +59,27 @@ const Experiences: React.FC = () => {
 
   return (
     <section
-      id="experiences"
+      id="experience"
       className={`flex flex-col justify-start text-white py-20 ${inika.className} backdrop-blur`}
     >
       {/* Background circles */}
-      <div className="absolute top-[0%] left-[15%] w-[200px] h-[200px] rounded-full bg-[#8DA55B] opacity-20 blur-[20px] -z-10" />
-      <div className="max-w-5xl mx-auto">
-        <h2 className="text-5xl font-bold text-[#8DA55B] mb-32">Experiences</h2>
+      <div className="absolute top-[0%] left-[15%] w-[200px] h-[200px] rounded-full bg-mainGreen opacity-20 blur-[20px] -z-10" />
+
+      <article className="max-w-5xl mx-auto">
+        <div className="flex items-baseline gap-5 mb-32">
+          <h2 className="text-5xl font-bold text-mainGreen">Experience</h2>
+          <div className="flex items-center gap-1">
+            <span className="h-3 rounded-lg bg-beige w-[40px]" />
+            <span className="h-3 rounded-lg bg-beige w-[25px]" />
+            <span className="h-3 rounded-lg bg-mainGreen w-[12px]" />
+          </div>
+        </div>
         <div className="ml-4">
           {experiences.map((exp, index) => (
             <ExperienceItem key={index} {...exp} />
           ))}
         </div>
-      </div>
+      </article>
     </section>
   );
 };

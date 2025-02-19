@@ -73,18 +73,18 @@ body {
     position: relative;
     display: inline-block;
     font-style: italic;
+    color: #2c3531;
   }
 
   .zigzag-border::before {
     content: "";
     position: absolute;
-    border-radius: 20px;
     left: -2px;
     right: -2px;
     top: 0;
     bottom: 0;
-    background: #ffe8a3;
+    background: #f5e6d3;
     z-index: -1;
-    transform: skew(-30deg) rotate(-1deg);
+    transform: skew(30deg) rotate(-1deg);
   }
 }
