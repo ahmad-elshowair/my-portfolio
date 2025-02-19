@@ -37,13 +37,13 @@ const Experiences: React.FC = () => {
         },
       ],
       technologies: [
-        <SiTypescript />,
-        <SiNextdotjs />,
-        <SiTailwindcss />,
-        <SiNodedotjs />,
-        <SiExpress />,
-        <SiPostgresql />,
-        <SiSupabase />,
+        <SiTypescript key="typescript" />,
+        <SiNextdotjs key="nextjs" />,
+        <SiTailwindcss key="tailwind" />,
+        <SiNodedotjs key="nodejs" />,
+        <SiExpress key="express" />,
+        <SiPostgresql key="postgresql" />,
+        <SiSupabase key="supabase" />,
       ],
     },
     {
@@ -53,7 +53,11 @@ const Experiences: React.FC = () => {
       period: "sep 2019 - Mar 2020",
       description:
         "I was a member of the volunteers. developing the organization's website through CMS WIX. redesigning the layout of the website.",
-      technologies: [<SiHtml5 />, <SiJavascript />, <SiCss3 />],
+      technologies: [
+        <SiHtml5 key="html5" />,
+        <SiJavascript key="javascript" />,
+        <SiCss3 key="css3" />,
+      ],
     },
   ];
 
@@ -76,7 +80,7 @@ const Experiences: React.FC = () => {
         </div>
         <div className="ml-4">
           {experiences.map((exp, index) => (
-            <ExperienceItem key={index} {...exp} />
+            <ExperienceItem key={`exp-${index}`} {...exp} />
           ))}
         </div>
       </article>

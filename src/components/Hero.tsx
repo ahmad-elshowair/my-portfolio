@@ -21,7 +21,7 @@ const Hero = () => {
           Hi There !
         </h1>
         <div className="text-2xl md:text-5xl font-bold">
-          <span className="text-beige">I'm </span>
+          <span className="text-beige">I&apos;m </span>
           <TypeAnimation
             sequence={[
               "Ahmad Elshowair",
@@ -51,9 +51,9 @@ const Hero = () => {
           <span className="zigzag-border px-1">Node.js</span>,{" "}
           <span className="zigzag-border px-1">PostgreSQL</span>, and modern web
           architectures. Certified through{" "}
-          <span className="zigzag-border px-1">Harvard's CS50</span> and
-          Udacity's Advanced Full Stack/Front-End Nanodegrees, with hands-on
-          experience building scalable applications.
+          <span className="zigzag-border px-1">Harvard&apos;s CS50</span> and
+          Udacity&apos;s Advanced Full Stack/Front-End Nanodegrees, with
+          hands-on experience building scalable applications.
         </p>
         <Link
           href="https://ioytezgkjmzpfcwaxqcj.supabase.co/storage/v1/object/public/portfolio/files/ahmad_elshowair_resume_pic.pdf"
