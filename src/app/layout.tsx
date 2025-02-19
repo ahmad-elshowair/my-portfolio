@@ -1,3 +1,4 @@
+import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import { geistMono, geistSans, inika } from "@/lib/fonts";
 import type { Metadata } from "next";
@@ -41,6 +42,7 @@ export default function RootLayout({
       >
         <Navbar />
         {children}
+        <Footer />
       </body>
     </html>
   );
