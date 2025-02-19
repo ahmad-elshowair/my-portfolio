@@ -9,6 +9,7 @@ const Hero = () => {
     <section
       className={`flex flex-col justify-center max-w-5xl mx-auto min-h-[calc(100vh-112px)] space-y-4 ${inika.className} backdrop-blur`}
     >
+      {/* Background circles */}
       <div className="absolute top-[12%] left-[0%] w-[200px] h-[200px] rounded-full bg-[#8DA55B] opacity-20 blur-[20px] -z-10" />
       <div className="absolute bottom-[10%] right-[0%] w-[200px] h-[200px] rounded-full bg-[#8DA55B] opacity-20 blur-[20px] -z-10" />
       <article className="flex flex-col self-start mb-14">
@@ -52,7 +53,7 @@ const Hero = () => {
           href="https://ioytezgkjmzpfcwaxqcj.supabase.co/storage/v1/object/public/portfolio/files/ahmad_elshowair_resume_pic.pdf"
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center self-end bg-[#8DA55B]/80 text-white px-8 py-3 rounded-2xl -skew-x-[30deg] font-semibold mt-20 hover:bg-[#8DA55B] hover:scale-125 transition-all duration-300 ease-in-out gap-2"
+          className="flex items-center self-end bg-[#8DA55B]/80 text-white px-8 py-3 rounded-2xl -skew-x-[30deg] font-semibold mt-20 hover:bg-[#8DA55B] hover:scale-125 hover:skew-x-0 transition-all duration-300 ease-in-out gap-2"
         >
           <FiDownloadCloud />
           Resume
