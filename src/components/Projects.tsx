@@ -3,8 +3,12 @@ import { inika } from "@/lib/fonts";
 import Link from "next/link";
 import { FaGithub } from "react-icons/fa";
 import {
+  SiGit,
   SiNextdotjs,
+  SiPostgresql,
   SiReact,
+  SiStripe,
+  SiSupabase,
   SiTailwindcss,
   SiTypescript,
 } from "react-icons/si";
@@ -14,116 +18,61 @@ export const Projects = () => {
     {
       title: "ClearCargo",
       technologies: [
-        <SiReact key="react" />,
         <SiNextdotjs key="next" />,
         <SiTypescript key="ts" />,
         <SiTailwindcss key="tailwind" />,
+        <SiPostgresql key="postgresql" />,
+        <SiSupabase key="supabase" />,
+        <SiStripe key="stripe" />,
+        <SiReact key="react" />,
+        <SiGit key="git" />,
       ],
-      link: "#",
-      githubUrl: "#",
+      link: "https://clearcargo.vercel.app/",
+      githubUrl: "https://github.com/ahmad-elshowair/clearcargo",
       images: [
         {
           url: "/images/clearcargo-1.png",
-          alt: "ClearCargo ",
+          alt: "Clearances Page ",
         },
         {
           url: "/images/clearcargo-2.png",
-          alt: "ClearCargo ",
+          alt: "Home Page",
         },
         {
           url: "/images/clearcargo-3.png",
-          alt: "ClearCargo ",
+          alt: "Login Page",
         },
         {
           url: "/images/clearcargo-4.png",
-          alt: "ClearCargo ",
+          alt: "Register Page",
         },
       ],
     },
     {
-      title: "Project Two",
+      title: "Kun Mim Aldhaakirin",
       technologies: [
-        <SiReact key="react" />,
         <SiNextdotjs key="next" />,
         <SiTypescript key="ts" />,
         <SiTailwindcss key="tailwind" />,
-      ],
-      link: "#",
-      githubUrl: "#",
-      images: [
-        {
-          url: "/images/clearcargo-1.png",
-          alt: "ClearCargo ",
-        },
-        {
-          url: "/images/clearcargo-2.png",
-          alt: "ClearCargo ",
-        },
-        {
-          url: "/images/clearcargo-3.png",
-          alt: "ClearCargo ",
-        },
-        {
-          url: "/images/clearcargo-4.png",
-          alt: "ClearCargo ",
-        },
-      ],
-    },
-    {
-      title: "Project Three",
-      technologies: [
+        <SiGit key="git" />,
+        <SiPostgresql key="postgresql" />,
+        <SiSupabase key="supabase" />,
         <SiReact key="react" />,
-        <SiNextdotjs key="next" />,
-        <SiTypescript key="ts" />,
-        <SiTailwindcss key="tailwind" />,
       ],
-      link: "#",
-      githubUrl: "#",
+      link: "https://kun-min-aldhaakirin.vercel.app/",
+      githubUrl: "https://github.com/ahmad-elshowair/kun-min-aldhaakirin",
       images: [
         {
-          url: "/images/clearcargo-1.png",
-          alt: "ClearCargo ",
+          url: "/images/kun-min-aldhaakirin-1.png",
+          alt: "morning adhkar",
         },
         {
-          url: "/images/clearcargo-2.png",
-          alt: "ClearCargo ",
+          url: "/images/kun-min-aldhaakirin-2.png",
+          alt: "morning adhkar english",
         },
         {
-          url: "/images/clearcargo-3.png",
-          alt: "ClearCargo ",
-        },
-        {
-          url: "/images/clearcargo-4.png",
-          alt: "ClearCargo ",
-        },
-      ],
-    },
-    {
-      title: "Project Four",
-      technologies: [
-        <SiReact key="react" />,
-        <SiNextdotjs key="next" />,
-        <SiTypescript key="ts" />,
-        <SiTailwindcss key="tailwind" />,
-      ],
-      link: "#",
-      githubUrl: "#",
-      images: [
-        {
-          url: "/images/clearcargo-1.png",
-          alt: "ClearCargo ",
-        },
-        {
-          url: "/images/clearcargo-2.png",
-          alt: "ClearCargo ",
-        },
-        {
-          url: "/images/clearcargo-3.png",
-          alt: "ClearCargo ",
-        },
-        {
-          url: "/images/clearcargo-4.png",
-          alt: "ClearCargo ",
+          url: "/images/kun-min-aldhaakirin-3.png",
+          alt: "adhkar light theme ",
         },
       ],
     },
