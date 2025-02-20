@@ -62,7 +62,7 @@ const Navbar = () => {
           )}
         >
           <ul className="flex flex-col items-center justify-center h-full space-y-12 pt-20">
-            {["me", "experience", "showcase", "contact"].map((section, i) => (
+            {["me", "experience", "projects", "contact"].map((section, i) => (
               <li
                 key={section}
                 className={cn(
