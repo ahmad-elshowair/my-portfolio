@@ -67,11 +67,13 @@ const Experiences: React.FC = () => {
       className={`flex flex-col justify-start text-white py-20 ${inika.className} backdrop-blur`}
     >
       {/* Background circles */}
-      <div className="absolute top-[0%] left-[15%] w-[200px] h-[200px] rounded-full bg-mainGreen opacity-20 blur-[20px] -z-10" />
+      <div className="absolute top-[2%] left-[-2%]  md:left-[15%] w-[160px] h-[160px]  md:w-[200px] md:h-[200px] rounded-full bg-mainGreen opacity-20 blur-[20px] -z-10" />
 
       <article className="max-w-5xl mx-auto">
         <div className="flex items-baseline gap-5 mb-32">
-          <h2 className="text-5xl font-bold text-mainGreen">Experience</h2>
+          <h2 className="text-4xl md:text-5xl font-bold text-mainGreen">
+            Experience
+          </h2>
           <div className="flex items-center gap-1">
             <span className="h-3 rounded-lg bg-beige w-[40px]" />
             <span className="h-3 rounded-lg bg-beige w-[25px]" />

@@ -45,7 +45,7 @@ const ExperienceItem: React.FC<ExperienceItemProps> = ({
     // Add remaining text
     parts.push(description.slice(lastIndex));
 
-    return <p className="text-gray-300 mt-2 text-base md:text-md">{parts}</p>;
+    return <p className="text-gray-300 mt-2 text-sm md:text-md">{parts}</p>;
   };
 
   return (
