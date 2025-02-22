@@ -4,7 +4,10 @@ import { FiLinkedin, FiMail } from "react-icons/fi";
 
 const Footer = () => {
   return (
-    <footer className={`py-8 px-4 bg-bgGreen ${inika.className}`} id="contact">
+    <footer
+      className={`py-8 px-4 bg-bgGreen backdrop-blur ${inika.className}`}
+      id="contact"
+    >
       <div className="max-w-5xl mx-auto flex justify-between items-center gap-6">
         <div className="flex items-center gap-6">
           <Link

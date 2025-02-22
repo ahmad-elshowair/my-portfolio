@@ -82,7 +82,7 @@ export const Projects = () => {
     <section className="py-20 backdrop-blur-sm" id="projects">
       <div className="max-w-5xl mx-auto relative">
         {/* BACKGROUND DROP NAME*/}
-        <span className="absolute top-[-5%] left-[-5%] md:top-[-6%] md:-left-[5%] w-[150px] h-[150px] md:w-[200px] md:h-[200px] rounded-full bg-mainGreen opacity-20 blur-[20px] -z-10" />
+        <span className="absolute w-40 h-40 md:w-52 md:h-52 top-[-5%] left-[-5%] md:top-[-12%] md:-left-[5%] lg:left-[-5%] lg:top-[-12%] xl:left-[-5%] xl:top-[-12%] rounded-full bg-mainGreen opacity-20 blur-[20px] -z-10" />
         <div className="flex items-baseline gap-5 mb-32">
           <h2
             className={`text-4xl md:text-6xl font-bold text-mainGreen ${inika.className}`}
