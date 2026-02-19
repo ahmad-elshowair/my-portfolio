@@ -12,18 +12,18 @@ export const metadata: Metadata = {
   icons: {
     icon: [
       {
-        url: "https://ioytezgkjmzpfcwaxqcj.supabase.co/storage/v1/object/public/portfolio/porttfolio_logo.1.png",
+        url: "https://mnlyhjoqqbulcocnsvdx.supabase.co/storage/v1/object/public/portfolio/logo.1.png",
         sizes: "32x32",
         type: "image/png",
       },
       {
-        url: "https://ioytezgkjmzpfcwaxqcj.supabase.co/storage/v1/object/public/portfolio/porttfolio_logo.1.png",
+        url: "https://mnlyhjoqqbulcocnsvdx.supabase.co/storage/v1/object/public/portfolio/logo.1.png",
         sizes: "16x16",
         type: "image/png",
       },
     ],
     apple: {
-      url: "https://ioytezgkjmzpfcwaxqcj.supabase.co/storage/v1/object/public/portfolio/porttfolio_logo.1.png",
+      url: "https://mnlyhjoqqbulcocnsvdx.supabase.co/storage/v1/object/public/portfolio/logo.1.png",
       sizes: "180x180",
       type: "image/png",
     },

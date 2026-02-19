@@ -8,12 +8,12 @@
   "theme_color": "#16a34a",
   "icons": [
     {
-      "src": "https://ioytezgkjmzpfcwaxqcj.supabase.co/storage/v1/object/public/portfolio//porttfolio_logo.2.png",
+      "src": "https://mnlyhjoqqbulcocnsvdx.supabase.co/storage/v1/object/public/portfolio/logo.2.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "https://ioytezgkjmzpfcwaxqcj.supabase.co/storage/v1/object/public/portfolio//porttfolio_logo.2.png",
+      "src": "https://mnlyhjoqqbulcocnsvdx.supabase.co/storage/v1/object/public/portfolio/logo.2.png",
       "sizes": "512x512",
       "type": "image/png"
     }

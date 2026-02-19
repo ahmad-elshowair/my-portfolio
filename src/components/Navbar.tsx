@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { FiMenu, FiX } from "react-icons/fi";
+import { configs } from "@/configs";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -16,9 +17,7 @@ const Navbar = () => {
           <div className="flex items-center justify-between h-20">
             <Link href={"/"}>
               <Image
-                src={
-                  "https://ioytezgkjmzpfcwaxqcj.supabase.co/storage/v1/object/public/portfolio//porttfolio_logo.2.png"
-                }
+                src={`${configs.storageUrl}logo.2.png`}
                 width={64}
                 height={64}
                 alt="logo"
@@ -36,7 +35,7 @@ const Navbar = () => {
                     "absolute inset-0 w-full h-full transition-all duration-300 ease-in-out",
                     isOpen
                       ? "opacity-0 translate-y-full"
-                      : "opacity-100 translate-y-0"
+                      : "opacity-100 translate-y-0",
                   )}
                 />
 
@@ -45,7 +44,7 @@ const Navbar = () => {
                     "absolute inset-0 w-full h-full transition-all duration-300 ease-in-out",
                     isOpen
                       ? "opacity-100 translate-y-0"
-                      : "opacity-0 -translate-y-full"
+                      : "opacity-0 -translate-y-full",
                   )}
                 />
               </div>
@@ -58,7 +57,7 @@ const Navbar = () => {
           className={cn(
             "fixed top-0 right-0 w-full h-screen bg-[#588157]/95 backdrop-blur transition-transform duration-500 ease-in-out transform",
             isOpen ? "translate-x-0" : "translate-x-full",
-            "overflow-hidden"
+            "overflow-hidden",
           )}
         >
           <ul className="flex flex-col items-center justify-center h-full space-y-12 pt-20">
@@ -71,7 +70,7 @@ const Navbar = () => {
                   isOpen
                     ? "translate-y-0 opacity-100"
                     : "-translate-y-full opacity-0",
-                  `delay-[${i * 250 + 500}ms]`
+                  `delay-[${i * 250 + 500}ms]`,
                 )}
               >
                 {/* Left Bracket */}
