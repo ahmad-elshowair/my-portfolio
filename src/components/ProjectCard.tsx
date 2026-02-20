@@ -2,9 +2,12 @@
 
 import { ProjectCardProps } from "@/definitions";
 import { AnimatePresence, motion } from "framer-motion";
+import Image from "next/image";
 import Link from "next/link";
 import { FC, useEffect, useState } from "react";
 import { FaExternalLinkAlt, FaGithub } from "react-icons/fa";
+
+const MotionImage = motion.create(Image);
 
 const ProjectCard: FC<ProjectCardProps> = ({
   title,
@@ -32,11 +35,13 @@ const ProjectCard: FC<ProjectCardProps> = ({
     >
       <div className="absolute inset-0 w-full h-full">
         <AnimatePresence mode="wait">
-          <motion.img
+          <MotionImage
             key={currentImageIndex}
             src={images[currentImageIndex].url}
             alt={images[currentImageIndex].alt}
-            className="w-full h-full object-fill transition-transform duration-700 group-hover:scale-90"
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            className="object-cover transition-transform duration-700 group-hover:scale-90"
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -20 }}
@@ -66,6 +71,7 @@ const ProjectCard: FC<ProjectCardProps> = ({
           href={link}
           target="_blank"
           rel="noopener noreferrer"
+          aria-label={`View live website for ${title}`}
           className="p-2 bg-mainGreen/20 backdrop-blur-sm rounded-full hover:bg-mainGreen/80 transition-colors ease-in-out duration-500"
           onClick={(e) => e.stopPropagation()}
         >
@@ -76,6 +82,7 @@ const ProjectCard: FC<ProjectCardProps> = ({
             href={githubUrl}
             target="_blank"
             rel="noopener noreferrer"
+            aria-label={`View source code for ${title} on GitHub`}
             className="p-2 bg-mainGreen/20 backdrop-blur-sm rounded-full hover:bg-mainGreen/80 transition-colors ease-in-out duration-500"
             onClick={(e) => e.stopPropagation()}
           >
