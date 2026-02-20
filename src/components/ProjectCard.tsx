@@ -18,7 +18,7 @@ const ProjectCard: FC<ProjectCardProps> = ({
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentImageIndex((prevIndex) =>
-        prevIndex === images.length - 1 ? 0 : prevIndex + 1
+        prevIndex === images.length - 1 ? 0 : prevIndex + 1,
       );
     }, 3000); // Change slide every 3 seconds
 
@@ -71,15 +71,17 @@ const ProjectCard: FC<ProjectCardProps> = ({
         >
           <FaExternalLinkAlt className="text-beige text-lg hover:scale-90  transition-transform duration-300" />
         </Link>
-        <Link
-          href={githubUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="p-2 bg-mainGreen/20 backdrop-blur-sm rounded-full hover:bg-mainGreen/80 transition-colors ease-in-out duration-500"
-          onClick={(e) => e.stopPropagation()}
-        >
-          <FaGithub className="text-beige text-lg hover:scale-125 hover:rotate-12 transition-transform duration-300" />
-        </Link>
+        {githubUrl && (
+          <Link
+            href={githubUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="p-2 bg-mainGreen/20 backdrop-blur-sm rounded-full hover:bg-mainGreen/80 transition-colors ease-in-out duration-500"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <FaGithub className="text-beige text-lg hover:scale-125 hover:rotate-12 transition-transform duration-300" />
+          </Link>
+        )}
       </div>
       {/* Content overlay */}
       <div className="absolute bottom-0 left-0 right-0 p-6 text-beige z-10">

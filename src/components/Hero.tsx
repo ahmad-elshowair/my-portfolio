@@ -1,6 +1,5 @@
 "use client";
 import Link from "next/link";
-import { configs } from "@/configs";
 import { inika } from "@/lib/fonts";
 import { FiDownloadCloud } from "react-icons/fi";
 import { TypeAnimation } from "react-type-animation";
@@ -57,7 +56,7 @@ const Hero = () => {
           hands-on experience building scalable applications.
         </p>
         <Link
-          href={`${configs.storageUrl}files/ahmad_elshowair_resume.pdf`}
+          href="/files/ahmad_elshowair_resume.pdf"
           target="_blank"
           rel="noopener noreferrer"
           className="flex items-center self-end bg-green-500 text-beige px-8 py-3 rounded-2xl  font-semibold mt-20 hover:text-bgGreen hover:bg-green-600 hover:scale-90 transition-all duration-300 ease-in-out gap-2"

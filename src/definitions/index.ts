@@ -24,6 +24,6 @@ export interface ProjectCardProps {
   title: string;
   technologies: ReactNode[];
   link: string;
-  githubUrl: string;
+  githubUrl?: string;
   images: ProjectImage[];
 }

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { FaGithub } from "react-icons/fa";
 import {
   SiGit,
+  SiMui,
   SiNextdotjs,
   SiPostgresql,
   SiReact,
@@ -15,6 +16,67 @@ import {
 
 export const Projects = () => {
   const projects = [
+    {
+      title: "Invoice Management",
+      technologies: [
+        <SiTypescript key="ts" />,
+        <SiReact key="react" />,
+        <SiMui key="mui" />,
+        <SiGit key="git" />,
+      ],
+      link: "https://point-craft.com/",
+      images: [
+        {
+          url: "/images/invoice-0.png",
+          alt: "Invoice Page ",
+        },
+        {
+          url: "/images/invoice-1.png",
+          alt: "Invoice Page ",
+        },
+        {
+          url: "/images/invoice-2.png",
+          alt: "Invoice Page",
+        },
+        {
+          url: "/images/invoice-3.png",
+          alt: "Invoice Page",
+        },
+      ],
+    },
+    {
+      title: "POS",
+      technologies: [
+        <SiTypescript key="ts" />,
+        <SiReact key="react" />,
+        <SiMui key="mui" />,
+        <SiGit key="git" />,
+      ],
+      link: "https://point-craft.com/",
+      images: [
+        {
+          url: "/images/POS-0.png",
+          alt: "POS Page ",
+        },
+        {
+          url: "/images/POS-1.png",
+          alt: "POS Page ",
+        },
+        {
+          url: "/images/POS-2.png",
+          alt: "POS Page",
+        },
+        {
+          url: "/images/POS-3.png",
+          alt: "POS Page",
+        },
+        {
+          url: "/images/POS-4.png",
+          alt: "POS Page",
+        },
+      ],
+    },
+
     {
       title: "ClearCargo",
       technologies: [
@@ -48,6 +110,7 @@ export const Projects = () => {
         },
       ],
     },
+
     {
       title: "Kun Mim Aldhaakirin",
       technologies: [
