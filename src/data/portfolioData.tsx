@@ -15,6 +15,7 @@ import {
   SiTailwindcss,
   SiTypescript,
   SiGit,
+  SiBootstrap,
 } from "react-icons/si";
 import { ExperienceItemProps, ProjectCardProps } from "@/definitions";
 
@@ -117,39 +118,39 @@ export const projects: ProjectCardProps[] = [
     images: [
       {
         url: "/images/invoice-0.png",
-        alt: "Invoice Page ",
+        alt: "Invoice for a $9.52 chicken noodle soup order with a save-and-continue button",
       },
       {
         url: "/images/POS-0.png",
-        alt: "POS Page ",
+        alt: "POS register in a ready-for-product-scan state with add-item, note, and coupon quick actions",
       },
       {
         url: "/images/invoice-1.png",
-        alt: "Invoice Page ",
+        alt: "Create-invoice form with customer details, line items, totals, and notes",
       },
       {
         url: "/images/POS-1.png",
-        alt: "POS Page ",
+        alt: "Product grid browsing 36 items with prices like ribeye steak and buffalo wings",
       },
       {
         url: "/images/invoice-2.png",
-        alt: "Invoice Page",
+        alt: "Overpaid invoice with itemized charges, a $3,195.95 total, and $0.00 due",
       },
       {
         url: "/images/POS-2.png",
-        alt: "POS Page",
+        alt: "Checkout screen with subtotal, discounts, tax, order total, and confirm-order button",
       },
       {
         url: "/images/invoice-3.png",
-        alt: "Invoice Page",
+        alt: "Invoices dashboard with summary stats, status filters, search, and a records table",
       },
       {
         url: "/images/POS-3.png",
-        alt: "POS Page",
+        alt: "Cart panel with added items, quantity controls, and a charge button",
       },
       {
         url: "/images/POS-4.png",
-        alt: "POS Page",
+        alt: "Item-not-found dialog with name and price fields over a numeric keypad",
       },
     ],
   },
@@ -173,19 +174,19 @@ export const projects: ProjectCardProps[] = [
     images: [
       {
         url: "/images/clearcargo-1.png",
-        alt: "Clearances Page ",
+        alt: "Clearances page with search, create button, and a record table showing invoice, VAT, and status",
       },
       {
         url: "/images/clearcargo-2.png",
-        alt: "Home Page",
+        alt: "Welcome page prompting login to access shipments, with register and login buttons",
       },
       {
         url: "/images/clearcargo-3.png",
-        alt: "Login Page",
+        alt: "Login form with email and password fields and a forgot-password link",
       },
       {
         url: "/images/clearcargo-4.png",
-        alt: "Register Page",
+        alt: "Registration form with name, email, password, date of birth, and mobile fields",
       },
     ],
   },
@@ -195,11 +196,13 @@ export const projects: ProjectCardProps[] = [
     description:
       "Full-stack social platform with dynamic feeds and threaded comments built on Zustand — hardened with dual-token JWT authentication, Redis rate limiting, and raw SQL ACID transactions for data integrity.",
     technologies: [
-      <SiNextdotjs key="next" />,
-      <SiTypescript key="ts" />,
-      <SiReact key="react" />,
       <SiPostgresql key="postgresql" />,
+      <SiExpress key="express" />,
+      <SiReact key="react" />,
+      <SiNodedotjs key="nodejs" />,
+      <SiTypescript key="ts" />,
       <SiRedis key="redis" />,
+      <SiBootstrap key="bootstrap" />,
       <SiGit key="git" />,
     ],
     githubUrl: "https://github.com/ahmad-elshowair/post-it",
@@ -224,15 +227,15 @@ export const projects: ProjectCardProps[] = [
     images: [
       {
         url: "/images/kun-min-aldhaakirin-1.png",
-        alt: "morning adhkar",
+        alt: "Arabic dhikr cards with audio play buttons and recitation counters in dark theme",
       },
       {
         url: "/images/kun-min-aldhaakirin-2.png",
-        alt: "morning adhkar english",
+        alt: "Morning azkar view of Ayatul Kursi with translation, audio playback, and the language menu open",
       },
       {
         url: "/images/kun-min-aldhaakirin-3.png",
-        alt: "adhkar light theme ",
+        alt: "Arabic dhikr counters with the light, dark, and system theme menu open",
       },
     ],
   },
