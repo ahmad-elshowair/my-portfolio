@@ -102,13 +102,14 @@ export const experiences: ExperienceItemProps[] = [
 
 export const projects: ProjectCardProps[] = [
   {
-    title: "Invoice Management",
+    title: "PointCraft — POS & Billing Suite",
     description:
-      "Invoice management tool for PointCraft's billing suite, streamlining transaction tracking and record reconciliation with a production React and Material UI interface used in daily operations.",
+      "PointCraft's restaurant POS, self-checkout, and invoice tools streamlining transaction tracking and record reconciliation — designed in Figma, shipped as production React and Material UI apps.",
     technologies: [
       <SiTypescript key="ts" />,
       <SiReact key="react" />,
       <SiMui key="mui" />,
+      <SiFigma key="figma" />,
       <SiGit key="git" />,
     ],
     link: "https://point-craft.com/",
@@ -118,42 +119,28 @@ export const projects: ProjectCardProps[] = [
         alt: "Invoice Page ",
       },
       {
-        url: "/images/invoice-1.png",
-        alt: "Invoice Page ",
-      },
-      {
-        url: "/images/invoice-2.png",
-        alt: "Invoice Page",
-      },
-      {
-        url: "/images/invoice-3.png",
-        alt: "Invoice Page",
-      },
-    ],
-  },
-  {
-    title: "POS",
-    description:
-      "Restaurant point-of-sale and self-checkout interfaces for PointCraft's payment suite — order flow and payment UI designed in Figma and shipped as production React and Material UI applications.",
-    technologies: [
-      <SiTypescript key="ts" />,
-      <SiReact key="react" />,
-      <SiMui key="mui" />,
-      <SiGit key="git" />,
-    ],
-    link: "https://point-craft.com/",
-    images: [
-      {
         url: "/images/POS-0.png",
         alt: "POS Page ",
+      },
+      {
+        url: "/images/invoice-1.png",
+        alt: "Invoice Page ",
       },
       {
         url: "/images/POS-1.png",
         alt: "POS Page ",
       },
       {
+        url: "/images/invoice-2.png",
+        alt: "Invoice Page",
+      },
+      {
         url: "/images/POS-2.png",
         alt: "POS Page",
+      },
+      {
+        url: "/images/invoice-3.png",
+        alt: "Invoice Page",
       },
       {
         url: "/images/POS-3.png",
