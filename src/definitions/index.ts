@@ -23,7 +23,11 @@ export interface ProjectImage {
 export interface ProjectCardProps {
   title: string;
   technologies: ReactNode[];
-  link: string;
+  /** Public live-demo URL. Omit when the deployment is down — the live-site action is not rendered. */
+  link?: string;
+  /** Source repository URL (GitHub). Rendered as the source action when present. */
   githubUrl?: string;
+  /** Honest availability note shown under the card title (e.g. redeploy status). Optional, data-driven. */
+  statusNote?: string;
   images: ProjectImage[];
 }

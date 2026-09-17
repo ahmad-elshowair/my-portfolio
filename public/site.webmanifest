@@ -4,18 +4,14 @@
   "description": "Full-Stack Developer with expertise in React, Next.js, Node.js, and TypeScript. Harvard CS50 graduate building modern, responsive web applications.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#16a34a",
+  "background_color": "#2c3531",
+  "theme_color": "#2c3531",
   "icons": [
     {
-      "src": "https://mnlyhjoqqbulcocnsvdx.supabase.co/storage/v1/object/public/portfolio/logo.2.png",
-      "sizes": "192x192",
-      "type": "image/png"
-    },
-    {
-      "src": "https://mnlyhjoqqbulcocnsvdx.supabase.co/storage/v1/object/public/portfolio/logo.2.png",
-      "sizes": "512x512",
-      "type": "image/png"
+      "src": "/images/logo.2.png",
+      "sizes": "500x280",
+      "type": "image/png",
+      "purpose": "any"
     }
   ]
 }

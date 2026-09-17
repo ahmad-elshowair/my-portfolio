@@ -14,6 +14,7 @@ const ProjectCard: FC<ProjectCardProps> = ({
   technologies,
   link,
   githubUrl,
+  statusNote,
   images,
 }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -67,16 +68,18 @@ const ProjectCard: FC<ProjectCardProps> = ({
       </div>
       {/* Project links */}
       <div className="absolute top-4 right-4 flex items-center gap-3 lg:opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-        <Link
-          href={link}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label={`View live website for ${title}`}
-          className="p-2 bg-mainGreen/20 backdrop-blur-sm rounded-full hover:bg-mainGreen/80 transition-colors ease-in-out duration-500"
-          onClick={(e) => e.stopPropagation()}
-        >
-          <FaExternalLinkAlt className="text-beige text-lg hover:scale-90  transition-transform duration-300" />
-        </Link>
+        {link && (
+          <Link
+            href={link}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`View live website for ${title}`}
+            className="p-2 bg-mainGreen/20 backdrop-blur-sm rounded-full hover:bg-mainGreen/80 transition-colors ease-in-out duration-500"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <FaExternalLinkAlt className="text-beige text-lg hover:scale-90  transition-transform duration-300" />
+          </Link>
+        )}
         {githubUrl && (
           <Link
             href={githubUrl}
@@ -93,6 +96,9 @@ const ProjectCard: FC<ProjectCardProps> = ({
       {/* Content overlay */}
       <div className="absolute bottom-0 left-0 right-0 p-6 text-beige z-10">
         <h3 className="text-base font-semibold mb-2">{title}</h3>
+        {statusNote && (
+          <p className="text-xs text-gray-300 mt-1">{statusNote}</p>
+        )}
 
         {/* Technologies section */}
         <div className="flex flex-wrap gap-2">
