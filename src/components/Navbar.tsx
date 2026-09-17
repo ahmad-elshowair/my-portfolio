@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { FiMenu, FiX } from "react-icons/fi";
+import { usePrefersReducedMotion } from "@/lib/usePrefersReducedMotion";
 
 const NAV_SECTIONS = [
   { label: "Me", id: "me" },
@@ -15,6 +16,7 @@ const NAV_SECTIONS = [
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const prefersReducedMotion = usePrefersReducedMotion();
 
   return (
     <>
@@ -75,10 +77,11 @@ const Navbar = () => {
           </div>
         </div>
 
-        {/* Mobile menu overlay */}
+        {/* Mobile menu overlay — instant state change under reduced motion */}
         <div
           className={cn(
-            "fixed top-0 right-0 w-full h-screen bg-[#588157]/95 backdrop-blur transition-transform duration-200 ease-in-out transform md:hidden",
+            "fixed top-0 right-0 w-full h-screen bg-[#588157]/95 backdrop-blur transform md:hidden",
+            prefersReducedMotion || "transition-transform duration-200 ease-in-out",
             isOpen ? "translate-x-0" : "translate-x-full",
             "overflow-hidden",
           )}
