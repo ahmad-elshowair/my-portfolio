@@ -22,6 +22,8 @@ export interface ProjectImage {
 
 export interface ProjectCardProps {
   title: string;
+  /** description of the project */
+  description: string;
   technologies: ReactNode[];
   /** Public live-demo URL. Omit when the deployment is down — the live-site action is not rendered. */
   link?: string;
