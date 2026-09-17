@@ -68,7 +68,7 @@ export const experiences: ExperienceItemProps[] = [
       },
       {
         name: "ClearCarGo",
-        url: "https://clearcargo.vercel.app/",
+        url: "https://github.com/ahmad-elshowair/clearcargo",
       },
       {
         name: "Task",
@@ -174,8 +174,8 @@ export const projects: ProjectCardProps[] = [
       <SiReact key="react" />,
       <SiGit key="git" />,
     ],
-    link: "https://clearcargo.vercel.app/",
     githubUrl: "https://github.com/ahmad-elshowair/clearcargo",
+    statusNote: "live demo redeploying — source on GitHub",
     images: [
       {
         url: "/images/clearcargo-1.png",
