@@ -26,7 +26,7 @@ export const experiences: ExperienceItemProps[] = [
     companyUrl: "https://point-craft.com/",
     period: "july 2025 - present",
     description:
-      "Building and maintaining a suite of POS and payment solutions, including Restaurant POS, Restaurant Self Checkout, Online Payment, and Invoice Management systems. Designing UI/UX interfaces in Figma and translating them into responsive, production-ready applications using React and Material UI.",
+      "Building and maintaining a suite of POS and payment solutions, including Restaurant POS, Restaurant Self Checkout, Online Payment, and Invoice Management systems — engineered for responsive, accessible, theme-consistent operation with React, TypeScript, and MUI.",
     projects: [
       {
         name: "POS",
@@ -54,7 +54,6 @@ export const experiences: ExperienceItemProps[] = [
       <SiReact key="react" />,
       <SiNodedotjs key="nodejs" />,
       <SiMui key="mui" />,
-      <SiFigma key="figma" />,
     ],
   },
   {
@@ -106,7 +105,7 @@ export const projects: ProjectCardProps[] = [
   {
     title: "PointCraft — POS & Billing Suite",
     description:
-      "PointCraft's restaurant POS, self-checkout, and invoice tools streamlining transaction tracking and record reconciliation — designed in Figma, shipped as production React and Material UI apps.",
+      "PointCraft's POS, self-checkout, and invoice tools streamlining transaction tracking and record reconciliation — shipped as production React and MUI interfaces with accessible, theme-consistent design.",
     technologies: [
       <SiTypescript key="ts" />,
       <SiReact key="react" />,
