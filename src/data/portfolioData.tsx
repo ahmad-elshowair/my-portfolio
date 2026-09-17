@@ -9,6 +9,7 @@ import {
   SiNodedotjs,
   SiPostgresql,
   SiReact,
+  SiRedis,
   SiStripe,
   SiSupabase,
   SiTailwindcss,
@@ -187,6 +188,22 @@ export const projects: ProjectCardProps[] = [
         alt: "Register Page",
       },
     ],
+  },
+
+  {
+    title: "Post-It",
+    description:
+      "Full-stack social platform with dynamic feeds and threaded comments built on Zustand — hardened with dual-token JWT authentication, Redis rate limiting, and raw SQL ACID transactions for data integrity.",
+    technologies: [
+      <SiNextdotjs key="next" />,
+      <SiTypescript key="ts" />,
+      <SiReact key="react" />,
+      <SiPostgresql key="postgresql" />,
+      <SiRedis key="redis" />,
+      <SiGit key="git" />,
+    ],
+    githubUrl: "https://github.com/ahmad-elshowair/post-it",
+    images: [],
   },
 
   {
