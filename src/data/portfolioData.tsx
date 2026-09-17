@@ -58,12 +58,12 @@ export const experiences: ExperienceItemProps[] = [
   {
     title: "full-stack developer",
     company: "remotely",
-    period: "april 2020 - july 2025",
+    period: "2023 - july 2025",
     description:
-      "I work with different clients across freelancing platforms or offline to implement projects, according to my experience as a full-stack | front-end | back-end developer, Developed Kun Mim Aldhaakirin, A PWA for Islamic daily remembrance. Built a full-stack customs clearance platform ClearCarGo with secure-auth and role-based access and payment gateway Stripe. Built Task, a full-stack task management system including secure-auth and role-based access.",
+      "I work with different clients across freelancing platforms or offline to implement projects, according to my experience as a full-stack | front-end | back-end developer, Developed Kun Min Aldhaakirin, A PWA for Islamic daily remembrance. Built a full-stack customs clearance platform ClearCarGo with secure-auth and role-based access and payment gateway Stripe. Built Task, a full-stack task management system including secure-auth and role-based access.",
     projects: [
       {
-        name: "Kun Mim Aldhaakirin",
+        name: "Kun Min Aldhaakirin",
         url: "https://kun-min-aldhaakirin.vercel.app",
       },
       {
@@ -163,7 +163,7 @@ export const projects: ProjectCardProps[] = [
   },
 
   {
-    title: "ClearCargo",
+    title: "ClearCarGo",
     technologies: [
       <SiNextdotjs key="next" />,
       <SiTypescript key="ts" />,
@@ -197,7 +197,7 @@ export const projects: ProjectCardProps[] = [
   },
 
   {
-    title: "Kun Mim Aldhaakirin",
+    title: "Kun Min Aldhaakirin",
     technologies: [
       <SiNextdotjs key="next" />,
       <SiTypescript key="ts" />,
