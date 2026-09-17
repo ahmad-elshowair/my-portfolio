@@ -38,6 +38,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <body
+        suppressHydrationWarning
         className={`${geistSans.variable} ${inika.variable} ${geistMono.variable} antialiased `}
       >
         <Navbar />
