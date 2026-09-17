@@ -95,42 +95,45 @@ const Navbar = () => {
           </div>
         </div>
 
-        {/* Mobile menu overlay — instant state change under reduced motion */}
-        <div
-          className={cn(
-            "fixed top-0 right-0 w-full h-screen bg-[#588157]/95 backdrop-blur transform md:hidden",
-            prefersReducedMotion ||
-              "transition-transform duration-200 ease-in-out",
-            isOpen ? "translate-x-0" : "translate-x-full",
-            "overflow-hidden",
-          )}
-        >
-          <ul className="flex flex-col items-center justify-center h-full space-y-12 pt-20">
-            {NAV_SECTIONS.map(({ label, id }) => (
-              <li
-                key={id}
-                className="transform transition-all duration-200 ease-in-out relative group hover:scale-105"
-              >
-                {/* Left Bracket */}
-                <div className="absolute right-full top-1/2 -translate-y-1/2 pr-6 transition-all duration-200 ease-in-out opacity-0 -translate-x-10 group-hover:translate-x-0 group-hover:opacity-100">
-                  <span className="text-5xl font-light text-beige">&lt;</span>
-                </div>
-
-                <Link
-                  href={`#${id}`}
-                  onClick={() => setIsOpen(false)}
-                  className="text-4xl text-beige transition-colors duration-200 ease-in-out hover:text-mainGreen block px-4"
+        {/* Mobile menu overlay — instant state change under reduced motion.
+            The shell clips the translated panel so the closed menu cannot
+            extend the page's scrollable region. */}
+        <div className="pointer-events-none fixed inset-0 overflow-hidden md:hidden">
+          <div
+            className={cn(
+              "pointer-events-auto absolute inset-y-0 right-0 h-full w-full transform bg-[#588157]/95 backdrop-blur",
+              prefersReducedMotion ||
+                "transition-[transform,visibility] duration-200 ease-in-out",
+              isOpen ? "visible translate-x-0" : "invisible translate-x-full",
+            )}
+          >
+            <ul className="flex flex-col items-center justify-center h-full space-y-12 pt-20">
+              {NAV_SECTIONS.map(({ label, id }) => (
+                <li
+                  key={id}
+                  className="transform transition-all duration-200 ease-in-out relative group hover:scale-105"
                 >
-                  {label}
-                </Link>
+                  {/* Left Bracket */}
+                  <div className="absolute right-full top-1/2 -translate-y-1/2 pr-6 transition-all duration-200 ease-in-out opacity-0 -translate-x-10 group-hover:translate-x-0 group-hover:opacity-100">
+                    <span className="text-5xl font-light text-beige">&lt;</span>
+                  </div>
 
-                {/* Right Bracket */}
-                <div className="absolute left-full top-1/2 -translate-y-1/2 pl-6 transition-all duration-200 ease-in-out opacity-0 translate-x-10 group-hover:translate-x-0 group-hover:opacity-100">
-                  <span className="text-5xl font-light text-beige">/&gt;</span>
-                </div>
-              </li>
-            ))}
-          </ul>
+                  <Link
+                    href={`#${id}`}
+                    onClick={() => setIsOpen(false)}
+                    className="text-4xl text-beige transition-colors duration-200 ease-in-out hover:text-mainGreen block px-4"
+                  >
+                    {label}
+                  </Link>
+
+                  {/* Right Bracket */}
+                  <div className="absolute left-full top-1/2 -translate-y-1/2 pl-6 transition-all duration-200 ease-in-out opacity-0 translate-x-10 group-hover:translate-x-0 group-hover:opacity-100">
+                    <span className="text-5xl font-light text-beige">/&gt;</span>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </nav>
 
