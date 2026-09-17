@@ -103,6 +103,8 @@ export const experiences: ExperienceItemProps[] = [
 export const projects: ProjectCardProps[] = [
   {
     title: "Invoice Management",
+    description:
+      "Invoice management tool for PointCraft's billing suite, streamlining transaction tracking and record reconciliation with a production React and Material UI interface used in daily operations.",
     technologies: [
       <SiTypescript key="ts" />,
       <SiReact key="react" />,
@@ -131,6 +133,8 @@ export const projects: ProjectCardProps[] = [
   },
   {
     title: "POS",
+    description:
+      "Restaurant point-of-sale and self-checkout interfaces for PointCraft's payment suite — order flow and payment UI designed in Figma and shipped as production React and Material UI applications.",
     technologies: [
       <SiTypescript key="ts" />,
       <SiReact key="react" />,
@@ -164,6 +168,8 @@ export const projects: ProjectCardProps[] = [
 
   {
     title: "ClearCarGo",
+    description:
+      "Full-stack customs-clearance platform with real-time shipment tracking, automated Stripe payment workflows, and role-based access control — built end-to-end with Next.js, TypeScript, and PostgreSQL.",
     technologies: [
       <SiNextdotjs key="next" />,
       <SiTypescript key="ts" />,
@@ -198,6 +204,8 @@ export const projects: ProjectCardProps[] = [
 
   {
     title: "Kun Min Aldhaakirin",
+    description:
+      "A progressive web app for Islamic daily remembrance with service-worker caching, dynamic dark and light themes, and full English/Arabic support — installable and fully usable offline.",
     technologies: [
       <SiNextdotjs key="next" />,
       <SiTypescript key="ts" />,

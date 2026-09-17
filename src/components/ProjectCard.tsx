@@ -11,6 +11,7 @@ const MotionImage = motion.create(Image);
 
 const ProjectCard: FC<ProjectCardProps> = ({
   title,
+  description,
   technologies,
   link,
   githubUrl,
@@ -99,6 +100,9 @@ const ProjectCard: FC<ProjectCardProps> = ({
         {statusNote && (
           <p className="text-xs text-gray-300 mt-1">{statusNote}</p>
         )}
+        <p className="text-xs md:text-sm leading-relaxed text-beige/90 line-clamp-3 mb-2">
+          {description}
+        </p>
 
         {/* Technologies section */}
         <div className="flex flex-wrap gap-2">
