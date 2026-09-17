@@ -6,7 +6,7 @@ import { geistSans, inika } from "@/lib/fonts";
 
 export default function Home() {
   return (
-    <main className="flex flex-col bg-bgGreen p-4">
+    <main className="flex flex-col overflow-x-clip bg-bgGreen p-4">
       <section
         id="me"
         className={`relative mx-auto flex w-full max-w-5xl flex-col gap-8 py-16 md:py-24 ${inika.className}`}
@@ -31,7 +31,7 @@ export default function Home() {
         </h1>
 
         <div className={`flex flex-col gap-6 ${geistSans.className}`}>
-          <p className="max-w-2xl text-sm tracking-wide text-beige/90 md:text-base lg:text-lg">
+          <p className="w-full text-sm tracking-wide text-beige/90 md:text-base lg:text-lg">
             Full-stack developer with{" "}
             <span className="zigzag-border px-1">
               3+ years of remote experience
@@ -51,15 +51,23 @@ export default function Home() {
             Hanoi, Vietnam · available remote worldwide
           </p>
 
-          <a
-            href="/files/ahmad_elshowair_resume.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex w-fit items-center gap-2 rounded-2xl bg-green-500 px-8 py-3 font-semibold text-beige transition-all duration-300 ease-in-out hover:scale-90 hover:bg-green-600 hover:text-bgGreen"
-          >
-            Resume
-            <FiDownloadCloud aria-hidden="true" />
-          </a>
+          <div className="flex flex-wrap items-center justify-end gap-4">
+            <a
+              href="/files/ahmad_elshowair_resume.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 rounded-2xl bg-mainGreen px-8 py-3 font-semibold text-bgGreen transition-all duration-200 ease-in-out hover:brightness-95"
+            >
+              Resume
+              <FiDownloadCloud aria-hidden="true" />
+            </a>
+            <a
+              href="mailto:ahmad-elshowair.dev@outlook.com"
+              className="flex items-center gap-2 rounded-2xl border border-beige/60 px-8 py-3 font-semibold text-beige transition-all duration-200 ease-in-out hover:bg-beige/10"
+            >
+              Contact
+            </a>
+          </div>
         </div>
       </section>
       <Experience />

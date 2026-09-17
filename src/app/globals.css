@@ -72,6 +72,7 @@ body {
   .zigzag-border {
     position: relative;
     display: inline-block;
+    isolation: isolate;
     font-style: italic;
     color: #2c3531;
   }
