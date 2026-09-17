@@ -1,3 +1,4 @@
+import Contact from "@/components/Contact";
 import Experience from "@/components/Experiences";
 import Hero from "@/components/Hero";
 import Projects from "@/components/Projects";
@@ -72,6 +73,7 @@ export default function Home() {
       </section>
       <Experience />
       <Projects />
+      <Contact />
     </main>
   );
 }
