@@ -20,7 +20,7 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className="sticky top-0 w-full z-50 bg-bgGreen">
+      <nav className="sticky top-0 z-50 w-full bg-bgGreen/75 backdrop-blur-lg border-b border-beige/10">
         <div className="max-w-5xl mx-auto px-4">
           <div className="flex items-center justify-between h-20">
             <Link href={"/"}>
@@ -81,7 +81,8 @@ const Navbar = () => {
         <div
           className={cn(
             "fixed top-0 right-0 w-full h-screen bg-[#588157]/95 backdrop-blur transform md:hidden",
-            prefersReducedMotion || "transition-transform duration-200 ease-in-out",
+            prefersReducedMotion ||
+              "transition-transform duration-200 ease-in-out",
             isOpen ? "translate-x-0" : "translate-x-full",
             "overflow-hidden",
           )}
