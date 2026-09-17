@@ -3,7 +3,7 @@
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FiMenu, FiX } from "react-icons/fi";
 import { usePrefersReducedMotion } from "@/lib/usePrefersReducedMotion";
 
@@ -16,11 +16,29 @@ const NAV_SECTIONS = [
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const prefersReducedMotion = usePrefersReducedMotion();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 10);
+    };
+
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
     <>
-      <nav className="sticky top-0 z-50 w-full bg-bgGreen/75 backdrop-blur-lg border-b border-beige/10">
+      <nav
+        className={cn(
+          "sticky top-0 z-50 w-full transition-all duration-300",
+          isScrolled
+            ? "bg-bgGreen/75 backdrop-blur-lg border-b border-beige/10"
+            : "bg-bgGreen backdrop-blur-none border-b border-transparent",
+        )}
+      >
         <div className="max-w-5xl mx-auto px-4">
           <div className="flex items-center justify-between h-20">
             <Link href={"/"}>
