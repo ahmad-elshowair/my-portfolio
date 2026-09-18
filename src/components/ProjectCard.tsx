@@ -113,7 +113,7 @@ const ProjectCard: FC<ProjectCardProps> = ({
         <div className="absolute inset-0 bg-gradient-to-r from-black/30 to-transparent" />
       </div>
       {/* Project links */}
-      <div className="absolute top-4 right-4 flex items-center gap-3 lg:opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+      <div className="absolute top-4 right-4 flex items-center gap-3 lg:opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-300">
         {link && (
           <Link
             href={link}

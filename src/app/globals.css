@@ -95,6 +95,12 @@ html {
   scroll-padding-top: 5rem;
 }
 
+/* Single focus indicator for every interactive element (palette ring) */
+:focus-visible {
+  outline: 2px solid #8da55b;
+  outline-offset: 2px;
+}
+
 /* Complete static experience for reduced-motion users */
 @media (prefers-reduced-motion: reduce) {
   *,
