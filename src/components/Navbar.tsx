@@ -46,7 +46,7 @@ const Navbar = () => {
                 src="/images/logo.2.png"
                 width={64}
                 height={64}
-                alt="logo"
+                alt="Ahmad Elshowair — home"
                 className="transition-transform duration-200 ease-in-out hover:scale-105"
               />
             </Link>
@@ -101,7 +101,7 @@ const Navbar = () => {
         <div className="pointer-events-none fixed inset-0 overflow-hidden md:hidden">
           <div
             className={cn(
-              "pointer-events-auto absolute inset-y-0 right-0 h-full w-full transform bg-[#588157]/95 backdrop-blur",
+              "pointer-events-auto absolute inset-y-0 right-0 h-full w-full transform bg-bgGreen/95 backdrop-blur",
               prefersReducedMotion ||
                 "transition-[transform,visibility] duration-200 ease-in-out",
               isOpen ? "visible translate-x-0" : "invisible translate-x-full",

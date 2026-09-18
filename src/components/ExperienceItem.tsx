@@ -58,14 +58,14 @@ const ExperienceItem: React.FC<ExperienceItemProps> = ({
       <div className="flex flex-col gap-1">
         <div className="flex items-baseline justify-between">
           <h3 className="text-2xl font-semibold text-beige">{title}</h3>
-          <span className="text-gray-500 text-sm">{period}</span>
+          <span className="text-gray-300 text-sm">{period}</span>
         </div>
         <Link
           href={companyUrl || "#"}
           target="_blank"
           rel="noopener noreferrer"
           className={cn(
-            "text-mainGreen text-xs bg-mainGreen/10 px-3 py-1 rounded-md hover:scale-110 hover:text-beige transition-all duration-300 ease-in-out w-fit",
+            "text-beige/90 text-xs bg-mainGreen/10 px-3 py-1 rounded-md hover:bg-mainGreen/30 hover:scale-110 transition-all duration-300 ease-in-out w-fit",
             !companyUrl && "pointer-events-none cursor-default"
           )}
         >

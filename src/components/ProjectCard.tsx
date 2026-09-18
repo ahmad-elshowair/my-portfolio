@@ -6,6 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { FC, useEffect, useState } from "react";
 import { FaExternalLinkAlt, FaGithub } from "react-icons/fa";
+import { usePrefersReducedMotion } from "@/lib/usePrefersReducedMotion";
 
 const MotionImage = motion.create(Image);
 
@@ -19,11 +20,15 @@ const ProjectCard: FC<ProjectCardProps> = ({
   images,
 }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+  const [rotationStopped, setRotationStopped] = useState(false);
+  const prefersReducedMotion = usePrefersReducedMotion();
   const hasImages = images.length > 0;
 
   useEffect(() => {
-    // Screenshot-free cards have nothing to rotate.
-    if (!hasImages) return;
+    // Screenshot-free cards have nothing to rotate; reduced motion stays static.
+    if (!hasImages || prefersReducedMotion || isPaused || rotationStopped)
+      return;
 
     const timer = setInterval(() => {
       setCurrentImageIndex((prevIndex) =>
@@ -32,45 +37,75 @@ const ProjectCard: FC<ProjectCardProps> = ({
     }, 3000); // Change slide every 3 seconds
 
     return () => clearInterval(timer);
-  }, [images.length, hasImages]);
+  }, [hasImages, prefersReducedMotion, isPaused, rotationStopped, images.length]);
+
+  const showImage = (index: number) => {
+    setCurrentImageIndex(index);
+    setRotationStopped(true);
+  };
 
   return (
     <motion.div
       whileHover={{ scale: 1.02 }}
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
+      onFocus={() => setIsPaused(true)}
+      onBlur={() => setIsPaused(false)}
       className="relative bg-mainGreen/10 backdrop-blur-sm rounded-lg overflow-hidden shadow-lg group cursor-pointer h-[300px]"
     >
       <div className="absolute inset-0 w-full h-full">
-        {hasImages && (
-          <>
-            <AnimatePresence mode="wait">
-              <MotionImage
-                key={currentImageIndex}
-                src={images[currentImageIndex].url}
-                alt={images[currentImageIndex].alt}
-                fill
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                className="object-cover transition-transform duration-700 group-hover:scale-90"
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
-                transition={{ duration: 0.5 }}
-              />
-            </AnimatePresence>
+        {hasImages && !prefersReducedMotion && (
+          <AnimatePresence mode="wait">
+            <MotionImage
+              key={currentImageIndex}
+              src={images[currentImageIndex].url}
+              alt={images[currentImageIndex].alt}
+              fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              className="object-cover transition-transform duration-700 group-hover:scale-90"
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              transition={{ duration: 0.5 }}
+            />
+          </AnimatePresence>
+        )}
 
-            {/* Slide indicators */}
-            <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex space-x-2">
-              {images.map((_, index) => (
-                <div
-                  key={index}
+        {hasImages && prefersReducedMotion && (
+          <Image
+            key={currentImageIndex}
+            src={images[currentImageIndex].url}
+            alt={images[currentImageIndex].alt}
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            className="object-cover"
+          />
+        )}
+
+        {/* Slide indicators — real buttons, still operable when static */}
+        {hasImages && (
+          <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex space-x-2">
+            {images.map((_, index) => (
+              <button
+                key={index}
+                type="button"
+                onClick={(event) => {
+                  event.stopPropagation();
+                  showImage(index);
+                }}
+                aria-label={`Show screenshot ${index + 1} of ${images.length}`}
+                aria-current={index === currentImageIndex}
+                className="flex h-6 w-6 items-center justify-center"
+              >
+                <span
+                  aria-hidden="true"
                   className={`h-1.5 w-1.5 rounded-full transition-all duration-300 ${
-                    index === currentImageIndex
-                      ? "bg-mainGreen w-4"
-                      : "bg-gray-300"
+                    index === currentImageIndex ? "bg-mainGreen w-4" : "bg-gray-300"
                   }`}
                 />
-              ))}
-            </div>
-          </>
+              </button>
+            ))}
+          </div>
         )}
 
         {/* Overlay gradient */}
