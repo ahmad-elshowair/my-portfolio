@@ -39,7 +39,7 @@ export default function RootLayout({
     <html lang="en" className="scroll-smooth">
       <body
         suppressHydrationWarning
-        className={`${geistSans.variable} ${inika.variable} ${geistMono.variable} antialiased `}
+        className={`${geistSans.variable} ${inika.variable} ${geistMono.variable} antialiased bg-bgGreen text-beige`}
       >
         {/* First focusable element — keyboard users skip the navigation */}
         <a

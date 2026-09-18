@@ -5,7 +5,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { FiMenu, FiX } from "react-icons/fi";
-import { usePrefersReducedMotion } from "@/lib/usePrefersReducedMotion";
 
 const NAV_SECTIONS = [
   { label: "Me", id: "me" },
@@ -16,14 +15,33 @@ const NAV_SECTIONS = [
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
-  const prefersReducedMotion = usePrefersReducedMotion();
+  const [activeSection, setActiveSection] = useState("me");
   const menuToggleRef = useRef<HTMLButtonElement>(null);
   const menuPanelRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10);
+      // Offset for detecting the active section in view
+      const scrollPosition = window.scrollY + 180;
+      const isBottom =
+        window.innerHeight + window.scrollY >=
+        document.documentElement.scrollHeight - 80;
+
+      if (isBottom) {
+        setActiveSection("contact");
+        return;
+      }
+
+      for (let i = NAV_SECTIONS.length - 1; i >= 0; i--) {
+        const section = document.getElementById(NAV_SECTIONS[i].id);
+        if (section) {
+          const top = section.offsetTop;
+          if (scrollPosition >= top) {
+            setActiveSection(NAV_SECTIONS[i].id);
+            break;
+          }
+        }
+      }
     };
 
     handleScroll();
@@ -42,7 +60,6 @@ const Navbar = () => {
       }
       if (event.key !== "Tab" || !menuPanelRef.current) return;
 
-      // Keep Tab cycling inside the open menu.
       const focusables = menuPanelRef.current.querySelectorAll<HTMLElement>(
         "a[href], button:not([disabled])",
       );
@@ -63,124 +80,119 @@ const Navbar = () => {
   }, [isOpen]);
 
   return (
-    <>
+    <header className="sticky top-4 sm:top-5 z-50 w-full px-4 sm:px-6 pointer-events-none">
+      {/* Floating Island Capsule */}
       <nav
-        className={cn(
-          "sticky top-0 z-50 w-full transition-all duration-300",
-          isScrolled
-            ? "bg-bgGreen/75 backdrop-blur-lg"
-            : "bg-bgGreen backdrop-blur-none",
-        )}
+        aria-label="Primary navigation"
+        className="pointer-events-auto relative mx-auto flex max-w-5xl items-center justify-between rounded-full bg-bgGreen/70 px-4 sm:px-6 md:px-8 py-2.5 md:py-3.5 shadow-sm shadow-black/40 backdrop-blur-3xl transition-all duration-300"
       >
-        <div className="max-w-5xl mx-auto px-4">
-          <div className="flex items-center justify-between h-20">
-            <Link href={"/"}>
-              <Image
-                src="/images/logo.2.png"
-                width={64}
-                height={64}
-                alt="Ahmad Elshowair — home"
-                className="transition-transform duration-200 ease-in-out hover:scale-105"
-              />
-            </Link>
+        {/* Logo */}
+        <Link
+          href="/"
+          className="flex items-center pl-1 sm:pl-2 transition-transform duration-200 ease-in-out hover:scale-105"
+        >
+          <Image
+            src="/images/logo.2.png"
+            width={48}
+            height={48}
+            alt="Ahmad Elshowair — home"
+            priority
+            className="w-10 h-10 md:w-12 md:h-12"
+          />
+        </Link>
 
-            {/* Desktop navigation */}
-            <ul className="hidden items-center gap-8 md:flex">
-              {NAV_SECTIONS.map(({ label, id }) => (
+        {/* Desktop Navigation Links */}
+        <ul className="hidden items-center gap-2 md:flex">
+          {NAV_SECTIONS.map(({ label, id }) => {
+            const isActive = activeSection === id;
+            return (
+              <li key={id}>
+                <Link
+                  href={`#${id}`}
+                  onClick={() => setActiveSection(id)}
+                  aria-current={isActive ? "page" : undefined}
+                  className={cn(
+                    "relative px-5 py-2 rounded-full text-sm md:text-base font-medium transition-all duration-200 ease-in-out",
+                    isActive
+                      ? "bg-mainGreen text-bgGreen font-semibold shadow-[0_0_18px_rgba(141,165,91,0.45)] scale-105"
+                      : "text-beige/85 hover:text-beige hover:bg-beige/10",
+                  )}
+                >
+                  {label}
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
+
+        {/* Mobile Menu Toggle Button */}
+        <button
+          ref={menuToggleRef}
+          onClick={() => setIsOpen(!isOpen)}
+          aria-label={isOpen ? "Close menu" : "Open menu"}
+          aria-expanded={isOpen}
+          className="relative z-50 flex h-10 w-10 items-center justify-center rounded-full  bg-beige/5 text-mainGreen transition-all hover:bg-beige/10 hover:text-beige active:scale-95 md:hidden"
+        >
+          {isOpen ? (
+            <FiX className="h-5 w-5" aria-hidden="true" />
+          ) : (
+            <FiMenu className="h-5 w-5" aria-hidden="true" />
+          )}
+        </button>
+      </nav>
+
+      {/* Modern Mobile Glass Dropdown Menu */}
+      {isOpen && (
+        <div
+          ref={menuPanelRef}
+          className="pointer-events-auto absolute left-4 right-4 top-full mt-2 mx-auto max-w-4xl rounded-3xl bg-bgGreen/70 p-4 shadow-sm shadow-black/40 backdrop-blur-3xl md:hidden transition-all duration-200"
+        >
+          <ul className="flex flex-col gap-1.5">
+            {NAV_SECTIONS.map(({ label, id }) => {
+              const isActive = activeSection === id;
+              return (
                 <li key={id}>
                   <Link
                     href={`#${id}`}
-                    className="text-base text-beige transition-colors duration-200 ease-in-out hover:text-mainGreen"
+                    onClick={() => {
+                      setActiveSection(id);
+                      setIsOpen(false);
+                    }}
+                    className={cn(
+                      "flex items-center justify-between rounded-2xl px-4 py-3 text-base transition-all duration-200",
+                      isActive
+                        ? "bg-mainGreen/20 text-mainGreen font-semibold border border-mainGreen/30"
+                        : "text-beige hover:bg-beige/5 hover:text-mainGreen",
+                    )}
                   >
-                    {label}
+                    <span>{label}</span>
+                    {isActive && (
+                      <span
+                        className="h-2 w-2 rounded-full bg-mainGreen"
+                        aria-hidden="true"
+                      />
+                    )}
                   </Link>
                 </li>
-              ))}
-            </ul>
+              );
+            })}
+          </ul>
 
-            {/* Mobile menu toggle */}
-            <button
-              ref={menuToggleRef}
-              onClick={() => setIsOpen(!isOpen)}
-              aria-label="Toggle menu"
-              aria-expanded={isOpen}
-              className="relative z-50 h-16 w-16 p-2 text-mainGreen hover:text-beige md:hidden"
+          {/* Quick Actions in Mobile Drawer */}
+          <div className="mt-3 flex flex-col gap-2 border-t border-beige/10 pt-3">
+            <a
+              href="/files/ahmad_elshowair_resume.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => setIsOpen(false)}
+              className="flex items-center justify-center gap-2 rounded-xl bg-mainGreen py-2.5 text-sm font-semibold text-bgGreen transition-all hover:brightness-95 active:scale-95"
             >
-              <div className="relative h-full w-full">
-                <FiMenu
-                  className={cn(
-                    "absolute inset-0 h-full w-full transition-all duration-200 ease-in-out",
-                    isOpen
-                      ? "opacity-0 translate-y-full"
-                      : "opacity-100 translate-y-0",
-                  )}
-                />
-
-                <FiX
-                  className={cn(
-                    "absolute inset-0 h-full w-full transition-all duration-200 ease-in-out",
-                    isOpen
-                      ? "opacity-100 translate-y-0"
-                      : "opacity-0 -translate-y-full",
-                  )}
-                />
-              </div>
-            </button>
+              Download Resume (PDF)
+            </a>
           </div>
         </div>
-
-        {/* Mobile menu overlay — instant state change under reduced motion.
-            The shell clips the translated panel so the closed menu cannot
-            extend the page's scrollable region. */}
-        <div className="pointer-events-none fixed inset-0 overflow-hidden md:hidden">
-          <div
-            ref={menuPanelRef}
-            className={cn(
-              "pointer-events-auto absolute inset-y-0 right-0 h-full w-full transform bg-bgGreen/95 backdrop-blur",
-              prefersReducedMotion ||
-                "transition-[transform,visibility] duration-200 ease-in-out",
-              isOpen ? "visible translate-x-0" : "invisible translate-x-full",
-            )}
-          >
-            <ul className="flex flex-col items-center justify-center h-full space-y-12 pt-20">
-              {NAV_SECTIONS.map(({ label, id }) => (
-                <li
-                  key={id}
-                  className="transform transition-all duration-200 ease-in-out relative group hover:scale-105"
-                >
-                  {/* Left Bracket */}
-                  <div className="absolute right-full top-1/2 -translate-y-1/2 pr-6 transition-all duration-200 ease-in-out opacity-0 -translate-x-10 group-hover:translate-x-0 group-hover:opacity-100">
-                    <span className="text-5xl font-light text-beige">&lt;</span>
-                  </div>
-
-                  <Link
-                    href={`#${id}`}
-                    onClick={() => setIsOpen(false)}
-                    className="text-4xl text-beige transition-colors duration-200 ease-in-out hover:text-mainGreen block px-4"
-                  >
-                    {label}
-                  </Link>
-
-                  {/* Right Bracket */}
-                  <div className="absolute left-full top-1/2 -translate-y-1/2 pl-6 transition-all duration-200 ease-in-out opacity-0 translate-x-10 group-hover:translate-x-0 group-hover:opacity-100">
-                    <span className="text-5xl font-light text-beige">
-                      /&gt;
-                    </span>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      </nav>
-
-      {/* Prevent scrolling when menu is open */}
-      <style jsx global>{`
-        body {
-          overflow: ${isOpen ? "hidden" : "auto"};
-        }
-      `}</style>
-    </>
+      )}
+    </header>
   );
 };
 
