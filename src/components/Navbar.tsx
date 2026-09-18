@@ -68,8 +68,8 @@ const Navbar = () => {
         className={cn(
           "sticky top-0 z-50 w-full transition-all duration-300",
           isScrolled
-            ? "bg-bgGreen/75 backdrop-blur-lg border-b border-beige/10"
-            : "bg-bgGreen backdrop-blur-none border-b border-transparent",
+            ? "bg-bgGreen/75 backdrop-blur-lg"
+            : "bg-bgGreen backdrop-blur-none",
         )}
       >
         <div className="max-w-5xl mx-auto px-4">
@@ -163,7 +163,9 @@ const Navbar = () => {
 
                   {/* Right Bracket */}
                   <div className="absolute left-full top-1/2 -translate-y-1/2 pl-6 transition-all duration-200 ease-in-out opacity-0 translate-x-10 group-hover:translate-x-0 group-hover:opacity-100">
-                    <span className="text-5xl font-light text-beige">/&gt;</span>
+                    <span className="text-5xl font-light text-beige">
+                      /&gt;
+                    </span>
                   </div>
                 </li>
               ))}

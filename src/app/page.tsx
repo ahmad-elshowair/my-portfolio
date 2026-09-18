@@ -38,9 +38,9 @@ export default function Home() {
             <span className="zigzag-border px-1">
               3+ years of remote experience
             </span>{" "}
-            building billing, POS, and PWA products — bilingual
-            English/Arabic interfaces, at home in async remote-first teams.
-            Harvard CS50 and Udacity Nanodegree certified.
+            building billing, POS, and PWA products — bilingual English/Arabic
+            interfaces, at home in async remote-first teams. Harvard CS50 and
+            Udacity Nanodegree certified.
           </p>
           <div className="flex flex-wrap gap-2 text-sm text-mainGreen">
             {["React", "Next.js", "TypeScript", "Node.js"].map((tech) => (
@@ -62,12 +62,6 @@ export default function Home() {
             >
               Resume
               <FiDownloadCloud aria-hidden="true" />
-            </a>
-            <a
-              href="mailto:ahmad-elshowair.dev@outlook.com"
-              className="flex items-center gap-2 rounded-2xl border border-beige/60 px-8 py-3 font-semibold text-beige transition-all duration-200 ease-in-out hover:bg-beige/10"
-            >
-              Contact
             </a>
           </div>
         </div>
