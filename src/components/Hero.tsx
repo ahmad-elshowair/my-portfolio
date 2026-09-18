@@ -65,13 +65,15 @@ const Hero = () => {
         </p>
 
         {/* Proof Micro-Card: PointCraft & Merchants Metric */}
-        <div className="flex items-center gap-3 rounded-2xl border border-beige/15 bg-bgGreen/50 p-3.5 sm:p-4 backdrop-blur-md shadow-sm">
+        <div className="flex items-center gap-3 rounded-2xl  bg-bgGreen/50 p-3.5 sm:p-4 backdrop-blur-3xl shadow shadow-black/40">
           <span className="relative flex h-2.5 w-2.5 shrink-0">
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-mainGreen opacity-75" />
             <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-mainGreen" />
           </span>
           <p className="text-xs sm:text-sm text-beige/90 leading-snug">
-            <span className="font-semibold text-beige">Currently at PointCraft</span>{" "}
+            <span className="font-semibold text-beige">
+              Currently at PointCraft
+            </span>{" "}
             — shipping POS and invoice tools used daily by{" "}
             <span className="font-semibold text-mainGreen">30+ merchants</span>.
           </p>
@@ -80,7 +82,10 @@ const Hero = () => {
         {/* Group 3: Core Stack & Action Buttons */}
         <div className="flex flex-wrap gap-2 pt-1 text-sm text-mainGreen">
           {["React", "Next.js", "TypeScript", "Node.js"].map((tech) => (
-            <span key={tech} className="zigzag-border px-1.5 py-0.5 text-xs sm:text-sm">
+            <span
+              key={tech}
+              className="zigzag-border px-1.5 py-0.5 text-xs sm:text-sm"
+            >
               {tech}
             </span>
           ))}
