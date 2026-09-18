@@ -41,6 +41,13 @@ export default function RootLayout({
         suppressHydrationWarning
         className={`${geistSans.variable} ${inika.variable} ${geistMono.variable} antialiased `}
       >
+        {/* First focusable element — keyboard users skip the navigation */}
+        <a
+          href="#me"
+          className="sr-only focus:not-sr-only focus:absolute focus:z-[60] focus:bg-bgGreen focus:px-4 focus:py-2 focus:text-beige"
+        >
+          Skip to main content
+        </a>
         <Navbar />
         {children}
         <Footer />

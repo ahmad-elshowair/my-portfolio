@@ -10,6 +10,7 @@ export default function Home() {
     <main className="flex flex-col overflow-x-clip bg-bgGreen p-4">
       <section
         id="me"
+        tabIndex={-1}
         className={`relative mx-auto flex w-full max-w-5xl flex-col gap-8 py-16 md:py-24 ${inika.className}`}
       >
         {/* Blurred accent drops — existing identity, repositioned */}

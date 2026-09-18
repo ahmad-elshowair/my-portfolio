@@ -3,7 +3,7 @@
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FiMenu, FiX } from "react-icons/fi";
 import { usePrefersReducedMotion } from "@/lib/usePrefersReducedMotion";
 
@@ -18,6 +18,8 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const prefersReducedMotion = usePrefersReducedMotion();
+  const menuToggleRef = useRef<HTMLButtonElement>(null);
+  const menuPanelRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -28,6 +30,37 @@ const Navbar = () => {
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setIsOpen(false);
+        menuToggleRef.current?.focus();
+        return;
+      }
+      if (event.key !== "Tab" || !menuPanelRef.current) return;
+
+      // Keep Tab cycling inside the open menu.
+      const focusables = menuPanelRef.current.querySelectorAll<HTMLElement>(
+        "a[href], button:not([disabled])",
+      );
+      if (focusables.length === 0) return;
+      const first = focusables[0];
+      const last = focusables[focusables.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen]);
 
   return (
     <>
@@ -46,7 +79,7 @@ const Navbar = () => {
                 src="/images/logo.2.png"
                 width={64}
                 height={64}
-                alt="logo"
+                alt="Ahmad Elshowair — home"
                 className="transition-transform duration-200 ease-in-out hover:scale-105"
               />
             </Link>
@@ -67,6 +100,7 @@ const Navbar = () => {
 
             {/* Mobile menu toggle */}
             <button
+              ref={menuToggleRef}
               onClick={() => setIsOpen(!isOpen)}
               aria-label="Toggle menu"
               aria-expanded={isOpen}
@@ -100,8 +134,9 @@ const Navbar = () => {
             extend the page's scrollable region. */}
         <div className="pointer-events-none fixed inset-0 overflow-hidden md:hidden">
           <div
+            ref={menuPanelRef}
             className={cn(
-              "pointer-events-auto absolute inset-y-0 right-0 h-full w-full transform bg-[#588157]/95 backdrop-blur",
+              "pointer-events-auto absolute inset-y-0 right-0 h-full w-full transform bg-bgGreen/95 backdrop-blur",
               prefersReducedMotion ||
                 "transition-[transform,visibility] duration-200 ease-in-out",
               isOpen ? "visible translate-x-0" : "invisible translate-x-full",

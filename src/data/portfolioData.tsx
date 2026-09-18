@@ -16,7 +16,19 @@ import {
   SiTypescript,
   SiGit,
   SiBootstrap,
+  SiGithub,
+  SiWix,
 } from "react-icons/si";
+import type { IconType } from "react-icons";
+
+/** Renders a technology icon with its screen-reader name — bare icons carry no meaning. */
+const techIcon = (name: string, Icon: IconType) => (
+  <span key={name} className="inline-flex items-center">
+    <Icon aria-hidden="true" />
+    <span className="sr-only">{name}</span>
+  </span>
+);
+
 import { ExperienceItemProps, ProjectCardProps } from "@/definitions";
 
 export const experiences: ExperienceItemProps[] = [
@@ -50,10 +62,13 @@ export const experiences: ExperienceItemProps[] = [
       },
     ],
     technologies: [
-      <SiTypescript key="typescript" />,
-      <SiReact key="react" />,
-      <SiNodedotjs key="nodejs" />,
-      <SiMui key="mui" />,
+      techIcon("TypeScript", SiTypescript),
+      techIcon("React", SiReact),
+      techIcon("Node.js", SiNodedotjs),
+      techIcon("MUI", SiMui),
+      techIcon("Git", SiGit),
+      techIcon("Github", SiGithub),
+      techIcon("Figma", SiFigma),
     ],
   },
   {
@@ -61,7 +76,7 @@ export const experiences: ExperienceItemProps[] = [
     company: "remotely",
     period: "2023 - july 2025",
     description:
-      "I work with different clients across freelancing platforms or offline to implement projects, according to my experience as a full-stack | front-end | back-end developer, Developed Kun Min Aldhaakirin, A PWA for Islamic daily remembrance. Built a full-stack customs clearance platform ClearCarGo with secure-auth and role-based access and payment gateway Stripe. Built Task, a full-stack task management system including secure-auth and role-based access.",
+      "I work with different clients across freelancing platforms or offline to implement projects, according to my experience as a full-stack | front-end | back-end developer, Developed Kun Min Aldhaakirin, A PWA for Islamic daily remembrance. Built a full-stack customs clearance platform ClearCarGo with secure-auth and role-based access and payment gateway Stripe. BuiltPost It, a full-stack social media platform including secure-auth.",
     projects: [
       {
         name: "Kun Min Aldhaakirin",
@@ -71,19 +86,25 @@ export const experiences: ExperienceItemProps[] = [
         name: "ClearCarGo",
         url: "https://github.com/ahmad-elshowair/clearcargo",
       },
+
       {
-        name: "Task",
-        url: "https://github.com/ahmad-elshowair/next-tasks",
+        name: "Post It",
+        url: "https://github.com/ahmad-elshowair/post-it",
       },
     ],
     technologies: [
-      <SiTypescript key="typescript" />,
-      <SiNextdotjs key="nextjs" />,
-      <SiTailwindcss key="tailwind" />,
-      <SiNodedotjs key="nodejs" />,
-      <SiExpress key="express" />,
-      <SiPostgresql key="postgresql" />,
-      <SiSupabase key="supabase" />,
+      techIcon("TypeScript", SiTypescript),
+      techIcon("Next.js", SiNextdotjs),
+      techIcon("Tailwind CSS", SiTailwindcss),
+      techIcon("Node.js", SiNodedotjs),
+      techIcon("Express", SiExpress),
+      techIcon("PostgreSQL", SiPostgresql),
+      techIcon("Supabase", SiSupabase),
+      techIcon("React", SiReact),
+      techIcon("Bootstrap", SiBootstrap),
+      techIcon("Git", SiGit),
+      techIcon("Github", SiGithub),
+      techIcon("Figma", SiFigma),
     ],
   },
   {
@@ -94,9 +115,10 @@ export const experiences: ExperienceItemProps[] = [
     description:
       "I was a member of the volunteers. developing the organization's website through CMS WIX. redesigning the layout of the website.",
     technologies: [
-      <SiHtml5 key="html5" />,
-      <SiJavascript key="javascript" />,
-      <SiCss3 key="css3" />,
+      techIcon("HTML5", SiHtml5),
+      techIcon("JavaScript", SiJavascript),
+      techIcon("CSS3", SiCss3),
+      techIcon("WIX", SiWix),
     ],
   },
 ];
@@ -107,11 +129,12 @@ export const projects: ProjectCardProps[] = [
     description:
       "PointCraft's POS, self-checkout, and invoice tools streamlining transaction tracking and record reconciliation — shipped as production React and MUI interfaces with accessible, theme-consistent design.",
     technologies: [
-      <SiTypescript key="ts" />,
-      <SiReact key="react" />,
-      <SiMui key="mui" />,
-      <SiFigma key="figma" />,
-      <SiGit key="git" />,
+      techIcon("TypeScript", SiTypescript),
+      techIcon("React", SiReact),
+      techIcon("MUI", SiMui),
+      techIcon("Git", SiGit),
+      techIcon("Github", SiGithub),
+      techIcon("Figma", SiFigma),
     ],
     link: "https://point-craft.com/",
     images: [
@@ -159,14 +182,16 @@ export const projects: ProjectCardProps[] = [
     description:
       "Full-stack customs-clearance platform with real-time shipment tracking, automated Stripe payment workflows, and role-based access control — built end-to-end with Next.js, TypeScript, and PostgreSQL.",
     technologies: [
-      <SiNextdotjs key="next" />,
-      <SiTypescript key="ts" />,
-      <SiTailwindcss key="tailwind" />,
-      <SiPostgresql key="postgresql" />,
-      <SiSupabase key="supabase" />,
-      <SiStripe key="stripe" />,
-      <SiReact key="react" />,
-      <SiGit key="git" />,
+      techIcon("Next.js", SiNextdotjs),
+      techIcon("TypeScript", SiTypescript),
+      techIcon("Tailwind CSS", SiTailwindcss),
+      techIcon("PostgreSQL", SiPostgresql),
+      techIcon("Supabase", SiSupabase),
+      techIcon("Stripe", SiStripe),
+      techIcon("React", SiReact),
+      techIcon("Git", SiGit),
+      techIcon("Github", SiGithub),
+      techIcon("Figma", SiFigma),
     ],
     githubUrl: "https://github.com/ahmad-elshowair/clearcargo",
     statusNote: "live demo redeploying — source on GitHub",
@@ -195,14 +220,14 @@ export const projects: ProjectCardProps[] = [
     description:
       "Full-stack social platform with dynamic feeds and threaded comments built on Zustand — hardened with dual-token JWT authentication, Redis rate limiting, and raw SQL ACID transactions for data integrity.",
     technologies: [
-      <SiPostgresql key="postgresql" />,
-      <SiExpress key="express" />,
-      <SiReact key="react" />,
-      <SiNodedotjs key="nodejs" />,
-      <SiTypescript key="ts" />,
-      <SiRedis key="redis" />,
-      <SiBootstrap key="bootstrap" />,
-      <SiGit key="git" />,
+      techIcon("PostgreSQL", SiPostgresql),
+      techIcon("Express", SiExpress),
+      techIcon("React", SiReact),
+      techIcon("Node.js", SiNodedotjs),
+      techIcon("TypeScript", SiTypescript),
+      techIcon("Redis", SiRedis),
+      techIcon("Bootstrap", SiBootstrap),
+      techIcon("Git", SiGit),
     ],
     githubUrl: "https://github.com/ahmad-elshowair/post-it",
     images: [],
@@ -213,13 +238,13 @@ export const projects: ProjectCardProps[] = [
     description:
       "A progressive web app for Islamic daily remembrance with service-worker caching, dynamic dark and light themes, and full English/Arabic support — installable and fully usable offline.",
     technologies: [
-      <SiNextdotjs key="next" />,
-      <SiTypescript key="ts" />,
-      <SiTailwindcss key="tailwind" />,
-      <SiGit key="git" />,
-      <SiPostgresql key="postgresql" />,
-      <SiSupabase key="supabase" />,
-      <SiReact key="react" />,
+      techIcon("Next.js", SiNextdotjs),
+      techIcon("TypeScript", SiTypescript),
+      techIcon("Tailwind CSS", SiTailwindcss),
+      techIcon("Git", SiGit),
+      techIcon("PostgreSQL", SiPostgresql),
+      techIcon("Supabase", SiSupabase),
+      techIcon("React", SiReact),
     ],
     link: "https://kun-min-aldhaakirin.vercel.app/",
     githubUrl: "https://github.com/ahmad-elshowair/kun-min-aldhaakirin",
