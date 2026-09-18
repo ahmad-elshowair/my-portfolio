@@ -1,6 +1,7 @@
 import AnimatedRole from "@/components/AnimatedRole";
 import { FiDownloadCloud } from "react-icons/fi";
 import { geistSans, inika } from "@/lib/fonts";
+import { location } from "@/data/portfolioData";
 
 /**
  * Identity section (#me) — name, role line, positioning copy, PointCraft proof
@@ -47,7 +48,7 @@ const Hero = () => {
             Open to remote roles
           </span>
           <span className="text-xs sm:text-sm text-beige/80">
-            Hanoi, Vietnam · available remote worldwide
+            {location} · available remote worldwide
           </span>
         </div>
       </div>

@@ -31,6 +31,8 @@ const techIcon = (name: string, Icon: IconType) => (
 
 import { ExperienceItemProps, ProjectCardProps } from "@/definitions";
 
+export const location = "Hanoi, Vietnam";
+
 export const experiences: ExperienceItemProps[] = [
   {
     title: "front-end developer",
