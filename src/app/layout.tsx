@@ -1,6 +1,6 @@
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
-import { geistMono, geistSans, inika } from "@/lib/fonts";
+import { geistSans, inika } from "@/lib/fonts";
 import {
   AUTHOR,
   SITE_DESCRIPTION,
@@ -93,7 +93,7 @@ export default function RootLayout({
       </head>
       <body
         suppressHydrationWarning
-        className={`${geistSans.variable} ${inika.variable} ${geistMono.variable} antialiased bg-bgGreen text-beige`}
+        className={`${geistSans.variable} ${inika.variable} antialiased bg-bgGreen text-beige font-sans`}
       >
         {/* First focusable element — keyboard users skip the navigation */}
         <a
