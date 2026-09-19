@@ -1,96 +1,125 @@
-# Ahmad Elshowair - Full-Stack Developer
+# Ahmad Elshowair — Full-Stack Developer
 
-  👋 Hi there, I'm a passionate Full-Stack Developer with a strong computer science
-   and web development foundation. My journey is marked by continuous learning and
-   the practical application of cutting-edge technologies.
+> Full-stack developer with 3+ years remote experience shipping billing, POS, and payments platforms with React, Next.js, TypeScript, and Node.js.
 
-## 🎓 Educational Background
-
-- **Harvard University** - CS50: Introduction to Computer Science
-- **UDACITY** - Advanced Full-Stack Web Development Nanodegree
-- **UDACITY** - Front-End Web Development Professional Nanodegree
-- **FreeCodeCamp** - Responsive Web Design Certification
-
-## 💻 Technical Expertise
-
-<table>
-  <tr>
-    <th>
-       Frontend    
-    </th>
-    <th>
-      Backend
-    </th>
-    
-  </tr>
-  <tr>
-    <td valign="top" width="50%">
-      <div align="center">  
-        <img style="margin: 10px" src="https://profilinator.rishav.dev/skills-assets/react-original-wordmark.svg" alt="React" height="50" />  
-        <img style="margin: 10px" src="https://profilinator.rishav.dev/skills-assets/css3-original-wordmark.svg" alt="CSS3" height="50" />  
-        <img style="margin: 10px" src="https://profilinator.rishav.dev/skills-assets/html5-original-wordmark.svg" alt="HTML5" height="50" />  
-        <img style="margin: 10px" src="https://profilinator.rishav.dev/skills-assets/bootstrap-plain.svg" alt="Bootstrap" height="50" />
-        <img style="margin: 10px" src="https://profilinator.rishav.dev/skills-assets/nextjs.png" alt="NextJS" height="50" />
-        <img style="margin: 10px" src="https://profilinator.rishav.dev/skills-assets/tailwindcss.svg" alt="Tailwind CSS" height="50" />
-      </div>
-    </td>
-    <td valign="top" width="50%">
-      <div align="center">  
-        <img style="margin: 10px" src="https://profilinator.rishav.dev/skills-assets/javascript-original.svg" alt="JavaScript" height="50" />  
-        <img style="margin: 10px" src="https://profilinator.rishav.dev/skills-assets/typescript-original.svg" alt="TypeScript" height="50" />
-        <img style="margin: 10px" src="https://profilinator.rishav.dev/skills-assets/nodejs-original-wordmark.svg" alt="Node.js" height="50" />  
-        <img style="margin: 10px" src="https://profilinator.rishav.dev/skills-assets/express-original-wordmark.svg" alt="Express.js" height="50" /> 
-        <img style="margin: 10px" src="https://profilinator.rishav.dev/skills-assets/postgresql-original-wordmark.svg" alt="PostgreSQL" height="50" /> 
-        <img style="margin: 10px" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/sqlite/sqlite-original.svg" alt="SQLite" height="50" />
-        <img style="margin: 10px" src="https://profilinator.rishav.dev/skills-assets/python-original.svg" alt="Python" height="50" />
-      </div>
-    </td>
-  </tr>
-</table>
-
-## 🛠️ Tools & Practices
-
-- Git/GitHub
-- Algorithms & Data Structures
-- Web Performance Optimization
-- Modern Development Workflows
-
-## 🚀 Professional Experience
-
-- Actively contributed to marketing team projects
-- Implemented modern web development practices
-- Collaborated effectively in cross-functional teams
-- Developed and maintained web applications
-
-## 🌟 Key Projects
-
-All my projects are available on my [GitHub profile](https://github.com/ahmad-elshowair), showcasing my expertise in:
-
-- Full-stack web applications
-- Responsive design implementations
-- API integrations
-- Modern UI/UX practices
-
-## 🔍 Current Focus
-
-Currently enhancing my expertise in Next.js and full-stack development, with a particular emphasis on:
-
-- Server-side rendering optimization
-- API route handling
-- Database integration
-- Modern UI/UX practices
-
-## ☎️ Let's Connect
-
-<div align="center">
-<a href="https://www.linkedin.com/in/ahmad-elshowair/" target="_blank">
-<img src=https://img.shields.io/badge/linkedin-%231E77B5.svg?&style=for-the-badge&logo=linkedin&logoColor=white alt=linkedin style="margin-bottom: 5px;" />
-</a>
-<a href="https://github.com/ahmad-elshowair" target="_blank">
-<img src=https://img.shields.io/badge/github-%2324292e.svg?&style=for-the-badge&logo=github&logoColor=white alt=github style="margin-bottom: 5px;" />
-</a>
-</div>
+**[Live Demo](https://ahmad-elshowair.vercel.app)** · **[Architecture](#project-structure)** · **[Getting Started](#getting-started)** · **[Contact](#connect)**
 
 ---
 
-💡 Open to collaboration and new opportunities in web development!
+## Overview
+
+Personal developer portfolio showcasing production systems, engineering craft, accessible UI design, and verified career milestones. Built with modern web standards, strict static typing, and high-performance server components.
+
+- **Live Production Deployment**: [https://ahmad-elshowair.vercel.app](https://ahmad-elshowair.vercel.app)
+- **Primary Domain & Contact**: [ahmad-elshowair.dev@outlook.com](mailto:ahmad-elshowair.dev@outlook.com)
+
+---
+
+## Visual Preview
+
+![Ahmad Elshowair Portfolio Preview](./public/images/readme.png)
+
+---
+
+## Tech Stack
+
+| Layer | Technologies |
+| :--- | :--- |
+| **Framework & Core** | Next.js 16 (App Router), React 19, TypeScript 5 (Strict Mode) |
+| **Styling & Motion** | Tailwind CSS 3, `tailwindcss-animate`, Framer Motion, Radix UI Slot |
+| **Icons & Media** | Lucide React, React Icons, Self-hosted static assets |
+| **Code Quality & CI** | ESLint, TypeScript Compiler (`tsc --noEmit`), GitHub Actions CI |
+
+---
+
+## Key Highlights
+
+- **Accessible & Responsive**: Keyboard navigable, semantic HTML, WCAG 2.1 AA compliant color contrast, and native reduced-motion support.
+- **Performant Architecture**: Built on Next.js App Router with server-rendered static generation, zero unapproved third-party tracking scripts, and optimized media assets.
+- **Enterprise Design System**: Curated color palette (forest greens, dark slate, muted earth tones) with glassmorphism surface effects and subtle micro-interactions.
+- **Automated CI Pipeline**: Full pull-request and push verification enforcing strict typechecking, linting, and production builds.
+
+---
+
+## Project Structure
+
+```text
+my-portfolio/
+├── .github/
+│   └── workflows/
+│       └── ci.yml               # Automated CI (lint, typecheck, build)
+├── public/
+│   ├── files/                   # Canonical resume PDF
+│   └── images/                  # Self-hosted project screenshots & preview
+├── src/
+│   ├── app/                     # App Router pages, layout, SEO metadata
+│   ├── components/              # Accessible UI components (Hero, Projects, Contact...)
+│   ├── data/                    # Static portfolio data & project definitions
+│   ├── definitions/             # TypeScript data contracts & type definitions
+│   └── lib/                     # Custom hooks and utility functions
+├── package.json                 # Dependencies & scripts
+└── tailwind.config.js           # Design tokens & color palette
+```
+
+---
+
+## Getting Started
+
+### Prerequisites
+
+- **Node.js**: `22.x` LTS (or `20.x`+)
+- **pnpm**: `9.x` or later (`corepack enable pnpm` or `npm install -g pnpm`)
+
+### Installation
+
+Clone the repository and install dependencies using `pnpm`:
+
+```bash
+git clone https://github.com/ahmad-elshowair/my-portfolio.git
+cd my-portfolio
+pnpm install
+```
+
+### Development Server
+
+Run the local development server:
+
+```bash
+pnpm dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) in your browser to view the application.
+
+### Verification & Quality Gates
+
+Run all quality checks locally before submitting code:
+
+```bash
+# Linting
+pnpm lint
+
+# TypeScript Strict Typecheck
+pnpm exec tsc --noEmit
+
+# Production Build
+pnpm build
+```
+
+---
+
+## Continuous Integration
+
+Every pull request and push to the `main` branch is validated automatically via [GitHub Actions](.github/workflows/ci.yml):
+
+1. **Install**: `pnpm install --frozen-lockfile`
+2. **Lint**: `pnpm lint`
+3. **Typecheck**: `pnpm exec tsc --noEmit`
+4. **Build**: `pnpm build`
+
+---
+
+## Connect
+
+- **Email**: [ahmad-elshowair.dev@outlook.com](mailto:ahmad-elshowair.dev@outlook.com)
+- **LinkedIn**: [linkedin.com/in/ahmad-elshowair](https://www.linkedin.com/in/ahmad-elshowair/)
+- **GitHub**: [github.com/ahmad-elshowair](https://github.com/ahmad-elshowair)
