@@ -1,8 +1,7 @@
 import AnimatedRole from "@/components/AnimatedRole";
 import { FiDownloadCloud } from "react-icons/fi";
 import { geistSans, inika } from "@/lib/fonts";
-import { location } from "@/data/portfolioData";
-
+import { AUTHOR } from "@/lib/site";
 /**
  * Identity section (#me) — name, role line, positioning copy, PointCraft proof
  * card, tech stack, and primary CTAs.
@@ -32,7 +31,7 @@ const Hero = () => {
       <div className="flex flex-col gap-3">
         <h1 className="flex flex-col gap-1.5">
           <span className="text-3xl font-bold text-beige sm:text-4xl md:text-5xl">
-            Ahmad Elshowair
+            {AUTHOR.name}
           </span>
           <span className="min-h-[1.875rem] text-xl font-semibold text-mainGreen sm:text-2xl md:min-h-[2.625rem] md:text-3xl">
             <AnimatedRole />
@@ -48,7 +47,8 @@ const Hero = () => {
             Open to remote roles
           </span>
           <span className="text-xs sm:text-sm text-beige/80">
-            {location} · available remote worldwide
+            {AUTHOR.location.city} , {AUTHOR.location.country} · available
+            remote worldwide
           </span>
         </div>
       </div>
