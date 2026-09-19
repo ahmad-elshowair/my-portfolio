@@ -65,7 +65,7 @@ const ExperienceItem: React.FC<ExperienceItemProps> = ({
           target="_blank"
           rel="noopener noreferrer"
           className={cn(
-            "text-beige/90 text-xs bg-mainGreen/10 px-3 py-1 rounded-md hover:bg-mainGreen/30 hover:scale-110 transition-all duration-300 ease-in-out w-fit",
+            "text-beige/90 text-xs bg-mainGreen/10 px-3 py-1 rounded-md hover:bg-mainGreen/30 hover:scale-105 transition-all duration-200 ease-in-out w-fit",
             !companyUrl && "pointer-events-none cursor-default"
           )}
         >
