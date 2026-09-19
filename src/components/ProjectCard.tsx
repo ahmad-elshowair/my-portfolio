@@ -46,7 +46,7 @@ const ProjectCard: FC<ProjectCardProps> = ({
 
   return (
     <motion.div
-      whileHover={{ scale: 1.02 }}
+      whileHover={prefersReducedMotion ? undefined : { scale: 1.02 }}
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
       onFocus={() => setIsPaused(true)}
@@ -62,7 +62,7 @@ const ProjectCard: FC<ProjectCardProps> = ({
               alt={images[currentImageIndex].alt}
               fill
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              className="object-cover transition-transform duration-700 group-hover:scale-90"
+              className="object-cover transition-transform duration-300 ease-in-out group-hover:scale-105"
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -20 }}
@@ -120,10 +120,10 @@ const ProjectCard: FC<ProjectCardProps> = ({
             target="_blank"
             rel="noopener noreferrer"
             aria-label={`View live website for ${title}`}
-            className="p-2 bg-mainGreen/20 backdrop-blur-sm rounded-full hover:bg-mainGreen/80 transition-colors ease-in-out duration-500"
+            className="p-2 bg-mainGreen/20 backdrop-blur-sm rounded-full hover:bg-mainGreen/80 transition-colors ease-in-out duration-300"
             onClick={(e) => e.stopPropagation()}
           >
-            <FaExternalLinkAlt className="text-beige text-lg hover:scale-90  transition-transform duration-300" />
+            <FaExternalLinkAlt className="text-beige text-lg hover:scale-105 transition-transform duration-200 ease-in-out" />
           </Link>
         )}
         {githubUrl && (
@@ -132,10 +132,10 @@ const ProjectCard: FC<ProjectCardProps> = ({
             target="_blank"
             rel="noopener noreferrer"
             aria-label={`View source code for ${title} on GitHub`}
-            className="p-2 bg-mainGreen/20 backdrop-blur-sm rounded-full hover:bg-mainGreen/80 transition-colors ease-in-out duration-500"
+            className="p-2 bg-mainGreen/20 backdrop-blur-sm rounded-full hover:bg-mainGreen/80 transition-colors ease-in-out duration-300"
             onClick={(e) => e.stopPropagation()}
           >
-            <FaGithub className="text-beige text-lg hover:scale-125 hover:rotate-12 transition-transform duration-300" />
+            <FaGithub className="text-beige text-lg hover:scale-105 transition-transform duration-200 ease-in-out" />
           </Link>
         )}
       </div>
