@@ -19,8 +19,7 @@ type CopyState = "idle" | "copied" | "failed";
  * Contact destination — direct conversion channels only (email, LinkedIn)
  * plus the resume asset; the strings below are contract-frozen and any change
  * must re-verify against the canonical resume. GitHub deliberately lives in
- * the Projects section and on project cards, not here (user decision
- * 2026-09-18).
+ * the Projects section and on project cards, not here.
  */
 const Contact = () => {
   const [copyState, setCopyState] = useState<CopyState>("idle");
