@@ -51,3 +51,6 @@ zcode/
 # local spec workflow docs (specs + tracker are machine-local by convention)
 /docs/
 /specs/
+
+# zcode
+.zcodeignore
