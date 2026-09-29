@@ -135,6 +135,7 @@ export const experiences: ExperienceItemProps[] = [
 
 export const projects: ProjectCardProps[] = [
   {
+    anchorId: "pointcraft",
     title: "PointCraft — POS & Billing Suite",
     description:
       "PointCraft's POS, self-checkout, and invoice tools streamlining transaction tracking and record reconciliation — shipped as production React and MUI interfaces with accessible, theme-consistent design.",
@@ -188,6 +189,7 @@ export const projects: ProjectCardProps[] = [
   },
 
   {
+    anchorId: "clearcargo",
     title: "ClearCarGo",
     description:
       "Full-stack customs-clearance platform with real-time shipment tracking, automated Stripe payment workflows, and role-based access control — built end-to-end with Next.js, TypeScript, and PostgreSQL.",
@@ -226,6 +228,7 @@ export const projects: ProjectCardProps[] = [
   },
 
   {
+    anchorId: "post-it",
     title: "Post-It",
     description:
       "Full-stack social platform with dynamic feeds and threaded comments built on Zustand — hardened with dual-token JWT authentication, Redis rate limiting, and raw SQL ACID transactions for data integrity.",
@@ -244,6 +247,7 @@ export const projects: ProjectCardProps[] = [
   },
 
   {
+    anchorId: "kun-min-aldhaakirin",
     title: "Kun Min Aldhaakirin",
     description:
       "A progressive web app for Islamic daily remembrance with service-worker caching, dynamic dark and light themes, and full English/Arabic support — installable and fully usable offline.",

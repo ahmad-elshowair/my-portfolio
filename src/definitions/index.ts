@@ -76,6 +76,8 @@ export interface ProjectImage {
 }
 
 export interface ProjectCardProps {
+  /** Stable anchor id — rendered as #project-<anchorId>; targeted by skill evidence pills and cross-glow. */
+  anchorId?: string;
   title: string;
   /** description of the project */
   description: string;
