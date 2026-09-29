@@ -9,6 +9,7 @@ import { FiMenu, FiX } from "react-icons/fi";
 const NAV_SECTIONS = [
   { label: "Me", id: "me" },
   { label: "Experience", id: "experience" },
+  { label: "Skills", id: "skills" },
   { label: "Projects", id: "projects" },
   { label: "Contact", id: "contact" },
 ];

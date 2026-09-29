@@ -44,15 +44,16 @@ export interface SkillItem {
 
 /**
  * Homogeneous props every concept variant accepts — the registry contract.
- * Variants consume the shared lab store rather than props; this "no props" type keeps
- * all eight interchangeable so adding a concept never touches the host.
+ * Variants consume the shared lab store rather than props; this "no known
+ * props" type keeps all eight interchangeable so adding a concept never
+ * touches the host (React's key still passes through).
  */
-export type SkillConceptProps = Record<string, never>;
+export type SkillConceptProps = object;
 
 /** Registry entry mounting one concept behind the switcher. */
 export interface SkillConceptDescriptor {
   id: ConceptId;
-  /** Short switcher label, e.g. "013 shelves". */
+  /** Short switcher label, e.g. "shelves". */
   label: string;
   /** One-line description of what the evaluator sees. */
   blurb: string;
