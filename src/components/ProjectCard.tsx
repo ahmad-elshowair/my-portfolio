@@ -6,7 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { FC, useEffect, useState } from "react";
 import { FaExternalLinkAlt, FaGithub } from "react-icons/fa";
-import { usePrefersReducedMotion } from "@/lib/usePrefersReducedMotion";
+import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 
 const MotionImage = motion.create(Image);
 
