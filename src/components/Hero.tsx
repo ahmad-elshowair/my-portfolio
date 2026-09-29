@@ -39,7 +39,7 @@ const Hero = () => {
         </h1>
 
         <div className="flex flex-wrap items-center gap-2 pt-1">
-          <span className="inline-flex items-center gap-2 rounded-full border border-mainGreen/40 bg-mainGreen/10 px-3.5 py-1 text-xs sm:text-sm font-medium text-mainGreen backdrop-blur-md">
+          <span className="inline-flex items-center gap-2 rounded-full border border-mainGreen/40 bg-mainGreen/10 px-3.5 py-1 text-xs sm:text-sm font-medium text-beige backdrop-blur-md">
             <span
               className="h-2 w-2 rounded-full bg-mainGreen motion-safe:animate-pulse"
               aria-hidden="true"
