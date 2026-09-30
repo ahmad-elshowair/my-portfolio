@@ -22,7 +22,7 @@ const ZONES: BentoZoneConfig[] = [
     title: "Front-End & UI Systems",
     subtitle: "Core Strengths & Architecture",
     spanClass: "md:col-span-2 lg:col-span-2",
-    heroIds: ["typescript", "react", "nextjs", "tailwind"],
+    heroIds: ["typescript", "react", "nextjs", "tailwind", "mui"],
     ids: [
       "typescript",
       "react",
@@ -45,7 +45,7 @@ const ZONES: BentoZoneConfig[] = [
     title: "Back-End, Data & APIs",
     subtitle: "Server Architecture & Pipelines",
     spanClass: "md:col-span-2 lg:col-span-2",
-    heroIds: ["nodejs", "postgresql"],
+    heroIds: ["nodejs", "postgresql", "acid-transactions", "express"],
     ids: [
       "nodejs",
       "postgresql",
@@ -65,6 +65,7 @@ const ZONES: BentoZoneConfig[] = [
     title: "State, Testing & DevOps",
     subtitle: "Quality & Deployment",
     spanClass: "md:col-span-1 lg:col-span-1",
+    heroIds: ["git", "zustand"],
     ids: [
       "zustand",
       "vitest",
@@ -80,6 +81,7 @@ const ZONES: BentoZoneConfig[] = [
     title: "Global Remote & Communication",
     subtitle: "Agile & Multilingual",
     spanClass: "md:col-span-1 lg:col-span-1",
+    heroIds: ["arabic", "english"],
     ids: ["agile-remote", "bilingual-ui", "arabic", "english"],
   },
 ];

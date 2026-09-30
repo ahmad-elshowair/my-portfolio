@@ -399,6 +399,7 @@ export const skills: SkillItem[] = [
   {
     id: "responsive-ui",
     name: "Responsive UI",
+    icon: "lucide:monitor-smartphone",
     category: "frontend",
     context:
       "Accessible, theme-consistent UI across mobile and desktop viewports (PointCraft).",
@@ -407,6 +408,7 @@ export const skills: SkillItem[] = [
   {
     id: "cross-browser",
     name: "Cross-Browser & Accessible UI",
+    icon: "tabler:browser-check",
     category: "frontend",
     context:
       "Cross-browser rendering with accessible, keyboard-operable markup.",
@@ -415,6 +417,7 @@ export const skills: SkillItem[] = [
   {
     id: "pwa",
     name: "Progressive Web Apps (PWA)",
+    icon: "simple-icons:pwa",
     category: "frontend",
     context:
       "Installable, offline-capable PWA with service-worker caching and dynamic themes (Kun Min Aldhaakirin).",
@@ -423,6 +426,7 @@ export const skills: SkillItem[] = [
   {
     id: "api-integration",
     name: "API Integration",
+    icon: "tabler:webhook",
     category: "frontend",
     context: "Front-end consumption of RESTful APIs.",
     projects: [],
@@ -430,6 +434,7 @@ export const skills: SkillItem[] = [
   {
     id: "fe-architecture",
     name: "Front-end architecture",
+    icon: "carbon:layers",
     category: "frontend",
     context:
       "Structured reactive state and component composition for production apps.",
@@ -456,6 +461,7 @@ export const skills: SkillItem[] = [
   {
     id: "rest-apis",
     name: "RESTful APIs",
+    icon: "tabler:api",
     category: "backend",
     context: "RESTful API design and consumption.",
     projects: ["pointcraft"],
@@ -498,6 +504,7 @@ export const skills: SkillItem[] = [
   {
     id: "jwt-rbac",
     name: "JWT & RBAC authentication",
+    icon: "lucide:shield-check",
     category: "backend",
     context: "Dual-token JWT authentication with role-based access control.",
     projects: ["clearcargo", "post-it"],
@@ -505,6 +512,7 @@ export const skills: SkillItem[] = [
   {
     id: "acid-transactions",
     name: "Raw SQL ACID transactions",
+    icon: "carbon:sql",
     category: "backend",
     context: "Raw SQL ACID transactions for production-grade data integrity.",
     projects: ["post-it"],
@@ -538,6 +546,7 @@ export const skills: SkillItem[] = [
   {
     id: "agile-remote",
     name: "Agile remote collaboration",
+    icon: "lucide:users",
     category: "tools",
     context: "Async collaboration with international teams.",
     projects: ["pointcraft", "clearcargo"],
@@ -545,6 +554,7 @@ export const skills: SkillItem[] = [
   {
     id: "zustand",
     name: "State management (Zustand)",
+    icon: "devicon-plain:zustand",
     category: "tools",
     context:
       "State management for dynamic feeds and threaded comments in Post-It.",
@@ -553,6 +563,7 @@ export const skills: SkillItem[] = [
   {
     id: "realtime-dashboards",
     name: "Real-time dashboards",
+    icon: "lucide:activity",
     category: "tools",
     context: "Real-time shipment tracking in ClearCarGO.",
     projects: ["clearcargo", "pointcraft"],
@@ -560,6 +571,7 @@ export const skills: SkillItem[] = [
   {
     id: "bilingual-ui",
     name: "Bilingual UI development",
+    icon: "lucide:languages",
     category: "tools",
     context: "English/Arabic interfaces in the Kun Min Aldhaakirin PWA.",
     projects: ["kun-min-aldhaakirin"],
@@ -567,6 +579,7 @@ export const skills: SkillItem[] = [
   {
     id: "performance-optimization",
     name: "Performance optimization",
+    icon: "lucide:gauge",
     category: "tools",
     context: "Hot-path performance work on production APIs.",
     projects: ["clearcargo", "post-it", "pointcraft", "kun-min-aldhaakirin"],
@@ -582,6 +595,7 @@ export const skills: SkillItem[] = [
   {
     id: "ai-assisted",
     name: "AI-assisted development",
+    icon: "lucide:sparkles",
     category: "tools",
     context: "AI-augmented engineering workflow.",
     projects: ["pointcraft", "clearcargo", "kun-min-aldhaakirin", "post-it"],
@@ -599,6 +613,7 @@ export const skills: SkillItem[] = [
   {
     id: "arabic",
     name: "Arabic (native)",
+    icon: "lucide:globe",
     category: "languages",
     context: "Arabic — native.",
     projects: [],
@@ -606,6 +621,7 @@ export const skills: SkillItem[] = [
   {
     id: "english",
     name: "English (fluent)",
+    icon: "lucide:globe",
     category: "languages",
     context: "English — fluent.",
     projects: [],
