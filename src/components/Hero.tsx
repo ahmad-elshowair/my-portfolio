@@ -39,7 +39,7 @@ const Hero = () => {
         </h1>
 
         <div className="flex flex-wrap items-center gap-2 pt-1">
-          <span className="inline-flex items-center gap-2 rounded-full border border-mainGreen/40 bg-mainGreen/10 px-3.5 py-1 text-xs sm:text-sm font-medium text-mainGreen backdrop-blur-md">
+          <span className="inline-flex items-center gap-2 rounded-full border border-mainGreen/40 bg-mainGreen/10 px-3.5 py-1 text-xs sm:text-sm font-medium text-beige backdrop-blur-md">
             <span
               className="h-2 w-2 rounded-full bg-mainGreen motion-safe:animate-pulse"
               aria-hidden="true"
@@ -66,7 +66,7 @@ const Hero = () => {
         </p>
 
         {/* Proof Micro-Card: PointCraft & Merchants Metric */}
-        <div className="flex items-center gap-3 rounded-2xl  bg-bgGreen/50 p-3.5 sm:p-4 backdrop-blur-3xl shadow shadow-black/40">
+        <div className="flex items-center gap-3 rounded-2xl  bg-bgGreen/50 p-3.5 sm:p-4 backdrop-blur-3xl">
           <span className="relative flex h-2.5 w-2.5 shrink-0">
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-mainGreen opacity-75" />
             <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-mainGreen" />

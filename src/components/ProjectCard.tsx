@@ -6,11 +6,13 @@ import Image from "next/image";
 import Link from "next/link";
 import { FC, useEffect, useState } from "react";
 import { FaExternalLinkAlt, FaGithub } from "react-icons/fa";
-import { usePrefersReducedMotion } from "@/lib/usePrefersReducedMotion";
+import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
+import { useProjectHighlight } from "@/hooks/useProjectHighlight";
 
 const MotionImage = motion.create(Image);
 
 const ProjectCard: FC<ProjectCardProps> = ({
+  anchorId,
   title,
   description,
   technologies,
@@ -23,6 +25,7 @@ const ProjectCard: FC<ProjectCardProps> = ({
   const [isPaused, setIsPaused] = useState(false);
   const [rotationStopped, setRotationStopped] = useState(false);
   const prefersReducedMotion = usePrefersReducedMotion();
+  const highlighted = useProjectHighlight(anchorId);
   const hasImages = images.length > 0;
 
   useEffect(() => {
@@ -46,12 +49,17 @@ const ProjectCard: FC<ProjectCardProps> = ({
 
   return (
     <motion.div
+      id={anchorId ? `project-${anchorId}` : undefined}
       whileHover={prefersReducedMotion ? undefined : { scale: 1.02 }}
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
       onFocus={() => setIsPaused(true)}
       onBlur={() => setIsPaused(false)}
-      className="relative bg-mainGreen/10 backdrop-blur-sm rounded-lg overflow-hidden shadow-lg group cursor-pointer h-[300px]"
+      className={`relative bg-mainGreen/10 backdrop-blur-sm rounded-lg overflow-hidden shadow-lg group cursor-pointer h-[300px] transition-shadow duration-300 ${
+        highlighted
+          ? "ring-2 ring-mainGreen/70 shadow-[0_0_25px_rgba(141,165,91,0.35)]"
+          : ""
+      }`}
     >
       <div className="absolute inset-0 w-full h-full">
         {hasImages && !prefersReducedMotion && (

@@ -9,6 +9,7 @@ import { FiMenu, FiX } from "react-icons/fi";
 const NAV_SECTIONS = [
   { label: "Me", id: "me" },
   { label: "Experience", id: "experience" },
+  { label: "Skills", id: "skills" },
   { label: "Projects", id: "projects" },
   { label: "Contact", id: "contact" },
 ];
@@ -93,11 +94,11 @@ const Navbar = () => {
         >
           <Image
             src="/images/logo.2.png"
-            width={48}
-            height={48}
+            width={50}
+            height={28}
             alt="Ahmad Elshowair — home"
             priority
-            className="w-10 h-10 md:w-12 md:h-12"
+            className="h-10 w-auto md:h-12"
           />
         </Link>
 

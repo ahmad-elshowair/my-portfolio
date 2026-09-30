@@ -84,7 +84,7 @@ const Contact = () => {
           </p>
 
           <div className="mt-4 sm:mt-6 flex flex-wrap items-center gap-x-4 gap-y-2">
-            <span className="inline-flex items-center gap-2 rounded-full border border-mainGreen/40 bg-mainGreen/10 px-4 py-1.5 text-sm text-mainGreen font-medium">
+            <span className="inline-flex items-center gap-2 rounded-full border border-mainGreen/40 bg-mainGreen/10 px-4 py-1.5 text-sm text-beige font-medium">
               <span
                 className="h-2.5 w-2.5 rounded-full bg-mainGreen motion-safe:animate-pulse"
                 aria-hidden="true"
@@ -100,7 +100,7 @@ const Contact = () => {
           <div className="mt-6 sm:mt-8 flex flex-col gap-4 sm:flex-row sm:items-center rounded-2xl border border-mainGreen/40 bg-mainGreen/10 p-4 sm:p-5">
             <a
               href={`mailto:${EMAIL}`}
-              className="flex min-w-0 items-center gap-3 sm:gap-4 text-mainGreen transition-colors duration-200 hover:text-beige"
+              className="flex min-w-0 items-center gap-3 sm:gap-4 text-beige transition-opacity duration-200 hover:opacity-80"
             >
               <FiMail
                 className="w-5 h-5 sm:w-6 sm:h-6 shrink-0"
@@ -141,7 +141,7 @@ const Contact = () => {
               href="https://www.linkedin.com/in/ahmad-elshowair"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center justify-center sm:justify-start gap-3 p-4 sm:p-5 rounded-2xl border border-beige/15 bg-bgGreen/40 text-mainGreen hover:text-beige hover:border-mainGreen/60 hover:bg-beige/5 transition-all duration-200 text-base sm:text-lg font-medium"
+              className="flex items-center justify-center sm:justify-start gap-3 p-4 sm:p-5 rounded-2xl border border-beige/15 bg-bgGreen/40 text-beige hover:border-mainGreen/60 hover:bg-beige/5 transition-all duration-200 text-base sm:text-lg font-medium"
             >
               <FiLinkedin
                 className="w-5 h-5 sm:w-6 sm:h-6 shrink-0"
@@ -154,7 +154,7 @@ const Contact = () => {
               href="/files/ahmad_elshowair_resume.pdf"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center justify-center sm:justify-start gap-3 p-4 sm:p-5 rounded-2xl border border-beige/15 bg-bgGreen/40 text-mainGreen hover:text-beige hover:border-mainGreen/60 hover:bg-beige/5 transition-all duration-200 text-base sm:text-lg font-medium"
+              className="flex items-center justify-center sm:justify-start gap-3 p-4 sm:p-5 rounded-2xl border border-beige/15 bg-bgGreen/40 text-beige hover:border-mainGreen/60 hover:bg-beige/5 transition-all duration-200 text-base sm:text-lg font-medium"
             >
               <FiDownloadCloud
                 className="w-5 h-5 sm:w-6 sm:h-6 shrink-0"
