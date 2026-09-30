@@ -2,7 +2,7 @@ import ProjectCard from "@/components/ProjectCard";
 import { inika } from "@/lib/fonts";
 import Link from "next/link";
 import { FaGithub } from "react-icons/fa";
-import { projects } from "@/data/portfolioData";
+import { projects } from "@/data";
 
 export const Projects = () => {
   return (

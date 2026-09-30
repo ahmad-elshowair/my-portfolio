@@ -2,7 +2,7 @@
 
 import type { SkillItem, SkillProjectId } from "@/definitions";
 import { cn } from "@/lib/utils";
-import { SKILL_PROJECTS } from "@/data/portfolioData";
+import { SKILL_PROJECTS } from "@/data";
 import { Icon as IconifyIcon } from "@iconify/react";
 
 /**

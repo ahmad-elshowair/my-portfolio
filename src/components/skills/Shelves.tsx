@@ -4,7 +4,7 @@ import { SkillEvidence, SkillGlyph } from "@/components/skills/shared";
 import {
   SKILL_CATEGORIES,
   skills,
-} from "@/data/portfolioData";
+} from "@/data";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 import { useSelectSkill, useSelectedSkillId } from "@/stores/skillsLabStore";
 import type { SkillCategoryId, SkillItem } from "@/definitions";

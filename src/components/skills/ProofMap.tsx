@@ -1,7 +1,7 @@
 "use client";
 
 import { ProjectPills, SkillEvidence, SkillGlyph } from "@/components/skills/shared";
-import { SKILL_CATEGORIES, SKILL_PROJECTS, skills } from "@/data/portfolioData";
+import { SKILL_CATEGORIES, SKILL_PROJECTS, skills } from "@/data";
 import { useSelectSkill, useSelectedSkillId } from "@/stores/skillsLabStore";
 import type { SkillCategoryId, SkillItem, SkillProjectId } from "@/definitions";
 import { useEffect, useState } from "react";

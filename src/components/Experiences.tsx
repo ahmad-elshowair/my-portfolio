@@ -1,7 +1,7 @@
 import ExperienceItem from "@/components/ExperienceItem";
 import { inika } from "@/lib/fonts";
 import React from "react";
-import { experiences } from "@/data/portfolioData";
+import { experiences } from "@/data";
 
 const Experiences: React.FC = () => {
   return (

@@ -1,4 +1,4 @@
-import { skills } from "@/data/portfolioData";
+import { skills } from "@/data";
 import type { SkillItem } from "@/definitions";
 import type { BentoZoneConfig } from "./bento.types";
 

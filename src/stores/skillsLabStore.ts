@@ -1,7 +1,7 @@
 "use client";
 
 import type { ConceptId, SkillProjectId } from "@/definitions";
-import { skills } from "@/data/portfolioData";
+import { skills } from "@/data";
 import { create } from "zustand";
 
 /**

@@ -1,6 +1,6 @@
 "use client";
 
-import { SKILL_PROJECTS } from "@/data/portfolioData";
+import { SKILL_PROJECTS } from "@/data";
 import type { SkillProjectId } from "@/definitions";
 import { cn } from "@/lib/utils";
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { SkillEvidence, SkillGlyph } from "@/components/skills/shared";
-import { skills } from "@/data/portfolioData";
+import { skills } from "@/data";
 import { useSelectSkill, useSelectedSkillId } from "@/stores/skillsLabStore";
 import { cn } from "@/lib/utils";
 

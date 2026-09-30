@@ -1,7 +1,7 @@
 "use client";
 
 import { SkillEvidence, SkillGlyph } from "@/components/skills/shared";
-import { SKILL_CATEGORIES, skills } from "@/data/portfolioData";
+import { SKILL_CATEGORIES, skills } from "@/data";
 import { useDesktopViewport } from "@/hooks/useDesktopViewport";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 import { useSelectSkill, useSelectedSkillId } from "@/stores/skillsLabStore";

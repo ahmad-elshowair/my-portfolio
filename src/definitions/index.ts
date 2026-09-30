@@ -29,7 +29,7 @@ export type ConceptId =
 
 /**
  * A single resume skill. `name` and `context` are resume-verbatim;
- * `projects` mirrors portfolioData `technologies` arrays, extended only by resume-bullet
+ * `projects` mirrors project card `technologies` arrays, extended only by resume-bullet
  * evidence. `icon` omitted → the skill renders as a text badge.
  */
 export interface SkillItem {
