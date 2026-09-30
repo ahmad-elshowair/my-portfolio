@@ -120,11 +120,12 @@ function SkillChipButton({
       type="button"
       aria-pressed={isSelected}
       aria-controls="bento-live-inspector"
+      aria-label={`Select ${skill.name} to view production proof`}
       onClick={() => onSelect(skill.id)}
       className={cn(
         "group relative flex min-h-[44px] items-center gap-2 rounded-xl border text-sm transition-all duration-200 ease-out",
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-mainGreen focus-visible:ring-offset-2 focus-visible:ring-offset-bgGreen",
-        "active:scale-[0.98] motion-safe:hover:scale-[1.02] motion-reduce:transform-none motion-reduce:transition-none",
+        "motion-safe:active:scale-[0.98] motion-safe:hover:scale-[1.02] motion-reduce:transform-none motion-reduce:transition-none",
         isHero
           ? "px-3.5 py-1.5 font-medium backdrop-blur-sm"
           : "px-3 py-1 font-normal",
@@ -137,9 +138,7 @@ function SkillChipButton({
         <span
           className={cn(
             "h-1.5 w-1.5 rounded-full transition-colors duration-200 shrink-0",
-            isSelected
-              ? "bg-mainGreen shadow-[0_0_6px_#8DA55B]"
-              : "bg-mainGreen/60 group-hover:bg-mainGreen",
+            isSelected ? "bg-mainGreen shadow-[0_0_6px_#8DA55B]" : "bg-mainGreen/60 group-hover:bg-mainGreen",
           )}
           aria-hidden="true"
         />
@@ -167,7 +166,13 @@ function ProjectJumpPill({ projectId }: { projectId: SkillProjectId }) {
     const el = document.getElementById(`project-${project.anchor}`);
     if (el) {
       e.preventDefault();
-      el.scrollIntoView({ behavior: "smooth", block: "center" });
+      const prefersReduced =
+        typeof window !== "undefined" &&
+        window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      el.scrollIntoView({
+        behavior: prefersReduced ? "auto" : "smooth",
+        block: "center",
+      });
     }
   };
 
@@ -176,9 +181,9 @@ function ProjectJumpPill({ projectId }: { projectId: SkillProjectId }) {
       href={`#project-${project.anchor}`}
       onClick={handleClick}
       className={cn(
-        "group inline-flex items-center gap-2 rounded-full border border-mainGreen/40 bg-mainGreen/15 pl-3 pr-1.5 py-1 text-xs font-medium text-beige",
+        "group inline-flex min-h-[44px] items-center gap-2 rounded-full border border-mainGreen/40 bg-mainGreen/15 pl-3 pr-1.5 py-1 text-xs font-medium text-beige",
         "transition-all duration-200 hover:border-mainGreen hover:bg-mainGreen/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-mainGreen",
-        "active:scale-[0.98] motion-reduce:transform-none motion-reduce:transition-none",
+        "motion-safe:active:scale-[0.98] motion-reduce:transform-none motion-reduce:transition-none",
       )}
     >
       <span>{project.name}</span>
@@ -188,10 +193,7 @@ function ProjectJumpPill({ projectId }: { projectId: SkillProjectId }) {
       >
         ↗
       </span>
-      <span className="sr-only">
-        {" "}
-        — jump to {project.name} project card in projects section
-      </span>
+      <span className="sr-only"> — jump to {project.name} project card in projects section</span>
     </a>
   );
 }
@@ -207,17 +209,17 @@ function LiveInspectorHUD({ skill }: { skill: SkillItem }) {
       id="bento-live-inspector"
       aria-label="Skill Proof Telemetry Inspector"
       aria-live="polite"
-      className="lg:sticky lg:top-28 flex flex-col gap-4 rounded-2xl border border-beige/15 bg-mainGreen/10 p-5 md:p-6 backdrop-blur-md shadow-[0_8px_32px_rgba(0,0,0,0.3)] transition-colors duration-200 hover:border-beige/25"
+      className="lg:sticky lg:top-28 flex flex-col gap-4 rounded-2xl border border-beige/15 bg-mainGreen/10 p-5 md:p-6 backdrop-blur-md shadow-[0_8px_32px_rgba(0,0,0,0.3)] transition-colors duration-200 hover:border-beige/25 w-full max-w-full overflow-hidden"
     >
       {/* Telemetry Header */}
       <div className="flex items-center justify-between gap-2 border-b border-beige/10 pb-3">
         <span className="text-[11px] font-mono uppercase tracking-widest text-mainGreen">
           Telemetry HUD
         </span>
-        <span className="inline-flex items-center gap-1.5 rounded-full border border-mainGreen/40 bg-mainGreen/20 px-2.5 py-0.5 text-xs font-semibold text-beige">
+        <span className="inline-flex items-center gap-1.5 rounded-full border border-mainGreen/40 bg-mainGreen/20 px-2.5 py-0.5 text-xs font-semibold text-beige shrink-0">
           <span
             className={cn(
-              "h-1.5 w-1.5 rounded-full",
+              "h-1.5 w-1.5 rounded-full shrink-0",
               status === "Core Daily Stack"
                 ? "bg-mainGreen shadow-[0_0_6px_#8DA55B]"
                 : status === "Production Deployed"
@@ -231,27 +233,29 @@ function LiveInspectorHUD({ skill }: { skill: SkillItem }) {
       </div>
 
       {/* Skill Identity: 32px Glyph + Inika Title */}
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-3 min-w-0">
         <SkillGlyph
           skill={skill}
           className="text-mainGreen text-[2rem] [&_svg]:text-[2rem] shrink-0"
         />
-        <div className="flex flex-col min-w-0">
+        <div className="flex flex-col min-w-0 flex-1">
           <h4 className="font-inika text-2xl font-bold tracking-tight text-beige truncate">
             {skill.name}
           </h4>
-          <span className="text-xs font-mono tracking-wider text-beige/60 capitalize">
+          <span className="text-xs font-mono uppercase tracking-wider text-beige/60">
             {skill.category} Engineering
           </span>
         </div>
       </div>
 
       {/* Verbatim Resume Proof Statement */}
-      <div className="rounded-xl border border-beige/10 bg-beige/5 p-3.5">
+      <div className="rounded-xl border border-beige/10 bg-beige/5 p-3.5 break-words">
         <p className="text-[11px] font-mono uppercase tracking-wider text-beige/50 mb-1">
           Production Proof & Context
         </p>
-        <p className="text-sm leading-relaxed text-beige/90">{skill.context}</p>
+        <p className="text-sm leading-relaxed text-beige/90">
+          {skill.context}
+        </p>
       </div>
 
       {/* Verifiable Project Links or Honest Fallback */}
@@ -268,9 +272,8 @@ function LiveInspectorHUD({ skill }: { skill: SkillItem }) {
             </div>
           </>
         ) : (
-          <p className="text-xs text-beige/60 italic">
-            Verified in resume — foundational competency without dedicated
-            project case study.
+          <p className="text-xs text-beige/60 italic leading-relaxed">
+            Verified in resume — foundational competency without dedicated project case study.
           </p>
         )}
       </div>
@@ -296,9 +299,9 @@ export default function Bento() {
     (selectedSkillId && byId.get(selectedSkillId)) || byId.get("typescript")!;
 
   return (
-    <div className="grid gap-6 lg:grid-cols-[1fr_21rem] xl:grid-cols-[1fr_23rem] items-start">
+    <div className="grid gap-6 grid-cols-1 lg:grid-cols-[1fr_21rem] xl:grid-cols-[1fr_23rem] items-start w-full">
       {/* Asymmetrical 4-Zone Bento Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5 w-full">
         {ZONES.map((zone) => {
           const heroSet = new Set(zone.heroIds ?? []);
           return (
@@ -306,7 +309,7 @@ export default function Bento() {
               key={zone.id}
               aria-label={zone.title}
               className={cn(
-                "rounded-2xl border border-beige/15 bg-mainGreen/10 p-5 backdrop-blur-md transition-colors duration-200 hover:border-beige/25 flex flex-col justify-between",
+                "rounded-2xl border border-beige/15 bg-mainGreen/10 p-4 sm:p-5 backdrop-blur-md transition-colors duration-200 hover:border-beige/25 flex flex-col justify-between w-full overflow-hidden",
                 zone.spanClass,
               )}
             >
