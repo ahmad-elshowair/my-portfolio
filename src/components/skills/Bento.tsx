@@ -22,7 +22,14 @@ const ZONES: BentoZoneConfig[] = [
     title: "Front-End & UI Systems",
     subtitle: "Core Strengths & Architecture",
     spanClass: "md:col-span-2 lg:col-span-2",
-    heroIds: ["typescript", "react", "nextjs", "tailwind", "mui"],
+    heroIds: [
+      "typescript",
+      "react",
+      "nextjs",
+      "tailwind",
+      "mui",
+      "fe-architecture",
+    ],
     ids: [
       "typescript",
       "react",
@@ -65,11 +72,12 @@ const ZONES: BentoZoneConfig[] = [
     title: "State, Testing & DevOps",
     subtitle: "Quality & Deployment",
     spanClass: "md:col-span-1 lg:col-span-1",
-    heroIds: ["git", "zustand"],
+    heroIds: ["git", "zustand", "github", "ai-assisted"],
     ids: [
       "zustand",
       "vitest",
       "git",
+      "github",
       "vercel",
       "performance-optimization",
       "realtime-dashboards",
@@ -95,6 +103,7 @@ const CORE_DAILY = new Set([
   "nodejs",
   "postgresql",
   "git",
+  "github",
 ]);
 
 function statusBadge(skill: SkillItem): string {

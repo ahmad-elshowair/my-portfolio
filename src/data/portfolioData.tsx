@@ -319,7 +319,7 @@ export const SKILL_PROJECTS: Record<
 };
 
 export const skills: SkillItem[] = [
-  // Front-End (13)
+  // Front-End
   {
     id: "javascript",
     name: "JavaScript (ES6+)",
@@ -401,10 +401,10 @@ export const skills: SkillItem[] = [
   {
     id: "responsive-ui",
     name: "Responsive UI",
-    icon: "lucide:monitor-smartphone",
+    icon: "streamline-ultimate:responsive-design-bold",
     category: "frontend",
     context:
-      "Accessible, theme-consistent UI across mobile and desktop viewports (PointCraft).",
+      "Accessible, theme-consistent UI across mobile and desktop viewports.",
     projects: ["pointcraft", "clearcargo", "kun-min-aldhaakirin"],
   },
   {
@@ -422,7 +422,7 @@ export const skills: SkillItem[] = [
     icon: "simple-icons:pwa",
     category: "frontend",
     context:
-      "Installable, offline-capable PWA with service-worker caching and dynamic themes (Kun Min Aldhaakirin).",
+      "Installable, offline-capable PWA with service-worker caching and dynamic themes.",
     projects: ["kun-min-aldhaakirin"],
   },
   {
@@ -443,7 +443,7 @@ export const skills: SkillItem[] = [
     projects: ["pointcraft", "clearcargo", "post-it", "kun-min-aldhaakirin"],
   },
 
-  // Back-End (11)
+  // Back-End
   {
     id: "nodejs",
     name: "Node.js",
@@ -539,10 +539,18 @@ export const skills: SkillItem[] = [
   // Tools & Practices (9)
   {
     id: "git",
-    name: "Git/GitHub",
+    name: "Git",
     icon: SiGit,
     category: "tools",
-    context: "Branch-based collaboration across every production codebase.",
+    context: "Git for version control.",
+    projects: ["pointcraft", "clearcargo", "post-it", "kun-min-aldhaakirin"],
+  },
+  {
+    id: "github",
+    name: "GitHub",
+    icon: "akar-icons:github-fill",
+    category: "tools",
+    context: "GitHub for version control and collaboration.",
     projects: ["pointcraft", "clearcargo", "post-it", "kun-min-aldhaakirin"],
   },
   {
@@ -555,11 +563,10 @@ export const skills: SkillItem[] = [
   },
   {
     id: "zustand",
-    name: "State management (Zustand)",
+    name: "S.M. (Zustand)",
     icon: "devicon-plain:zustand",
     category: "tools",
-    context:
-      "State management for dynamic feeds and threaded comments in Post-It.",
+    context: "Global state management for applications.",
     projects: ["post-it", "pointcraft", "kun-min-aldhaakirin"],
   },
   {
