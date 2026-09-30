@@ -2,6 +2,7 @@ import { ExperienceItemProps } from "@/definitions";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import React, { ReactNode } from "react";
+import { TechIcon } from "@/components/TechIcon";
 
 const ExperienceItem: React.FC<ExperienceItemProps> = ({
   title,
@@ -35,7 +36,7 @@ const ExperienceItem: React.FC<ExperienceItemProps> = ({
             className="inline-flex items-center gap-1 text-mainGreen px-1 py-[2px] rounded-3xl rounded-tr-none hover:underline transition-all duration-300 ease-in-out"
           >
             {project.name}
-          </Link>
+          </Link>,
         );
 
         lastIndex = index + project.name.length;
@@ -66,19 +67,19 @@ const ExperienceItem: React.FC<ExperienceItemProps> = ({
           rel="noopener noreferrer"
           className={cn(
             "text-beige/90 text-xs bg-mainGreen/10 px-3 py-1 rounded-md hover:bg-mainGreen/30 hover:scale-105 transition-all duration-200 ease-in-out w-fit",
-            !companyUrl && "pointer-events-none cursor-default"
+            !companyUrl && "pointer-events-none cursor-default",
           )}
         >
           {company}
         </Link>
         {renderDescription()}
         <div className="flex gap-3 mt-3">
-          {technologies.map((tech, index) => (
+          {technologies.map((tech) => (
             <div
-              key={index}
+              key={tech.name}
               className="text-xl text-gray-400 hover:text-mainGreen transition-colors"
             >
-              {tech}
+              <TechIcon name={tech.name} icon={tech.icon} />
             </div>
           ))}
         </div>

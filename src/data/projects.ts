@@ -16,7 +16,6 @@ import {
   SiTypescript,
 } from "react-icons/si";
 import type { ProjectCardProps } from "@/definitions";
-import { techIcon } from "./techIcon";
 
 export const projects: ProjectCardProps[] = [
   {
@@ -25,12 +24,12 @@ export const projects: ProjectCardProps[] = [
     description:
       "PointCraft's POS, self-checkout, and invoice tools streamlining transaction tracking and record reconciliation — shipped as production React and MUI interfaces with accessible, theme-consistent design.",
     technologies: [
-      techIcon("TypeScript", SiTypescript),
-      techIcon("React", SiReact),
-      techIcon("MUI", SiMui),
-      techIcon("Git", SiGit),
-      techIcon("Github", SiGithub),
-      techIcon("Figma", SiFigma),
+      { name: "TypeScript", icon: SiTypescript },
+      { name: "React", icon: SiReact },
+      { name: "MUI", icon: SiMui },
+      { name: "Git", icon: SiGit },
+      { name: "Github", icon: SiGithub },
+      { name: "Figma", icon: SiFigma },
     ],
     link: "https://point-craft.com/",
     images: [
@@ -79,16 +78,16 @@ export const projects: ProjectCardProps[] = [
     description:
       "Full-stack customs-clearance platform with real-time shipment tracking, automated Stripe payment workflows, and role-based access control — built end-to-end with Next.js, TypeScript, and PostgreSQL.",
     technologies: [
-      techIcon("Next.js", SiNextdotjs),
-      techIcon("TypeScript", SiTypescript),
-      techIcon("Tailwind CSS", SiTailwindcss),
-      techIcon("PostgreSQL", SiPostgresql),
-      techIcon("Supabase", SiSupabase),
-      techIcon("Stripe", SiStripe),
-      techIcon("React", SiReact),
-      techIcon("Git", SiGit),
-      techIcon("Github", SiGithub),
-      techIcon("Figma", SiFigma),
+      { name: "Next.js", icon: SiNextdotjs },
+      { name: "TypeScript", icon: SiTypescript },
+      { name: "Tailwind CSS", icon: SiTailwindcss },
+      { name: "PostgreSQL", icon: SiPostgresql },
+      { name: "Supabase", icon: SiSupabase },
+      { name: "Stripe", icon: SiStripe },
+      { name: "React", icon: SiReact },
+      { name: "Git", icon: SiGit },
+      { name: "Github", icon: SiGithub },
+      { name: "Figma", icon: SiFigma },
     ],
     githubUrl: "https://github.com/ahmad-elshowair/clearcargo",
     statusNote: "live demo redeploying — source on GitHub",
@@ -118,14 +117,14 @@ export const projects: ProjectCardProps[] = [
     description:
       "Full-stack social platform with dynamic feeds and threaded comments built on Zustand — hardened with dual-token JWT authentication, Redis rate limiting, and raw SQL ACID transactions for data integrity.",
     technologies: [
-      techIcon("PostgreSQL", SiPostgresql),
-      techIcon("Express", SiExpress),
-      techIcon("React", SiReact),
-      techIcon("Node.js", SiNodedotjs),
-      techIcon("TypeScript", SiTypescript),
-      techIcon("Redis", SiRedis),
-      techIcon("Bootstrap", SiBootstrap),
-      techIcon("Git", SiGit),
+      { name: "PostgreSQL", icon: SiPostgresql },
+      { name: "Express", icon: SiExpress },
+      { name: "React", icon: SiReact },
+      { name: "Node.js", icon: SiNodedotjs },
+      { name: "TypeScript", icon: SiTypescript },
+      { name: "Redis", icon: SiRedis },
+      { name: "Bootstrap", icon: SiBootstrap },
+      { name: "Git", icon: SiGit },
     ],
     githubUrl: "https://github.com/ahmad-elshowair/post-it",
     images: [],
@@ -137,13 +136,13 @@ export const projects: ProjectCardProps[] = [
     description:
       "A progressive web app for Islamic daily remembrance with service-worker caching, dynamic dark and light themes, and full English/Arabic support — installable and fully usable offline.",
     technologies: [
-      techIcon("Next.js", SiNextdotjs),
-      techIcon("TypeScript", SiTypescript),
-      techIcon("Tailwind CSS", SiTailwindcss),
-      techIcon("Git", SiGit),
-      techIcon("PostgreSQL", SiPostgresql),
-      techIcon("Supabase", SiSupabase),
-      techIcon("React", SiReact),
+      { name: "Next.js", icon: SiNextdotjs },
+      { name: "TypeScript", icon: SiTypescript },
+      { name: "Tailwind CSS", icon: SiTailwindcss },
+      { name: "Git", icon: SiGit },
+      { name: "PostgreSQL", icon: SiPostgresql },
+      { name: "Supabase", icon: SiSupabase },
+      { name: "React", icon: SiReact },
     ],
     link: "https://kun-min-aldhaakirin.vercel.app/",
     githubUrl: "https://github.com/ahmad-elshowair/kun-min-aldhaakirin",

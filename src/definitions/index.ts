@@ -1,4 +1,4 @@
-import { ComponentType, ReactNode } from "react";
+import { ComponentType } from "react";
 import type { IconType } from "react-icons";
 
 export interface Project {
@@ -60,12 +60,17 @@ export interface SkillConceptDescriptor {
   component: ComponentType<SkillConceptProps>;
 }
 
+export interface TechItem {
+  name: string;
+  icon: IconType;
+}
+
 export interface ExperienceItemProps {
   title: string;
   company: string;
   period: string;
   description: string;
-  technologies: React.ReactNode[];
+  technologies: TechItem[];
   projects?: Project[];
   companyUrl?: string;
 }
@@ -81,7 +86,7 @@ export interface ProjectCardProps {
   title: string;
   /** description of the project */
   description: string;
-  technologies: ReactNode[];
+  technologies: TechItem[];
   /** Public live-demo URL. Omit when the deployment is down — the live-site action is not rendered. */
   link?: string;
   /** Source repository URL (GitHub). Rendered as the source action when present. */

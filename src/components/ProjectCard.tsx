@@ -6,6 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { FC, useEffect, useState } from "react";
 import { FaExternalLinkAlt, FaGithub } from "react-icons/fa";
+import { TechIcon } from "@/components/TechIcon";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 import { useProjectHighlight } from "@/hooks/useProjectHighlight";
 
@@ -159,12 +160,12 @@ const ProjectCard: FC<ProjectCardProps> = ({
 
         {/* Technologies section */}
         <div className="flex flex-wrap gap-2">
-          {technologies.map((tech, index) => (
+          {technologies.map((tech) => (
             <div
-              key={index}
+              key={tech.name}
               className="text-xs hover:text-mainGreen transition-colors"
             >
-              {tech}
+              <TechIcon name={tech.name} icon={tech.icon} />
             </div>
           ))}
         </div>

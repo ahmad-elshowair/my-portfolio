@@ -18,7 +18,6 @@ import {
   SiWix,
 } from "react-icons/si";
 import type { ExperienceItemProps } from "@/definitions";
-import { techIcon } from "./techIcon";
 
 export const experiences: ExperienceItemProps[] = [
   {
@@ -51,13 +50,13 @@ export const experiences: ExperienceItemProps[] = [
       },
     ],
     technologies: [
-      techIcon("TypeScript", SiTypescript),
-      techIcon("React", SiReact),
-      techIcon("Node.js", SiNodedotjs),
-      techIcon("MUI", SiMui),
-      techIcon("Git", SiGit),
-      techIcon("Github", SiGithub),
-      techIcon("Figma", SiFigma),
+      { name: "TypeScript", icon: SiTypescript },
+      { name: "React", icon: SiReact },
+      { name: "Node.js", icon: SiNodedotjs },
+      { name: "MUI", icon: SiMui },
+      { name: "Git", icon: SiGit },
+      { name: "Github", icon: SiGithub },
+      { name: "Figma", icon: SiFigma },
     ],
   },
   {
@@ -82,18 +81,18 @@ export const experiences: ExperienceItemProps[] = [
       },
     ],
     technologies: [
-      techIcon("TypeScript", SiTypescript),
-      techIcon("Next.js", SiNextdotjs),
-      techIcon("Tailwind CSS", SiTailwindcss),
-      techIcon("Node.js", SiNodedotjs),
-      techIcon("Express", SiExpress),
-      techIcon("PostgreSQL", SiPostgresql),
-      techIcon("Supabase", SiSupabase),
-      techIcon("React", SiReact),
-      techIcon("Bootstrap", SiBootstrap),
-      techIcon("Git", SiGit),
-      techIcon("Github", SiGithub),
-      techIcon("Figma", SiFigma),
+      { name: "TypeScript", icon: SiTypescript },
+      { name: "Next.js", icon: SiNextdotjs },
+      { name: "Tailwind CSS", icon: SiTailwindcss },
+      { name: "Node.js", icon: SiNodedotjs },
+      { name: "Express", icon: SiExpress },
+      { name: "PostgreSQL", icon: SiPostgresql },
+      { name: "Supabase", icon: SiSupabase },
+      { name: "React", icon: SiReact },
+      { name: "Bootstrap", icon: SiBootstrap },
+      { name: "Git", icon: SiGit },
+      { name: "Github", icon: SiGithub },
+      { name: "Figma", icon: SiFigma },
     ],
   },
   {
@@ -104,10 +103,10 @@ export const experiences: ExperienceItemProps[] = [
     description:
       "I was a member of the volunteers. developing the organization's website through CMS WIX. redesigning the layout of the website.",
     technologies: [
-      techIcon("HTML5", SiHtml5),
-      techIcon("JavaScript", SiJavascript),
-      techIcon("CSS3", SiCss3),
-      techIcon("WIX", SiWix),
+      { name: "HTML5", icon: SiHtml5 },
+      { name: "JavaScript", icon: SiJavascript },
+      { name: "CSS3", icon: SiCss3 },
+      { name: "WIX", icon: SiWix },
     ],
   },
 ];

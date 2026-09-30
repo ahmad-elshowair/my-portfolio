@@ -1,3 +1,5 @@
+"use client";
+
 import ProjectCard from "@/components/ProjectCard";
 import { inika } from "@/lib/fonts";
 import Link from "next/link";
