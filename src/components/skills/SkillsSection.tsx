@@ -67,9 +67,12 @@ const SkillsSection = () => {
   return (
     <section id="skills" className="py-20 backdrop-blur-sm">
       <div className="relative mx-auto max-w-5xl">
-        <span className="absolute left-[-5%] top-[-12%] -z-10 h-40 w-40 rounded-full bg-mainGreen opacity-20 blur-[20px] md:left-[-5%] md:top-[-12%] md:h-52 md:w-52" />
         <div className="mb-10 flex items-baseline gap-5">
-          <h2 className={`text-4xl font-bold text-mainGreen md:text-6xl ${inika.className}`}>
+          <h2 className={`relative isolate text-4xl font-bold text-mainGreen md:text-6xl ${inika.className}`}>
+            <span
+              aria-hidden="true"
+              className="pointer-events-none absolute left-0 top-1/2 -translate-x-1/2 -translate-y-1/2 -z-10 h-44 w-44 rounded-full bg-mainGreen opacity-20 blur-[28px] md:h-52 md:w-52"
+            />
             skills
           </h2>
           <div className="flex items-center gap-1" aria-hidden="true">

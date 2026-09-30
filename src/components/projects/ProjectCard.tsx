@@ -8,6 +8,7 @@ import { FC, useEffect, useState } from "react";
 import { FaExternalLinkAlt, FaGithub } from "react-icons/fa";
 import { TechIcon } from "@/components/TechIcon";
 import { usePrefersReducedMotion, useProjectHighlight } from "@/hooks";
+import { inika } from "@/lib/fonts";
 
 const MotionImage = motion.create(Image);
 
@@ -40,7 +41,13 @@ const ProjectCard: FC<ProjectCardProps> = ({
     }, 3000); // Change slide every 3 seconds
 
     return () => clearInterval(timer);
-  }, [hasImages, prefersReducedMotion, isPaused, rotationStopped, images.length]);
+  }, [
+    hasImages,
+    prefersReducedMotion,
+    isPaused,
+    rotationStopped,
+    images.length,
+  ]);
 
   const showImage = (index: number) => {
     setCurrentImageIndex(index);
@@ -90,9 +97,9 @@ const ProjectCard: FC<ProjectCardProps> = ({
           />
         )}
 
-        {/* Slide indicators — real buttons, still operable when static */}
+        {/* Slide indicators — indicate the number of pictures */}
         {hasImages && (
-          <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex space-x-2">
+          <div className="absolute bottom-[0.1rem] left-1/2 transform -translate-x-1/2 flex space-x-2 z-20">
             {images.map((_, index) => (
               <button
                 key={index}
@@ -107,8 +114,10 @@ const ProjectCard: FC<ProjectCardProps> = ({
               >
                 <span
                   aria-hidden="true"
-                  className={`h-1.5 w-1.5 rounded-full transition-all duration-300 ${
-                    index === currentImageIndex ? "bg-mainGreen w-4" : "bg-gray-300"
+                  className={`h-1.5 rounded-full transition-all duration-300 ${
+                    index === currentImageIndex
+                      ? "bg-mainGreen w-4"
+                      : "bg-gray-300 w-1.5"
                   }`}
                 />
               </button>
@@ -120,8 +129,9 @@ const ProjectCard: FC<ProjectCardProps> = ({
         <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
         <div className="absolute inset-0 bg-gradient-to-r from-black/30 to-transparent" />
       </div>
+
       {/* Project links */}
-      <div className="absolute top-4 right-4 flex items-center gap-3 lg:opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-300">
+      <div className="absolute top-4 right-4 flex items-center gap-3 lg:opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-300 z-20">
         {link && (
           <Link
             href={link}
@@ -147,11 +157,16 @@ const ProjectCard: FC<ProjectCardProps> = ({
           </Link>
         )}
       </div>
+
       {/* Content overlay */}
       <div className="absolute bottom-0 left-0 right-0 p-6 text-beige z-10">
-        <h3 className="text-base font-semibold mb-2">{title}</h3>
+        <h3
+          className={`text-base font-semibold mb-1 group-hover:text-mainGreen transition-colors ${inika.className}`}
+        >
+          {title}
+        </h3>
         {statusNote && (
-          <p className="text-xs text-gray-300 mt-1">{statusNote}</p>
+          <p className="text-xs text-gray-300 mb-1">{statusNote}</p>
         )}
         <p className="text-xs md:text-sm leading-relaxed text-beige/90 line-clamp-3 mb-2">
           {description}
@@ -172,4 +187,5 @@ const ProjectCard: FC<ProjectCardProps> = ({
     </motion.div>
   );
 };
+
 export default ProjectCard;

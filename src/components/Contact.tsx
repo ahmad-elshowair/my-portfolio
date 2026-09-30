@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  FiArrowUpRight,
   FiCheck,
   FiCopy,
   FiDownloadCloud,
@@ -55,18 +56,18 @@ const Contact = () => {
         {/* Background accent drops */}
         <span
           aria-hidden="true"
-          className="absolute w-40 h-40 md:w-56 md:h-56 top-[-5%] left-[-5%] md:top-[-10%] md:-left-[5%] rounded-full bg-mainGreen opacity-20 blur-[25px] -z-10"
-        />
-        <span
-          aria-hidden="true"
           className="absolute w-44 h-44 bottom-[-10%] right-[-5%] rounded-full bg-mainGreen opacity-15 blur-[30px] -z-10"
         />
 
-        <div className="rounded-3xl  bg-bgGreen/40 backdrop-blur-md shadow-lg p-6 sm:p-8 md:p-10">
+        <div className="rounded-3xl bg-bgGreen/40 border border-beige/10 backdrop-blur-md shadow-lg p-6 sm:p-8 md:p-10">
           <div className="flex items-baseline gap-3 sm:gap-5 mb-4 sm:mb-6">
             <h2
-              className={`text-3xl sm:text-4xl md:text-5xl font-bold text-mainGreen ${inika.className}`}
+              className={`relative isolate text-3xl sm:text-4xl md:text-5xl font-bold text-mainGreen ${inika.className}`}
             >
+              <span
+                aria-hidden="true"
+                className="pointer-events-none absolute left-0 top-1/2 -translate-x-1/2 -translate-y-1/2 -z-10 h-44 w-44 rounded-full bg-mainGreen opacity-20 blur-[28px] md:h-52 md:w-52"
+              />
               contact
             </h2>
             <div
@@ -103,7 +104,7 @@ const Contact = () => {
               className="flex min-w-0 items-center gap-3 sm:gap-4 text-beige transition-opacity duration-200 hover:opacity-80"
             >
               <FiMail
-                className="w-5 h-5 sm:w-6 sm:h-6 shrink-0"
+                className="w-5 h-5 sm:w-6 sm:h-6 shrink-0 text-mainGreen"
                 aria-hidden="true"
               />
               <span className="text-sm sm:text-base font-medium break-all">
@@ -113,7 +114,7 @@ const Contact = () => {
             <button
               type="button"
               onClick={copyEmail}
-              className="flex items-center justify-center gap-2 rounded-xl bg-mainGreen px-5 py-2.5 text-sm font-semibold text-bgGreen transition-all duration-200 ease-in-out hover:brightness-95 sm:ml-auto sm:shrink-0"
+              className="flex items-center justify-center gap-2 rounded-xl bg-mainGreen px-5 py-2.5 text-sm font-semibold text-bgGreen transition-all duration-200 ease-in-out hover:brightness-95 active:scale-95 sm:ml-auto sm:shrink-0"
             >
               {copyState === "copied" ? (
                 <FiCheck className="w-4 h-4" aria-hidden="true" />
@@ -141,26 +142,38 @@ const Contact = () => {
               href="https://www.linkedin.com/in/ahmad-elshowair"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center justify-center sm:justify-start gap-3 p-4 sm:p-5 rounded-2xl border border-beige/15 bg-bgGreen/40 text-beige hover:border-mainGreen/60 hover:bg-beige/5 transition-all duration-200 text-base sm:text-lg font-medium"
+              className="flex items-center justify-between p-4 sm:p-5 rounded-2xl border border-beige/15 bg-bgGreen/40 text-beige hover:border-mainGreen/60 hover:bg-beige/5 transition-all duration-200 text-base sm:text-lg font-medium group"
             >
-              <FiLinkedin
-                className="w-5 h-5 sm:w-6 sm:h-6 shrink-0"
+              <div className="flex items-center gap-3">
+                <FiLinkedin
+                  className="w-5 h-5 sm:w-6 sm:h-6 shrink-0 text-mainGreen"
+                  aria-hidden="true"
+                />
+                <span>Connect on LinkedIn</span>
+              </div>
+              <FiArrowUpRight
+                className="w-5 h-5 text-beige/50 group-hover:text-mainGreen group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"
                 aria-hidden="true"
               />
-              <span>Connect on LinkedIn</span>
             </Link>
 
             <a
               href="/files/ahmad_elshowair_resume.pdf"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center justify-center sm:justify-start gap-3 p-4 sm:p-5 rounded-2xl border border-beige/15 bg-bgGreen/40 text-beige hover:border-mainGreen/60 hover:bg-beige/5 transition-all duration-200 text-base sm:text-lg font-medium"
+              className="flex items-center justify-between p-4 sm:p-5 rounded-2xl border border-beige/15 bg-bgGreen/40 text-beige hover:border-mainGreen/60 hover:bg-beige/5 transition-all duration-200 text-base sm:text-lg font-medium group"
             >
-              <FiDownloadCloud
-                className="w-5 h-5 sm:w-6 sm:h-6 shrink-0"
+              <div className="flex items-center gap-3">
+                <FiDownloadCloud
+                  className="w-5 h-5 sm:w-6 sm:h-6 shrink-0 text-mainGreen"
+                  aria-hidden="true"
+                />
+                <span>Download Resume (PDF)</span>
+              </div>
+              <FiArrowUpRight
+                className="w-5 h-5 text-beige/50 group-hover:text-mainGreen group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"
                 aria-hidden="true"
               />
-              <span>Download Resume (PDF)</span>
             </a>
           </div>
         </div>
