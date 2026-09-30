@@ -1,4 +1,4 @@
-import ExperienceItem from "@/components/ExperienceItem";
+import ExperienceItem from "./ExperienceItem";
 import { inika } from "@/lib/fonts";
 import React from "react";
 import { experiences } from "@/data";

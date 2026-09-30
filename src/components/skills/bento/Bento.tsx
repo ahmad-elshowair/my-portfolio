@@ -3,13 +3,10 @@
 import { useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { useSelectSkill, useSelectedSkillId } from "@/stores/skillsLabStore";
-import {
-  byId,
-  LiveInspectorHUD,
-  MobileTelemetryDock,
-  SkillChipButton,
-  ZONES,
-} from "./bento-grid";
+import { byId, ZONES } from "./bento.constants";
+import { LiveInspectorHUD } from "./LiveInspectorHUD";
+import { MobileTelemetryDock } from "./MobileTelemetryDock";
+import { SkillChipButton } from "./SkillChipButton";
 
 /**
  * Bento Stack & Live Proof Inspector.

@@ -1,6 +1,6 @@
 "use client";
 
-import ProjectCard from "@/components/ProjectCard";
+import ProjectCard from "./ProjectCard";
 import { inika } from "@/lib/fonts";
 import Link from "next/link";
 import { FaGithub } from "react-icons/fa";

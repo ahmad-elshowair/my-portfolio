@@ -16,7 +16,7 @@ const descriptors: SkillConceptDescriptor[] = [
     id: "009",
     label: "bento",
     blurb: "Four bento zones with a live proof inspector",
-    component: dynamic(() => import("./Bento"), {
+    component: dynamic(() => import("./bento"), {
       ssr: true,
       loading: ConceptLoading,
     }),
@@ -25,7 +25,7 @@ const descriptors: SkillConceptDescriptor[] = [
     id: "010",
     label: "filter",
     blurb: "Domain presets, live search and cross-lighting",
-    component: dynamic(() => import("./Filter"), {
+    component: dynamic(() => import("./filter"), {
       ssr: true,
       loading: ConceptLoading,
     }),
@@ -34,7 +34,7 @@ const descriptors: SkillConceptDescriptor[] = [
     id: "011",
     label: "architecture",
     blurb: "Full-stack tiers with a topology inspector",
-    component: dynamic(() => import("./Architecture"), {
+    component: dynamic(() => import("./architecture"), {
       ssr: true,
       loading: ConceptLoading,
     }),
@@ -43,7 +43,7 @@ const descriptors: SkillConceptDescriptor[] = [
     id: "012",
     label: "terminal",
     blurb: "Dual-pane deck with a live inspect terminal",
-    component: dynamic(() => import("./Terminal"), {
+    component: dynamic(() => import("./terminal"), {
       ssr: true,
       loading: ConceptLoading,
     }),
@@ -52,7 +52,7 @@ const descriptors: SkillConceptDescriptor[] = [
     id: "013",
     label: "shelves",
     blurb: "Category shelves with proof tooltips",
-    component: dynamic(() => import("./Shelves"), {
+    component: dynamic(() => import("./shelves"), {
       ssr: true,
       loading: ConceptLoading,
     }),
@@ -61,7 +61,7 @@ const descriptors: SkillConceptDescriptor[] = [
     id: "014",
     label: "proof map",
     blurb: "Skill wall with project cross-glow evidence",
-    component: dynamic(() => import("./ProofMap"), {
+    component: dynamic(() => import("./proofmap"), {
       ssr: true,
       loading: ConceptLoading,
     }),
@@ -70,7 +70,7 @@ const descriptors: SkillConceptDescriptor[] = [
     id: "015",
     label: "physics",
     blurb: "Springy chip field with flip-to-detail",
-    component: dynamic(() => import("./Physics"), {
+    component: dynamic(() => import("./physics"), {
       ssr: true,
       loading: ConceptLoading,
     }),
@@ -79,7 +79,7 @@ const descriptors: SkillConceptDescriptor[] = [
     id: "016",
     label: "orbit",
     blurb: "Category rings orbiting the headline",
-    component: dynamic(() => import("./Orbit"), {
+    component: dynamic(() => import("./orbit"), {
       ssr: true,
       loading: ConceptLoading,
     }),
