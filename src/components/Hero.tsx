@@ -1,5 +1,5 @@
 import AnimatedRole from "@/components/AnimatedRole";
-import { FiDownloadCloud } from "react-icons/fi";
+import Iconify from "@/components/iconify";
 import { geistSans, inika } from "@/lib/fonts";
 import { AUTHOR } from "@/lib/site";
 /**
@@ -100,7 +100,7 @@ const Hero = () => {
             className="flex items-center justify-center gap-2 rounded-2xl bg-mainGreen px-8 py-3.5 font-semibold text-bgGreen transition-all duration-200 ease-in-out hover:brightness-95 active:scale-95 w-full sm:w-auto shadow-md"
           >
             <span>Resume</span>
-            <FiDownloadCloud className="w-5 h-5" aria-hidden="true" />
+            <Iconify icon="lucide:cloud-download" className="w-5 h-5" aria-hidden="true" />
           </a>
         </div>
       </div>

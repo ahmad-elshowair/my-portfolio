@@ -4,8 +4,8 @@ import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import type { ConceptItem } from "./switcher.types";
+import Iconify from "@/components/iconify";
 import type { ConceptId } from "@/definitions";
-import { TechIcon } from "@/components/TechIcon";
 
 interface MobileSwitcherRailProps {
   items: ConceptItem[];
@@ -129,7 +129,7 @@ export function MobileSwitcherRail({
                 )}
                 aria-hidden="true"
               >
-                <TechIcon icon={item.icon} className="h-4 w-4" />
+                <Iconify icon={item.icon} className="h-4 w-4" />
               </span>
             </motion.button>
           </div>

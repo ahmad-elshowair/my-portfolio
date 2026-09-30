@@ -1,25 +1,3 @@
-import {
-  SiBootstrap,
-  SiCss3,
-  SiExpress,
-  SiGit,
-  SiHtml5,
-  SiJavascript,
-  SiMui,
-  SiNextdotjs,
-  SiNodedotjs,
-  SiPostgresql,
-  SiPython,
-  SiReact,
-  SiRedis,
-  SiSqlite,
-  SiStripe,
-  SiSupabase,
-  SiTailwindcss,
-  SiTypescript,
-  SiVercel,
-  SiVitest,
-} from "react-icons/si";
 import type { SkillCategoryId, SkillItem, SkillProjectId } from "@/definitions";
 
 /* ─── Skills Lab dataset ──────────────────────────────────────────────
@@ -66,7 +44,7 @@ export const skills: SkillItem[] = [
   {
     id: "javascript",
     name: "JavaScript (ES6+)",
-    icon: SiJavascript,
+    icon: "simple-icons:javascript",
     category: "frontend",
     context: "ES6+ JavaScript across the front-end stack.",
     projects: [],
@@ -74,7 +52,7 @@ export const skills: SkillItem[] = [
   {
     id: "typescript",
     name: "TypeScript",
-    icon: SiTypescript,
+    icon: "simple-icons:typescript",
     category: "frontend",
     context:
       "Shipped in the PointCraft suite, ClearCarGO, Post-It, and the remembrance PWA.",
@@ -83,7 +61,7 @@ export const skills: SkillItem[] = [
   {
     id: "react",
     name: "React.js",
-    icon: SiReact,
+    icon: "simple-icons:react",
     category: "frontend",
     context:
       "Reactive state for dynamic carts and concurrent order flows (PointCraft); feeds and threaded comments (Post-It).",
@@ -92,7 +70,7 @@ export const skills: SkillItem[] = [
   {
     id: "nextjs",
     name: "Next.js",
-    icon: SiNextdotjs,
+    icon: "simple-icons:nextdotjs",
     category: "frontend",
     context:
       "Next.js 14 on ClearCarGO; Next.js 15 App Router on the Kun Min Aldhaakirin PWA.",
@@ -101,7 +79,7 @@ export const skills: SkillItem[] = [
   {
     id: "html5",
     name: "HTML5",
-    icon: SiHtml5,
+    icon: "simple-icons:html5",
     category: "frontend",
     context:
       "Semantic HTML5 markup and accessibility foundations under every interface.",
@@ -110,7 +88,7 @@ export const skills: SkillItem[] = [
   {
     id: "css3",
     name: "CSS3",
-    icon: SiCss3,
+    icon: "simple-icons:css3",
     category: "frontend",
     context:
       "Modern CSS3 styling, responsive layouts, and visual design systems.",
@@ -119,7 +97,7 @@ export const skills: SkillItem[] = [
   {
     id: "tailwind",
     name: "Tailwind CSS",
-    icon: SiTailwindcss,
+    icon: "simple-icons:tailwindcss",
     category: "frontend",
     context: "UI layer for ClearCarGO and the bilingual remembrance PWA.",
     projects: ["clearcargo", "kun-min-aldhaakirin"],
@@ -127,7 +105,7 @@ export const skills: SkillItem[] = [
   {
     id: "mui",
     name: "MUI (Material UI)",
-    icon: SiMui,
+    icon: "simple-icons:mui",
     category: "frontend",
     context:
       "Theme-consistent, accessible POS and invoice interfaces at PointCraft.",
@@ -136,7 +114,7 @@ export const skills: SkillItem[] = [
   {
     id: "bootstrap",
     name: "Bootstrap",
-    icon: SiBootstrap,
+    icon: "simple-icons:bootstrap",
     category: "frontend",
     context: "Component toolkit for the Post-It social platform.",
     projects: ["post-it"],
@@ -190,7 +168,7 @@ export const skills: SkillItem[] = [
   {
     id: "nodejs",
     name: "Node.js",
-    icon: SiNodedotjs,
+    icon: "simple-icons:nodedotjs",
     category: "backend",
     context: "Production APIs and tooling behind POS and social platforms.",
     projects: ["post-it"],
@@ -198,7 +176,7 @@ export const skills: SkillItem[] = [
   {
     id: "express",
     name: "Express.js",
-    icon: SiExpress,
+    icon: "simple-icons:express",
     category: "backend",
     context: "RESTful API layer for Post-It.",
     projects: ["post-it"],
@@ -214,7 +192,7 @@ export const skills: SkillItem[] = [
   {
     id: "postgresql",
     name: "PostgreSQL",
-    icon: SiPostgresql,
+    icon: "simple-icons:postgresql",
     category: "backend",
     context:
       "Schema design plus raw SQL ACID transactions for production data integrity.",
@@ -223,7 +201,7 @@ export const skills: SkillItem[] = [
   {
     id: "sqlite",
     name: "SQLite",
-    icon: SiSqlite,
+    icon: "simple-icons:sqlite",
     category: "backend",
     context: "Embedded relational storage for lightweight workloads.",
     projects: [],
@@ -231,7 +209,7 @@ export const skills: SkillItem[] = [
   {
     id: "supabase",
     name: "Supabase",
-    icon: SiSupabase,
+    icon: "simple-icons:supabase",
     category: "backend",
     context:
       "Persistent storage and authentication for ClearCarGO and the remembrance PWA.",
@@ -240,7 +218,7 @@ export const skills: SkillItem[] = [
   {
     id: "redis",
     name: "Redis",
-    icon: SiRedis,
+    icon: "simple-icons:redis",
     category: "backend",
     context:
       "Caching and rate limiting keeping API hot paths fast and abuse-resistant.",
@@ -265,7 +243,7 @@ export const skills: SkillItem[] = [
   {
     id: "stripe",
     name: "Stripe payments integration",
-    icon: SiStripe,
+    icon: "simple-icons:stripe",
     category: "backend",
     context: "Automated Stripe payment workflows in ClearCarGO.",
     projects: ["clearcargo"],
@@ -273,7 +251,7 @@ export const skills: SkillItem[] = [
   {
     id: "python",
     name: "Python",
-    icon: SiPython,
+    icon: "simple-icons:python",
     category: "backend",
     context: "Backend scripting and tooling.",
     projects: [],
@@ -283,7 +261,7 @@ export const skills: SkillItem[] = [
   {
     id: "git",
     name: "Git",
-    icon: SiGit,
+    icon: "simple-icons:git",
     category: "tools",
     context: "Git for version control.",
     projects: ["pointcraft", "clearcargo", "post-it", "kun-min-aldhaakirin"],
@@ -339,7 +317,7 @@ export const skills: SkillItem[] = [
   {
     id: "vercel",
     name: "Vercel",
-    icon: SiVercel,
+    icon: "simple-icons:vercel",
     category: "tools",
     context: "Deployment pipeline for production apps (Kun Min Aldhaakirin).",
     projects: ["kun-min-aldhaakirin", "clearcargo"],
@@ -355,7 +333,7 @@ export const skills: SkillItem[] = [
   {
     id: "vitest",
     name: "Vitest",
-    icon: SiVitest,
+    icon: "devicon-plain:vitest",
     category: "tools",
     context: "Unit testing for production modules.",
     projects: [],

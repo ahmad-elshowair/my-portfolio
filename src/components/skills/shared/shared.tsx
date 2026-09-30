@@ -1,9 +1,9 @@
 "use client";
 
+import Iconify from "@/components/iconify";
 import type { SkillItem, SkillProjectId } from "@/definitions";
 import { cn } from "@/lib/utils";
 import { SKILL_PROJECTS } from "@/data";
-import { TechIcon } from "@/components/TechIcon";
 
 /**
  * Shared presentation atoms for every concept variant.
@@ -21,7 +21,7 @@ export function SkillGlyph({
   className?: string;
 }) {
   if (!skill.icon) return null;
-  return <TechIcon icon={skill.icon} name={skill.name} className={className} />;
+  return <Iconify icon={skill.icon} name={skill.name} className={className} />;
 }
 
 /** Pill links that jump to the cited project's card anchor (#project-<anchor>). */

@@ -1,11 +1,11 @@
 import type { ConceptId, SkillConceptDescriptor } from "@/definitions";
-import type { IconType } from "react-icons";
+import type { IconifyProps } from "@/components/iconify";
 
 export interface ConceptItem {
   id: ConceptId;
   label: string;
   blurb: string;
-  icon: IconType | string;
+  icon: IconifyProps;
 }
 
 export interface ConceptSwitcherProps {

@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { RefObject } from "react";
-import { FiMenu, FiX } from "react-icons/fi";
+import Iconify from "@/components/iconify";
 
 export interface MobileNavToggleProps {
   isOpen: boolean;
@@ -48,7 +48,7 @@ export function MobileNavToggle({
             transition={{ duration: 0.15 }}
             className="flex items-center justify-center"
           >
-            <FiX className="h-5 w-5" aria-hidden="true" />
+            <Iconify icon="lucide:x" className="h-5 w-5" aria-hidden="true" />
           </motion.span>
         ) : (
           <motion.span
@@ -71,7 +71,7 @@ export function MobileNavToggle({
             transition={{ duration: 0.15 }}
             className="flex items-center justify-center"
           >
-            <FiMenu className="h-5 w-5" aria-hidden="true" />
+            <Iconify icon="lucide:menu" className="h-5 w-5" aria-hidden="true" />
           </motion.span>
         )}
       </AnimatePresence>

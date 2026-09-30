@@ -4,12 +4,11 @@ import { usePrefersReducedMotion } from "@/hooks";
 import { cn } from "@/lib/utils";
 import { AnimatePresence } from "framer-motion";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { FiX } from "react-icons/fi";
+import Iconify from "@/components/iconify";
 import { CONCEPT_ICONS, CONCEPT_ORDER } from "./switcher.constants";
 import type { ConceptItem, ConceptSwitcherProps } from "./switcher.types";
 import { DesktopSwitcherTrack } from "./DesktopSwitcherTrack";
 import { MobileSwitcherRail } from "./MobileSwitcherRail";
-import { TechIcon } from "@/components/TechIcon";
 import { CONCEPT_REGISTRY } from "../registry";
 
 export function ConceptSwitcher({
@@ -23,7 +22,7 @@ export function ConceptSwitcher({
   const prefersReducedMotion = usePrefersReducedMotion();
 
   const activeDescriptor = CONCEPT_REGISTRY[active];
-  const ActiveIcon = CONCEPT_ICONS[active] || FiX;
+  const ActiveIcon = CONCEPT_ICONS[active] || "lucide:x";
 
   // Build the 8 ordered concept items
   const conceptItems: ConceptItem[] = useMemo(() => {
@@ -115,7 +114,7 @@ export function ConceptSwitcher({
                 className="flex h-7 w-7 items-center justify-center rounded-full border border-beige/20 bg-beige/10 text-mainGreen transition-transform duration-300 group-hover:scale-105"
                 aria-hidden="true"
               >
-                <TechIcon icon={ActiveIcon} className="h-3.5 w-3.5" />
+                <Iconify icon={ActiveIcon} className="h-3.5 w-3.5" />
               </span>
             </button>
           ) : (
@@ -164,9 +163,9 @@ export function ConceptSwitcher({
             aria-hidden="true"
           >
             {isOpen ? (
-              <FiX className="h-3.5 w-3.5" />
+              <Iconify icon="lucide:x" className="h-3.5 w-3.5" aria-hidden="true" />
             ) : (
-              <TechIcon icon={ActiveIcon} className="h-3.5 w-3.5" />
+              <Iconify icon={ActiveIcon} className="h-3.5 w-3.5" />
             )}
           </span>
         </button>

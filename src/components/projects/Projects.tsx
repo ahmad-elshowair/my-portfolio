@@ -3,7 +3,7 @@
 import ProjectCard from "./ProjectCard";
 import { inika } from "@/lib/fonts";
 import Link from "next/link";
-import { FaGithub } from "react-icons/fa";
+import Iconify from "@/components/iconify";
 import { projects } from "@/data";
 
 export const Projects = () => {
@@ -41,7 +41,11 @@ export const Projects = () => {
             className="inline-flex items-center gap-3 text-beige hover:text-mainGreen transition-colors group"
           >
             <span className="text-2xl font-medium">more on</span>
-            <FaGithub className="text-3xl group-hover:rotate-12 transition-transform" aria-hidden="true" />
+            <Iconify
+              icon="akar-icons:github-fill"
+              className="text-3xl group-hover:rotate-12 transition-transform"
+              aria-hidden="true"
+            />
             <span className="sr-only">GitHub</span>
           </Link>
         </div>

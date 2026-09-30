@@ -1,5 +1,5 @@
 import { ComponentType } from "react";
-import type { IconType } from "react-icons";
+import type { IconifyProps } from "@/components/iconify";
 
 export interface Project {
   name: string;
@@ -36,7 +36,7 @@ export interface SkillItem {
   /** Stable slug used as key and selection id. */
   id: string;
   name: string;
-  icon?: IconType | string;
+  icon?: IconifyProps;
   category: SkillCategoryId;
   context: string;
   projects: SkillProjectId[];
@@ -62,7 +62,7 @@ export interface SkillConceptDescriptor {
 
 export interface TechItem {
   name: string;
-  icon: IconType | string;
+  icon: IconifyProps;
 }
 
 export interface ExperienceItemProps {

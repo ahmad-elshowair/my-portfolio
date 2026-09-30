@@ -5,8 +5,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { FC, useEffect, useState } from "react";
-import { FaExternalLinkAlt, FaGithub } from "react-icons/fa";
-import { TechIcon } from "@/components/TechIcon";
+import Iconify from "@/components/iconify";
 import { usePrefersReducedMotion, useProjectHighlight } from "@/hooks";
 import { inika } from "@/lib/fonts";
 
@@ -141,7 +140,11 @@ const ProjectCard: FC<ProjectCardProps> = ({
             className="p-2 bg-mainGreen/20 backdrop-blur-sm rounded-full hover:bg-mainGreen/80 transition-colors ease-in-out duration-300"
             onClick={(e) => e.stopPropagation()}
           >
-            <FaExternalLinkAlt className="text-beige text-lg hover:scale-105 transition-transform duration-200 ease-in-out" />
+            <Iconify
+              icon="lucide:external-link"
+              className="text-beige text-lg hover:scale-105 transition-transform duration-200 ease-in-out"
+              aria-hidden="true"
+            />
           </Link>
         )}
         {githubUrl && (
@@ -153,7 +156,11 @@ const ProjectCard: FC<ProjectCardProps> = ({
             className="p-2 bg-mainGreen/20 backdrop-blur-sm rounded-full hover:bg-mainGreen/80 transition-colors ease-in-out duration-300"
             onClick={(e) => e.stopPropagation()}
           >
-            <FaGithub className="text-beige text-lg hover:scale-105 transition-transform duration-200 ease-in-out" />
+            <Iconify
+              icon="akar-icons:github-fill"
+              className="text-beige text-lg hover:scale-105 transition-transform duration-200 ease-in-out"
+              aria-hidden="true"
+            />
           </Link>
         )}
       </div>
@@ -179,7 +186,7 @@ const ProjectCard: FC<ProjectCardProps> = ({
               key={tech.name}
               className="text-xs hover:text-mainGreen transition-colors"
             >
-              <TechIcon name={tech.name} icon={tech.icon} />
+              <Iconify name={tech.name} icon={tech.icon} />
             </div>
           ))}
         </div>

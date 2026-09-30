@@ -1,13 +1,6 @@
 "use client";
 
-import {
-  FiArrowUpRight,
-  FiCheck,
-  FiCopy,
-  FiDownloadCloud,
-  FiLinkedin,
-  FiMail,
-} from "react-icons/fi";
+import Iconify from "@/components/iconify";
 import { inika } from "@/lib/fonts";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
@@ -103,7 +96,8 @@ const Contact = () => {
               href={`mailto:${EMAIL}`}
               className="flex min-w-0 items-center gap-3 sm:gap-4 text-beige transition-opacity duration-200 hover:opacity-80"
             >
-              <FiMail
+              <Iconify
+                icon="lucide:mail"
                 className="w-5 h-5 sm:w-6 sm:h-6 shrink-0 text-mainGreen"
                 aria-hidden="true"
               />
@@ -117,9 +111,9 @@ const Contact = () => {
               className="flex items-center justify-center gap-2 rounded-xl bg-mainGreen px-5 py-2.5 text-sm font-semibold text-bgGreen transition-all duration-200 ease-in-out hover:brightness-95 active:scale-95 sm:ml-auto sm:shrink-0"
             >
               {copyState === "copied" ? (
-                <FiCheck className="w-4 h-4" aria-hidden="true" />
+                <Iconify icon="lucide:check" className="w-4 h-4" aria-hidden="true" />
               ) : (
-                <FiCopy className="w-4 h-4" aria-hidden="true" />
+                <Iconify icon="lucide:copy" className="w-4 h-4" aria-hidden="true" />
               )}
               {copyState === "copied"
                 ? "Copied!"
@@ -145,16 +139,14 @@ const Contact = () => {
               className="flex items-center justify-between p-4 sm:p-5 rounded-2xl border border-beige/15 bg-bgGreen/40 text-beige hover:border-mainGreen/60 hover:bg-beige/5 transition-all duration-200 text-base sm:text-lg font-medium group"
             >
               <div className="flex items-center gap-3">
-                <FiLinkedin
+                <Iconify
+                  icon="akar-icons:linkedin-fill"
                   className="w-5 h-5 sm:w-6 sm:h-6 shrink-0 text-mainGreen"
                   aria-hidden="true"
                 />
                 <span>Connect on LinkedIn</span>
               </div>
-              <FiArrowUpRight
-                className="w-5 h-5 text-beige/50 group-hover:text-mainGreen group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"
-                aria-hidden="true"
-              />
+              <Iconify icon="lucide:arrow-up-right" className="w-5 h-5 text-beige/50 group-hover:text-mainGreen group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" aria-hidden="true" />
             </Link>
 
             <a
@@ -164,16 +156,10 @@ const Contact = () => {
               className="flex items-center justify-between p-4 sm:p-5 rounded-2xl border border-beige/15 bg-bgGreen/40 text-beige hover:border-mainGreen/60 hover:bg-beige/5 transition-all duration-200 text-base sm:text-lg font-medium group"
             >
               <div className="flex items-center gap-3">
-                <FiDownloadCloud
-                  className="w-5 h-5 sm:w-6 sm:h-6 shrink-0 text-mainGreen"
-                  aria-hidden="true"
-                />
+                <Iconify icon="lucide:cloud-download" className="w-5 h-5 sm:w-6 sm:h-6 shrink-0 text-mainGreen" aria-hidden="true" />
                 <span>Download Resume (PDF)</span>
               </div>
-              <FiArrowUpRight
-                className="w-5 h-5 text-beige/50 group-hover:text-mainGreen group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"
-                aria-hidden="true"
-              />
+              <Iconify icon="lucide:arrow-up-right" className="w-5 h-5 text-beige/50 group-hover:text-mainGreen group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" aria-hidden="true" />
             </a>
           </div>
         </div>

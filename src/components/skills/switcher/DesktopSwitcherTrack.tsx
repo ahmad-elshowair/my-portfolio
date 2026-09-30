@@ -3,10 +3,9 @@
 import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
-import { FiX } from "react-icons/fi";
+import Iconify from "@/components/iconify";
 import type { ConceptItem } from "./switcher.types";
 import type { ConceptId } from "@/definitions";
-import { TechIcon } from "@/components/TechIcon";
 
 interface DesktopSwitcherTrackProps {
   items: ConceptItem[];
@@ -78,7 +77,7 @@ export function DesktopSwitcherTrack({
                 isHovered ? "px-2.5 gap-1.5" : "w-7 justify-center p-0",
               )}
             >
-              <TechIcon icon={item.icon} className="h-3.5 w-3.5 shrink-0" />
+              <Iconify icon={item.icon} className="h-3.5 w-3.5 shrink-0" />
 
               <AnimatePresence initial={false}>
                 {isHovered && (
@@ -117,7 +116,7 @@ export function DesktopSwitcherTrack({
         aria-label="Close concept switcher"
         className="flex h-7 w-7 items-center justify-center rounded-full border border-beige/20 bg-beige/10 text-beige hover:border-mainGreen/70 hover:bg-mainGreen hover:text-bgGreen transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-mainGreen"
       >
-        <FiX className="h-3.5 w-3.5" aria-hidden="true" />
+        <Iconify icon="lucide:x" className="h-3.5 w-3.5" aria-hidden="true" />
       </button>
     </motion.div>
   );

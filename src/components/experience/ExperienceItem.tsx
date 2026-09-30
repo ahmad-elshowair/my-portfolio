@@ -1,8 +1,8 @@
+import Iconify from "@/components/iconify";
 import { ExperienceItemProps } from "@/definitions";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import React, { ReactNode } from "react";
-import { TechIcon } from "@/components/TechIcon";
 
 const ExperienceItem: React.FC<ExperienceItemProps> = ({
   title,
@@ -79,7 +79,7 @@ const ExperienceItem: React.FC<ExperienceItemProps> = ({
               key={tech.name}
               className="text-xl text-gray-400 hover:text-mainGreen transition-colors"
             >
-              <TechIcon name={tech.name} icon={tech.icon} />
+              <Iconify name={tech.name} icon={tech.icon} />
             </div>
           ))}
         </div>
