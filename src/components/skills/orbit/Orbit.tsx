@@ -3,8 +3,7 @@
 import { SkillEvidence, SkillGlyph } from "@/components/skills/shared";
 import { SKILL_CATEGORIES, skills } from "@/data";
 import { AUTHOR } from "@/lib/site";
-import { useDesktopViewport } from "@/hooks/useDesktopViewport";
-import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
+import { useDesktopViewport, usePrefersReducedMotion } from "@/hooks";
 import { useSelectSkill, useSelectedSkillId } from "@/stores/skillsLabStore";
 import type { SkillItem } from "@/definitions";
 import { cn } from "@/lib/utils";

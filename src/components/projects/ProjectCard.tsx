@@ -7,8 +7,7 @@ import Link from "next/link";
 import { FC, useEffect, useState } from "react";
 import { FaExternalLinkAlt, FaGithub } from "react-icons/fa";
 import { TechIcon } from "@/components/TechIcon";
-import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
-import { useProjectHighlight } from "@/hooks/useProjectHighlight";
+import { usePrefersReducedMotion, useProjectHighlight } from "@/hooks";
 
 const MotionImage = motion.create(Image);
 

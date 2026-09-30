@@ -2,8 +2,7 @@
 
 import { SkillEvidence, SkillGlyph } from "@/components/skills/shared";
 import { SKILL_CATEGORIES, skills } from "@/data";
-import { useDesktopViewport } from "@/hooks/useDesktopViewport";
-import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
+import { useDesktopViewport, usePrefersReducedMotion } from "@/hooks";
 import { useSelectSkill, useSelectedSkillId } from "@/stores/skillsLabStore";
 import { AnimatePresence, useAnimationFrame, motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";

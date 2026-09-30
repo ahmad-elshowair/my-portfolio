@@ -5,7 +5,7 @@ import {
   SKILL_CATEGORIES,
   skills,
 } from "@/data";
-import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
+import { usePrefersReducedMotion } from "@/hooks";
 import { useSelectSkill, useSelectedSkillId } from "@/stores/skillsLabStore";
 import type { SkillCategoryId, SkillItem } from "@/definitions";
 import { useRef, useState } from "react";

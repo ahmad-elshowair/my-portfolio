@@ -2,7 +2,7 @@
 
 import { useSyncExternalStore } from "react";
 import { TypeAnimation } from "react-type-animation";
-import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
+import { usePrefersReducedMotion } from "@/hooks";
 
 /** Animated role set — title-case per the casing convention. */
 const ROLES = [

@@ -1,8 +1,10 @@
 "use client";
 
-import { useActiveSection } from "@/hooks/useActiveSection";
-import { useMenuFocusTrap } from "@/hooks/useMenuFocusTrap";
-import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
+import {
+  useActiveSection,
+  useMenuFocusTrap,
+  usePrefersReducedMotion,
+} from "@/hooks";
 import Image from "next/image";
 import Link from "next/link";
 import { useRef, useState } from "react";
