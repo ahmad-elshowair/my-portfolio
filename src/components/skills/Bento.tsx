@@ -44,7 +44,7 @@ const ZONES: BentoZoneConfig[] = [
     id: "backend",
     title: "Back-End, Data & APIs",
     subtitle: "Server Architecture & Pipelines",
-    spanClass: "md:col-span-1 lg:col-span-1 lg:row-span-2",
+    spanClass: "md:col-span-2 lg:col-span-2",
     heroIds: ["nodejs", "postgresql"],
     ids: [
       "nodejs",
@@ -79,7 +79,7 @@ const ZONES: BentoZoneConfig[] = [
     id: "global",
     title: "Global Remote & Communication",
     subtitle: "Agile & Multilingual",
-    spanClass: "md:col-span-2 lg:col-span-1",
+    spanClass: "md:col-span-1 lg:col-span-1",
     ids: ["agile-remote", "bilingual-ui", "arabic", "english"],
   },
 ];
@@ -89,6 +89,7 @@ const CORE_DAILY = new Set([
   "react",
   "nextjs",
   "tailwind",
+  "mui",
   "nodejs",
   "postgresql",
   "git",
@@ -139,7 +140,9 @@ function SkillChipButton({
         <span
           className={cn(
             "h-1.5 w-1.5 rounded-full transition-colors duration-200 shrink-0",
-            isSelected ? "bg-mainGreen shadow-[0_0_6px_#8DA55B]" : "bg-mainGreen/60 group-hover:bg-mainGreen",
+            isSelected
+              ? "bg-mainGreen shadow-[0_0_6px_#8DA55B]"
+              : "bg-mainGreen/60 group-hover:bg-mainGreen",
           )}
           aria-hidden="true"
         />
@@ -194,7 +197,10 @@ function ProjectJumpPill({ projectId }: { projectId: SkillProjectId }) {
       >
         ↗
       </span>
-      <span className="sr-only"> — jump to {project.name} project card in projects section</span>
+      <span className="sr-only">
+        {" "}
+        — jump to {project.name} project card in projects section
+      </span>
     </a>
   );
 }
@@ -254,9 +260,7 @@ function LiveInspectorHUD({ skill }: { skill: SkillItem }) {
         <p className="text-[11px] font-mono uppercase tracking-wider text-beige/50 mb-1">
           Production Proof & Context
         </p>
-        <p className="text-sm leading-relaxed text-beige/90">
-          {skill.context}
-        </p>
+        <p className="text-sm leading-relaxed text-beige/90">{skill.context}</p>
       </div>
 
       {/* Verifiable Project Links or Honest Fallback */}
@@ -274,7 +278,8 @@ function LiveInspectorHUD({ skill }: { skill: SkillItem }) {
           </>
         ) : (
           <p className="text-xs text-beige/60 italic leading-relaxed">
-            Verified in resume — foundational competency without dedicated project case study.
+            Verified in resume — foundational competency without dedicated
+            project case study.
           </p>
         )}
       </div>
@@ -302,7 +307,7 @@ export default function Bento() {
   return (
     <div className="grid gap-6 grid-cols-1 lg:grid-cols-[1fr_21rem] xl:grid-cols-[1fr_23rem] items-start w-full">
       {/* Asymmetrical 4-Zone Bento Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5 w-full">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 lg:grid-flow-dense gap-4 md:gap-5 w-full">
         {ZONES.map((zone) => {
           const heroSet = new Set(zone.heroIds ?? []);
           return (
