@@ -1,14 +1,14 @@
 "use client";
 
-import { CONCEPT_IDS, CONCEPT_LIST, CONCEPT_REGISTRY } from "@/components/skills/registry";
+import { CONCEPT_LIST, CONCEPT_REGISTRY } from "@/components/skills/registry";
+import { ConceptFanSwitcher } from "@/components/skills/switcher";
 import { inika } from "@/lib/fonts";
 import { useSetLabConcept } from "@/stores/skillsLabStore";
 import type { ConceptId } from "@/definitions";
-import { useCallback, useEffect, useRef, useState } from "react";
-import { cn } from "@/lib/utils";
+import { useCallback, useEffect, useState } from "react";
 
 const STORAGE_KEY = "skills-concept";
-const DEFAULT_CONCEPT: ConceptId = "013";
+const DEFAULT_CONCEPT: ConceptId = "009";
 
 function isConceptId(value: string | null): value is ConceptId {
   return value !== null && value in CONCEPT_REGISTRY;
@@ -17,7 +17,6 @@ function isConceptId(value: string | null): value is ConceptId {
 const SkillsSection = () => {
   const [active, setActive] = useState<ConceptId>(DEFAULT_CONCEPT);
   const setConcept = useSetLabConcept();
-  const radioRefs = useRef<Partial<Record<ConceptId, HTMLButtonElement | null>>>({});
   const ActiveConcept = CONCEPT_REGISTRY[active].component;
 
   const activate = useCallback(
@@ -48,71 +47,33 @@ const SkillsSection = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
-    const current = CONCEPT_IDS.indexOf(active);
-    let next: number;
-    if (event.key === "ArrowRight" || event.key === "ArrowDown") {
-      next = (current + 1) % CONCEPT_IDS.length;
-    } else if (event.key === "ArrowLeft" || event.key === "ArrowUp") {
-      next = (current - 1 + CONCEPT_IDS.length) % CONCEPT_IDS.length;
-    } else {
-      return;
-    }
-    event.preventDefault();
-    const nextId = CONCEPT_IDS[next];
-    activate(nextId);
-    radioRefs.current[nextId]?.focus();
-  };
-
   return (
     <section id="skills" className="py-20 backdrop-blur-sm">
       <div className="relative mx-auto max-w-5xl">
-        <div className="mb-10 flex items-baseline gap-5">
-          <h2 className={`relative isolate text-4xl font-bold text-mainGreen md:text-6xl ${inika.className}`}>
-            <span
-              aria-hidden="true"
-              className="pointer-events-none absolute left-0 top-1/2 -translate-x-1/2 -translate-y-1/2 -z-10 h-44 w-44 rounded-full bg-mainGreen opacity-20 blur-[28px] md:h-52 md:w-52"
-            />
-            skills
-          </h2>
-          <div className="flex items-center gap-1" aria-hidden="true">
-            <span className="h-3 w-[40px] rounded-lg bg-beige" />
-            <span className="h-3 w-[25px] rounded-lg bg-beige" />
-            <span className="h-3 w-[12px] rounded-lg bg-mainGreen" />
+        <div className="mb-10 flex flex-wrap items-center justify-between gap-4">
+          <div className="flex items-baseline gap-5">
+            <h2
+              className={`relative isolate text-4xl font-bold text-mainGreen md:text-6xl ${inika.className}`}
+            >
+              <span
+                aria-hidden="true"
+                className="pointer-events-none absolute left-0 top-1/2 -translate-x-1/2 -translate-y-1/2 -z-10 h-44 w-44 rounded-full bg-mainGreen opacity-20 blur-[28px] md:h-52 md:w-52"
+              />
+              skills
+            </h2>
+            <div className="flex items-center gap-1" aria-hidden="true">
+              <span className="h-3 w-[40px] rounded-lg bg-beige" />
+              <span className="h-3 w-[25px] rounded-lg bg-beige" />
+              <span className="h-3 w-[12px] rounded-lg bg-mainGreen" />
+            </div>
           </div>
-        </div>
 
-        <div
-          role="radiogroup"
-          aria-label="Skills section concept"
-          onKeyDown={handleKeyDown}
-          className="mb-8 flex gap-2 overflow-x-auto pb-2"
-        >
-          {CONCEPT_LIST.map(({ id, label, blurb }) => {
-            const isActive = active === id;
-            return (
-              <button
-                key={id}
-                ref={(el) => {
-                  radioRefs.current[id] = el;
-                }}
-                type="button"
-                role="radio"
-                aria-checked={isActive}
-                aria-label={`${label} — ${blurb}`}
-                tabIndex={isActive ? 0 : -1}
-                onClick={() => activate(id)}
-                className={cn(
-                  "min-h-[44px] shrink-0 rounded-full border px-4 py-2 text-sm transition-colors duration-200",
-                  isActive
-                    ? "border-mainGreen bg-mainGreen font-semibold text-bgGreen shadow-[0_0_18px_rgba(141,165,91,0.45)]"
-                    : "border-beige/20 bg-beige/5 text-beige/85 hover:bg-beige/10 hover:text-beige",
-                )}
-              >
-                {label}
-              </button>
-            );
-          })}
+          {/* Radial Concept Fan Switcher matching user sketch */}
+          <ConceptFanSwitcher
+            active={active}
+            onSelect={activate}
+            concepts={CONCEPT_LIST}
+          />
         </div>
 
         <ActiveConcept key={active} />
