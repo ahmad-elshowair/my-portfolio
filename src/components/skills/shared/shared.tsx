@@ -3,7 +3,7 @@
 import type { SkillItem, SkillProjectId } from "@/definitions";
 import { cn } from "@/lib/utils";
 import { SKILL_PROJECTS } from "@/data";
-import { Icon as IconifyIcon } from "@iconify/react";
+import { TechIcon } from "@/components/TechIcon";
 
 /**
  * Shared presentation atoms for every concept variant.
@@ -20,19 +20,8 @@ export function SkillGlyph({
   skill: SkillItem;
   className?: string;
 }) {
-  const Icon = skill.icon;
-  if (!Icon) return null;
-
-  return (
-    <span className={cn("inline-flex items-center", className)}>
-      {typeof Icon === "string" ? (
-        <IconifyIcon icon={Icon} aria-hidden="true" className="h-[1em] w-[1em] shrink-0" />
-      ) : (
-        <Icon aria-hidden="true" />
-      )}
-      <span className="sr-only">{skill.name}</span>
-    </span>
-  );
+  if (!skill.icon) return null;
+  return <TechIcon icon={skill.icon} name={skill.name} className={className} />;
 }
 
 /** Pill links that jump to the cited project's card anchor (#project-<anchor>). */

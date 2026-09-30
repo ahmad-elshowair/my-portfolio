@@ -1,27 +1,19 @@
 import type { ConceptId, SkillConceptDescriptor } from "@/definitions";
 import type { IconType } from "react-icons";
 
-export interface ConceptFanItem {
+export interface ConceptItem {
   id: ConceptId;
   label: string;
   blurb: string;
-  angleDeg: number;
-  offsetPx: number;
-  widthPx: number;
-  icon: IconType;
+  icon: IconType | string;
 }
 
-export interface ConceptFanSwitcherProps {
+export interface ConceptSwitcherProps {
   active: ConceptId;
   onSelect: (id: ConceptId) => void;
   concepts?: SkillConceptDescriptor[];
   className?: string;
 }
 
-export interface ConceptPetalProps {
-  item: ConceptFanItem;
-  isActive: boolean;
-  onSelect: (id: ConceptId) => void;
-  index: number;
-  prefersReducedMotion: boolean;
-}
+// Backwards compatibility alias
+export type ConceptFanSwitcherProps = ConceptSwitcherProps;

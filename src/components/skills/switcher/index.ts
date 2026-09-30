@@ -1,5 +1,6 @@
-export { default as ConceptFanSwitcher } from "./ConceptFanSwitcher";
-export { default } from "./ConceptFanSwitcher";
+export { ConceptSwitcher, default } from "./ConceptSwitcher";
+export { ConceptSwitcher as ConceptFanSwitcher } from "./ConceptSwitcher";
 export * from "./switcher.types";
 export * from "./switcher.constants";
-export * from "./ConceptPetal";
+export * from "./DesktopSwitcherTrack";
+export * from "./MobileSwitcherRail";

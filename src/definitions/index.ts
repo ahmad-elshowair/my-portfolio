@@ -62,7 +62,7 @@ export interface SkillConceptDescriptor {
 
 export interface TechItem {
   name: string;
-  icon: IconType;
+  icon: IconType | string;
 }
 
 export interface ExperienceItemProps {

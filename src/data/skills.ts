@@ -20,11 +20,7 @@ import {
   SiVercel,
   SiVitest,
 } from "react-icons/si";
-import type {
-  SkillCategoryId,
-  SkillItem,
-  SkillProjectId,
-} from "@/definitions";
+import type { SkillCategoryId, SkillItem, SkillProjectId } from "@/definitions";
 
 /* ─── Skills Lab dataset ──────────────────────────────────────────────
  * Single source for every skills-concept variant.
@@ -151,7 +147,7 @@ export const skills: SkillItem[] = [
     icon: "streamline-ultimate:responsive-design-bold",
     category: "frontend",
     context:
-      "Accessible, theme-consistent UI across mobile and desktop viewports.",
+      "Accessible, theme-consistent UI across mobile and desktop viewports3.",
     projects: ["pointcraft", "clearcargo", "kun-min-aldhaakirin"],
   },
   {

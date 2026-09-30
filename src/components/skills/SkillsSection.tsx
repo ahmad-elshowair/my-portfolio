@@ -1,7 +1,7 @@
 "use client";
 
 import { CONCEPT_LIST, CONCEPT_REGISTRY } from "@/components/skills/registry";
-import { ConceptFanSwitcher } from "@/components/skills/switcher";
+import { ConceptSwitcher } from "@/components/skills/switcher";
 import { inika } from "@/lib/fonts";
 import { useSetLabConcept } from "@/stores/skillsLabStore";
 import type { ConceptId } from "@/definitions";
@@ -68,8 +68,8 @@ const SkillsSection = () => {
             </div>
           </div>
 
-          {/* Radial Concept Fan Switcher matching user sketch */}
-          <ConceptFanSwitcher
+          {/* Expanding Concept Switcher matching user sketch */}
+          <ConceptSwitcher
             active={active}
             onSelect={activate}
             concepts={CONCEPT_LIST}
