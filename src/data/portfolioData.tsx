@@ -360,7 +360,8 @@ export const skills: SkillItem[] = [
     name: "HTML5",
     icon: SiHtml5,
     category: "frontend",
-    context: "Semantic HTML5 markup and accessibility foundations under every interface.",
+    context:
+      "Semantic HTML5 markup and accessibility foundations under every interface.",
     projects: ["post-it"],
   },
   {
@@ -368,7 +369,8 @@ export const skills: SkillItem[] = [
     name: "CSS3",
     icon: SiCss3,
     category: "frontend",
-    context: "Modern CSS3 styling, responsive layouts, and visual design systems.",
+    context:
+      "Modern CSS3 styling, responsive layouts, and visual design systems.",
     projects: ["post-it"],
   },
   {
@@ -512,7 +514,7 @@ export const skills: SkillItem[] = [
   {
     id: "acid-transactions",
     name: "Raw SQL ACID transactions",
-    icon: "carbon:sql",
+    icon: "gravity-ui:abbr-sql",
     category: "backend",
     context: "Raw SQL ACID transactions for production-grade data integrity.",
     projects: ["post-it"],
@@ -586,7 +588,7 @@ export const skills: SkillItem[] = [
   },
   {
     id: "vercel",
-    name: "Vercel deployment",
+    name: "Vercel",
     icon: SiVercel,
     category: "tools",
     context: "Deployment pipeline for production apps (Kun Min Aldhaakirin).",
@@ -613,7 +615,7 @@ export const skills: SkillItem[] = [
   {
     id: "arabic",
     name: "Arabic (native)",
-    icon: "lucide:globe",
+    icon: "iconoir:ar-tag",
     category: "languages",
     context: "Arabic — native.",
     projects: [],
@@ -621,7 +623,7 @@ export const skills: SkillItem[] = [
   {
     id: "english",
     name: "English (fluent)",
-    icon: "lucide:globe",
+    icon: "icon-park-solid:english",
     category: "languages",
     context: "English — fluent.",
     projects: [],
