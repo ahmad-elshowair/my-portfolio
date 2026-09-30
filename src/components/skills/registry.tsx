@@ -5,10 +5,7 @@ import dynamic from "next/dynamic";
 
 function ConceptLoading() {
   return (
-    <p
-      className="min-h-[24rem] animate-pulse rounded-lg border border-beige/10 bg-mainGreen/5 p-6 text-sm text-beige/50"
-      aria-live="polite"
-    >
+    <p className="min-h-[24rem] animate-pulse rounded-lg border border-beige/10 bg-mainGreen/5 p-6 text-sm text-beige/50">
       Loading concept…
     </p>
   );

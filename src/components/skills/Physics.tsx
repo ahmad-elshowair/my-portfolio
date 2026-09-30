@@ -44,6 +44,9 @@ export default function Concept015() {
   const chipState = useRef<ChipState[]>([]);
   const pointer = useRef<{ x: number; y: number } | null>(null);
   const [detail, setDetail] = useState<string | null>(null);
+  const dialogRef = useRef<HTMLDivElement | null>(null);
+  const closeRef = useRef<HTMLButtonElement | null>(null);
+  const triggerRef = useRef<HTMLButtonElement | null>(null);
 
   // Lazy client-only probe: markup never depends on it, so hydration is safe.
   const [finePointer] = useState(
@@ -69,6 +72,13 @@ export default function Concept015() {
       chipRefs.current.forEach((el) => el && (el.style.transform = ""));
     }
   }, [physicsOn]);
+
+  // Dialog focus management: focus moves in on open and back to the
+  // triggering chip on close (any close path).
+  useEffect(() => {
+    if (detail) closeRef.current?.focus();
+    else triggerRef.current?.focus();
+  }, [detail]);
 
   useAnimationFrame((time) => {
     if (!physicsOn) return;
@@ -123,7 +133,8 @@ export default function Concept015() {
             }}
             type="button"
             aria-pressed={selectedSkillId === skill.id}
-            onClick={() => {
+            onClick={(event) => {
+              triggerRef.current = event.currentTarget;
               selectSkill(skill.id);
               setDetail(skill.id);
             }}
@@ -153,14 +164,44 @@ export default function Concept015() {
                 className="absolute inset-0 z-10 flex items-center justify-center bg-bgGreen/85 p-6 backdrop-blur-sm"
                 onClick={() => setDetail(null)}
               >
-                <div role="dialog" aria-label={`${skill.name} details`} onClick={(e) => e.stopPropagation()} className="max-w-md">
+                <div
+                  ref={dialogRef}
+                  role="dialog"
+                  aria-modal="true"
+                  aria-label={`${skill.name} details`}
+                  onClick={(e) => e.stopPropagation()}
+                  onKeyDown={(event) => {
+                    if (event.key === "Escape") {
+                      setDetail(null);
+                      return;
+                    }
+                    if (event.key !== "Tab") return;
+                    // Trap focus inside the dialog while it is open.
+                    const focusables =
+                      dialogRef.current?.querySelectorAll<HTMLElement>(
+                        "button, a[href]",
+                      ) ?? [];
+                    if (focusables.length === 0) return;
+                    const first = focusables[0];
+                    const last = focusables[focusables.length - 1];
+                    if (event.shiftKey && document.activeElement === first) {
+                      event.preventDefault();
+                      last.focus();
+                    } else if (
+                      !event.shiftKey &&
+                      document.activeElement === last
+                    ) {
+                      event.preventDefault();
+                      first.focus();
+                    }
+                  }}
+                  className="max-w-md"
+                >
                   <SkillEvidence skill={skill} announce />
                   <button
+                    ref={closeRef}
                     type="button"
                     onClick={() => setDetail(null)}
-                    onKeyDown={(event) => {
-                      if (event.key === "Escape") setDetail(null);
-                    }}
                     className="mt-3 min-h-[44px] rounded-full border border-beige/20 px-4 py-2 text-sm text-beige/85 transition-colors duration-200 hover:bg-beige/10"
                   >
                     Close

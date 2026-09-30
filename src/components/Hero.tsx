@@ -66,7 +66,7 @@ const Hero = () => {
         </p>
 
         {/* Proof Micro-Card: PointCraft & Merchants Metric */}
-        <div className="flex items-center gap-3 rounded-2xl  bg-bgGreen/50 p-3.5 sm:p-4 backdrop-blur-3xl shadow shadow-black/40">
+        <div className="flex items-center gap-3 rounded-2xl  bg-bgGreen/50 p-3.5 sm:p-4 backdrop-blur-3xl">
           <span className="relative flex h-2.5 w-2.5 shrink-0">
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-mainGreen opacity-75" />
             <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-mainGreen" />
