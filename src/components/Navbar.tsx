@@ -1,6 +1,9 @@
 "use client";
 
+import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 import { cn } from "@/lib/utils";
+import type { Variants } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
@@ -19,6 +22,7 @@ const Navbar = () => {
   const [activeSection, setActiveSection] = useState("me");
   const menuToggleRef = useRef<HTMLButtonElement>(null);
   const menuPanelRef = useRef<HTMLDivElement>(null);
+  const prefersReducedMotion = usePrefersReducedMotion();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -76,9 +80,71 @@ const Navbar = () => {
       }
     };
 
+    const handlePointerDown = (event: MouseEvent | TouchEvent) => {
+      const target = event.target as Node | null;
+      if (!target) return;
+      if (
+        menuPanelRef.current &&
+        !menuPanelRef.current.contains(target) &&
+        menuToggleRef.current &&
+        !menuToggleRef.current.contains(target)
+      ) {
+        setIsOpen(false);
+      }
+    };
+
     document.addEventListener("keydown", handleKeyDown);
-    return () => document.removeEventListener("keydown", handleKeyDown);
+    document.addEventListener("mousedown", handlePointerDown);
+    document.addEventListener("touchstart", handlePointerDown);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      document.removeEventListener("mousedown", handlePointerDown);
+      document.removeEventListener("touchstart", handlePointerDown);
+    };
   }, [isOpen]);
+
+  const menuVariants: Variants = {
+    closed: {
+      opacity: 0,
+      y: prefersReducedMotion ? 0 : -20,
+      scale: prefersReducedMotion ? 1 : 0.96,
+      transition: {
+        duration: 0.2,
+        ease: [0.4, 0, 1, 1],
+      },
+    },
+    open: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: {
+        type: "spring",
+        damping: 24,
+        stiffness: 280,
+        mass: 0.8,
+        staggerChildren: prefersReducedMotion ? 0 : 0.04,
+        delayChildren: 0.03,
+      },
+    },
+  };
+
+  const itemVariants: Variants = {
+    closed: {
+      opacity: 0,
+      y: prefersReducedMotion ? 0 : -8,
+      transition: {
+        duration: 0.15,
+      },
+    },
+    open: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.22,
+        ease: [0.16, 1, 0.3, 1],
+      },
+    },
+  };
 
   return (
     <header className="sticky top-4 sm:top-5 z-50 w-full px-4 sm:px-6 pointer-events-none">
@@ -132,69 +198,125 @@ const Navbar = () => {
           onClick={() => setIsOpen(!isOpen)}
           aria-label={isOpen ? "Close menu" : "Open menu"}
           aria-expanded={isOpen}
-          className="relative z-50 flex h-10 w-10 items-center justify-center rounded-full  bg-beige/5 text-mainGreen transition-all hover:bg-beige/10 hover:text-beige active:scale-95 md:hidden"
+          className="relative z-50 flex h-10 w-10 items-center justify-center rounded-full bg-beige/5 text-mainGreen transition-all hover:bg-beige/10 hover:text-beige active:scale-95 md:hidden"
         >
-          {isOpen ? (
-            <FiX className="h-5 w-5" aria-hidden="true" />
-          ) : (
-            <FiMenu className="h-5 w-5" aria-hidden="true" />
-          )}
+          <AnimatePresence mode="wait" initial={false}>
+            {isOpen ? (
+              <motion.span
+                key="close"
+                initial={
+                  prefersReducedMotion
+                    ? { opacity: 0 }
+                    : { opacity: 0, rotate: -90, scale: 0.8 }
+                }
+                animate={
+                  prefersReducedMotion
+                    ? { opacity: 1 }
+                    : { opacity: 1, rotate: 0, scale: 1 }
+                }
+                exit={
+                  prefersReducedMotion
+                    ? { opacity: 0 }
+                    : { opacity: 0, rotate: 90, scale: 0.8 }
+                }
+                transition={{ duration: 0.15 }}
+                className="flex items-center justify-center"
+              >
+                <FiX className="h-5 w-5" aria-hidden="true" />
+              </motion.span>
+            ) : (
+              <motion.span
+                key="menu"
+                initial={
+                  prefersReducedMotion
+                    ? { opacity: 0 }
+                    : { opacity: 0, rotate: 90, scale: 0.8 }
+                }
+                animate={
+                  prefersReducedMotion
+                    ? { opacity: 1 }
+                    : { opacity: 1, rotate: 0, scale: 1 }
+                }
+                exit={
+                  prefersReducedMotion
+                    ? { opacity: 0 }
+                    : { opacity: 0, rotate: -90, scale: 0.8 }
+                }
+                transition={{ duration: 0.15 }}
+                className="flex items-center justify-center"
+              >
+                <FiMenu className="h-5 w-5" aria-hidden="true" />
+              </motion.span>
+            )}
+          </AnimatePresence>
         </button>
       </nav>
 
       {/* Modern Mobile Glass Dropdown Menu */}
-      {isOpen && (
-        <div
-          ref={menuPanelRef}
-          className="pointer-events-auto absolute left-4 right-4 top-full mt-2 mx-auto max-w-4xl rounded-3xl bg-bgGreen/70 p-4 shadow-sm shadow-black/40 backdrop-blur-3xl md:hidden transition-all duration-200"
-        >
-          <ul className="flex flex-col gap-1.5">
-            {NAV_SECTIONS.map(({ label, id }) => {
-              const isActive = activeSection === id;
-              return (
-                <li key={id}>
-                  <Link
-                    href={`#${id}`}
-                    onClick={() => {
-                      setActiveSection(id);
-                      setIsOpen(false);
-                    }}
-                    className={cn(
-                      "flex items-center justify-between rounded-2xl px-4 py-3 text-base transition-all duration-200",
-                      isActive
-                        ? "bg-mainGreen/20 text-mainGreen font-semibold border border-mainGreen/30"
-                        : "text-beige hover:bg-beige/5 hover:text-mainGreen",
-                    )}
-                  >
-                    <span>{label}</span>
-                    {isActive && (
-                      <span
-                        className="h-2 w-2 rounded-full bg-mainGreen"
-                        aria-hidden="true"
-                      />
-                    )}
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            key="mobile-nav-panel"
+            ref={menuPanelRef}
+            initial="closed"
+            animate="open"
+            exit="closed"
+            variants={menuVariants}
+            style={{ transformOrigin: "top center" }}
+            className="pointer-events-auto absolute left-4 right-4 top-full mt-2 mx-auto max-w-4xl overflow-hidden rounded-3xl border border-beige/15 bg-bgGreen/80 p-4 shadow-2xl shadow-black/50 backdrop-blur-3xl md:hidden"
+          >
+            <motion.ul className="flex flex-col gap-1.5">
+              {NAV_SECTIONS.map(({ label, id }) => {
+                const isActive = activeSection === id;
+                return (
+                  <motion.li key={id} variants={itemVariants}>
+                    <Link
+                      href={`#${id}`}
+                      onClick={() => {
+                        setActiveSection(id);
+                        setIsOpen(false);
+                      }}
+                      className={cn(
+                        "flex items-center justify-between rounded-2xl px-4 py-3 text-base transition-all duration-200",
+                        isActive
+                          ? "bg-mainGreen/20 text-mainGreen font-semibold border border-mainGreen/30"
+                          : "text-beige hover:bg-beige/5 hover:text-mainGreen",
+                      )}
+                    >
+                      <span>{label}</span>
+                      {isActive && (
+                        <span
+                          className="h-2 w-2 rounded-full bg-mainGreen"
+                          aria-hidden="true"
+                        />
+                      )}
+                    </Link>
+                  </motion.li>
+                );
+              })}
+            </motion.ul>
 
-          {/* Quick Actions in Mobile Drawer */}
-          <div className="mt-3 flex flex-col gap-2 border-t border-beige/10 pt-3">
-            <a
-              href="/files/ahmad_elshowair_resume.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={() => setIsOpen(false)}
-              className="flex items-center justify-center gap-2 rounded-xl bg-mainGreen py-2.5 text-sm font-semibold text-bgGreen transition-all hover:brightness-95 active:scale-95"
+            {/* Quick Actions in Mobile Drawer */}
+            <motion.div
+              variants={itemVariants}
+              className="mt-3 flex flex-col gap-2 border-t border-beige/10 pt-3"
             >
-              Download Resume (PDF)
-            </a>
-          </div>
-        </div>
-      )}
+              <a
+                href="/files/ahmad_elshowair_resume.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setIsOpen(false)}
+                className="flex items-center justify-center gap-2 rounded-xl bg-mainGreen py-2.5 text-sm font-semibold text-bgGreen transition-all hover:brightness-95 active:scale-95"
+              >
+                Download Resume (PDF)
+              </a>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </header>
   );
 };
 
 export default Navbar;
+
