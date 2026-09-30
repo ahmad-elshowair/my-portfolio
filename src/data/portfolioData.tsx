@@ -319,7 +319,7 @@ export const SKILL_PROJECTS: Record<
 };
 
 export const skills: SkillItem[] = [
-  // Front-End (13)
+  // Front-End
   {
     id: "javascript",
     name: "JavaScript (ES6+)",
@@ -356,12 +356,22 @@ export const skills: SkillItem[] = [
     projects: ["clearcargo", "kun-min-aldhaakirin"],
   },
   {
-    id: "html-css",
-    name: "HTML5/CSS3",
+    id: "html5",
+    name: "HTML5",
     icon: SiHtml5,
     category: "frontend",
-    context: "Semantic HTML5 and CSS3 markup under every interface.",
-    projects: [],
+    context:
+      "Semantic HTML5 markup and accessibility foundations under every interface.",
+    projects: ["post-it"],
+  },
+  {
+    id: "css3",
+    name: "CSS3",
+    icon: SiCss3,
+    category: "frontend",
+    context:
+      "Modern CSS3 styling, responsive layouts, and visual design systems.",
+    projects: ["post-it"],
   },
   {
     id: "tailwind",
@@ -391,14 +401,16 @@ export const skills: SkillItem[] = [
   {
     id: "responsive-ui",
     name: "Responsive UI",
+    icon: "streamline-ultimate:responsive-design-bold",
     category: "frontend",
     context:
-      "Accessible, theme-consistent UI across mobile and desktop viewports (PointCraft).",
+      "Accessible, theme-consistent UI across mobile and desktop viewports.",
     projects: ["pointcraft", "clearcargo", "kun-min-aldhaakirin"],
   },
   {
     id: "cross-browser",
     name: "Cross-Browser & Accessible UI",
+    icon: "tabler:browser-check",
     category: "frontend",
     context:
       "Cross-browser rendering with accessible, keyboard-operable markup.",
@@ -407,14 +419,16 @@ export const skills: SkillItem[] = [
   {
     id: "pwa",
     name: "Progressive Web Apps (PWA)",
+    icon: "simple-icons:pwa",
     category: "frontend",
     context:
-      "Installable, offline-capable PWA with service-worker caching and dynamic themes (Kun Min Aldhaakirin).",
+      "Installable, offline-capable PWA with service-worker caching and dynamic themes.",
     projects: ["kun-min-aldhaakirin"],
   },
   {
     id: "api-integration",
     name: "API Integration",
+    icon: "tabler:webhook",
     category: "frontend",
     context: "Front-end consumption of RESTful APIs.",
     projects: [],
@@ -422,13 +436,14 @@ export const skills: SkillItem[] = [
   {
     id: "fe-architecture",
     name: "Front-end architecture",
+    icon: "carbon:layers",
     category: "frontend",
     context:
       "Structured reactive state and component composition for production apps.",
     projects: ["pointcraft", "clearcargo", "post-it", "kun-min-aldhaakirin"],
   },
 
-  // Back-End (11)
+  // Back-End
   {
     id: "nodejs",
     name: "Node.js",
@@ -448,6 +463,7 @@ export const skills: SkillItem[] = [
   {
     id: "rest-apis",
     name: "RESTful APIs",
+    icon: "tabler:api",
     category: "backend",
     context: "RESTful API design and consumption.",
     projects: ["pointcraft"],
@@ -490,6 +506,7 @@ export const skills: SkillItem[] = [
   {
     id: "jwt-rbac",
     name: "JWT & RBAC authentication",
+    icon: "lucide:shield-check",
     category: "backend",
     context: "Dual-token JWT authentication with role-based access control.",
     projects: ["clearcargo", "post-it"],
@@ -497,6 +514,7 @@ export const skills: SkillItem[] = [
   {
     id: "acid-transactions",
     name: "Raw SQL ACID transactions",
+    icon: "gravity-ui:abbr-sql",
     category: "backend",
     context: "Raw SQL ACID transactions for production-grade data integrity.",
     projects: ["post-it"],
@@ -521,30 +539,40 @@ export const skills: SkillItem[] = [
   // Tools & Practices (9)
   {
     id: "git",
-    name: "Git/GitHub",
+    name: "Git",
     icon: SiGit,
     category: "tools",
-    context: "Branch-based collaboration across every production codebase.",
+    context: "Git for version control.",
+    projects: ["pointcraft", "clearcargo", "post-it", "kun-min-aldhaakirin"],
+  },
+  {
+    id: "github",
+    name: "GitHub",
+    icon: "akar-icons:github-fill",
+    category: "tools",
+    context: "GitHub for version control and collaboration.",
     projects: ["pointcraft", "clearcargo", "post-it", "kun-min-aldhaakirin"],
   },
   {
     id: "agile-remote",
     name: "Agile remote collaboration",
+    icon: "lucide:users",
     category: "tools",
     context: "Async collaboration with international teams.",
     projects: ["pointcraft", "clearcargo"],
   },
   {
     id: "zustand",
-    name: "State management (Zustand)",
+    name: "S.M. (Zustand)",
+    icon: "devicon-plain:zustand",
     category: "tools",
-    context:
-      "State management for dynamic feeds and threaded comments in Post-It.",
+    context: "Global state management for applications.",
     projects: ["post-it", "pointcraft", "kun-min-aldhaakirin"],
   },
   {
     id: "realtime-dashboards",
     name: "Real-time dashboards",
+    icon: "lucide:activity",
     category: "tools",
     context: "Real-time shipment tracking in ClearCarGO.",
     projects: ["clearcargo", "pointcraft"],
@@ -552,6 +580,7 @@ export const skills: SkillItem[] = [
   {
     id: "bilingual-ui",
     name: "Bilingual UI development",
+    icon: "lucide:languages",
     category: "tools",
     context: "English/Arabic interfaces in the Kun Min Aldhaakirin PWA.",
     projects: ["kun-min-aldhaakirin"],
@@ -559,13 +588,14 @@ export const skills: SkillItem[] = [
   {
     id: "performance-optimization",
     name: "Performance optimization",
+    icon: "lucide:gauge",
     category: "tools",
     context: "Hot-path performance work on production APIs.",
     projects: ["clearcargo", "post-it", "pointcraft", "kun-min-aldhaakirin"],
   },
   {
     id: "vercel",
-    name: "Vercel deployment",
+    name: "Vercel",
     icon: SiVercel,
     category: "tools",
     context: "Deployment pipeline for production apps (Kun Min Aldhaakirin).",
@@ -574,6 +604,7 @@ export const skills: SkillItem[] = [
   {
     id: "ai-assisted",
     name: "AI-assisted development",
+    icon: "lucide:sparkles",
     category: "tools",
     context: "AI-augmented engineering workflow.",
     projects: ["pointcraft", "clearcargo", "kun-min-aldhaakirin", "post-it"],
@@ -591,6 +622,7 @@ export const skills: SkillItem[] = [
   {
     id: "arabic",
     name: "Arabic (native)",
+    icon: "iconoir:ar-tag",
     category: "languages",
     context: "Arabic — native.",
     projects: [],
@@ -598,6 +630,7 @@ export const skills: SkillItem[] = [
   {
     id: "english",
     name: "English (fluent)",
+    icon: "icon-park-solid:english",
     category: "languages",
     context: "English — fluent.",
     projects: [],

@@ -36,7 +36,7 @@ export interface SkillItem {
   /** Stable slug used as key and selection id. */
   id: string;
   name: string;
-  icon?: IconType;
+  icon?: IconType | string;
   category: SkillCategoryId;
   context: string;
   projects: SkillProjectId[];

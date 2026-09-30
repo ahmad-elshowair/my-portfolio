@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 const TIERS = [
   {
     label: "Client & Presentation",
-    ids: ["nextjs", "react", "typescript", "javascript", "html-css", "tailwind", "mui", "responsive-ui", "cross-browser", "pwa", "api-integration", "fe-architecture"],
+    ids: ["nextjs", "react", "typescript", "javascript", "html5", "css3", "tailwind", "mui", "responsive-ui", "cross-browser", "pwa", "api-integration", "fe-architecture"],
   },
   {
     label: "Application, Auth & Payments",
