@@ -152,7 +152,7 @@ export const skills: SkillItem[] = [
     icon: "tabler:webhook",
     category: "frontend",
     context: "Front-end consumption of RESTful APIs.",
-    projects: [],
+    projects: ["clearcargo", "kun-min-aldhaakirin", "pointcraft", "post-it"],
   },
   {
     id: "fe-architecture",
@@ -187,7 +187,7 @@ export const skills: SkillItem[] = [
     icon: "tabler:api",
     category: "backend",
     context: "RESTful API design and consumption.",
-    projects: ["pointcraft"],
+    projects: ["post-it"],
   },
   {
     id: "postgresql",
