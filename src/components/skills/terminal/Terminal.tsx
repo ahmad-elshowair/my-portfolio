@@ -603,7 +603,7 @@ export default function Concept012() {
             key={category}
             className="rounded-2xl border border-beige/15 bg-mainGreen/10 p-4 backdrop-blur-md"
           >
-            <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-beige/60">
+            <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-beige/80">
               {SKILL_CATEGORIES[category]}
             </h3>
             <div className="flex flex-wrap gap-2">
@@ -646,7 +646,6 @@ export default function Concept012() {
             <button
               type="button"
               onClick={copyLatestJson}
-              aria-label="Copy the latest inspection JSON"
               className="ml-auto min-h-[44px] rounded-md border border-beige/20 bg-beige/5 px-3 font-mono text-xs text-beige/80 transition-colors duration-200 hover:bg-beige/10"
             >
               {copyState === "copied" ? "copied ✓" : "Copy JSON"}
