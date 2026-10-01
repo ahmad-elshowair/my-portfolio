@@ -24,7 +24,7 @@ export function MobileNavToggle({
       onClick={onToggle}
       aria-label={isOpen ? "Close menu" : "Open menu"}
       aria-expanded={isOpen}
-      className="relative z-50 flex h-10 w-10 items-center justify-center rounded-full bg-beige/5 text-mainGreen transition-all hover:bg-beige/10 hover:text-beige active:scale-95 md:hidden"
+      className="relative z-50 flex h-11 w-11 items-center justify-center rounded-full bg-beige/5 text-mainGreen transition-all hover:bg-beige/10 hover:text-beige active:scale-95 md:hidden"
     >
       <AnimatePresence mode="wait" initial={false}>
         {isOpen ? (

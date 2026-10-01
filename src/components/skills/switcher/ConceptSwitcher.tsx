@@ -98,7 +98,7 @@ export function ConceptSwitcher({
               aria-expanded={false}
               aria-haspopup="dialog"
               aria-label={`Skills concept switcher. Currently showing ${activeDescriptor?.label}. Click to expand options`}
-              className="group flex h-9 items-center gap-2.5 rounded-full border border-beige/25 bg-[#202724]/90 pl-3.5 pr-1 py-1 text-sm shadow-md backdrop-blur-md transition-all duration-200 hover:border-mainGreen/60 hover:bg-[#2c3531] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-mainGreen cursor-pointer"
+              className="group flex h-11 items-center gap-2.5 rounded-full border border-beige/25 bg-[#202724]/90 pl-3.5 pr-1 py-1 text-sm shadow-md backdrop-blur-md transition-all duration-200 hover:border-mainGreen/60 hover:bg-[#2c3531] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-mainGreen cursor-pointer"
             >
               <span className="font-inika font-bold tracking-wide text-beige group-hover:text-mainGreen transition-colors text-xs sm:text-sm whitespace-nowrap">
                 {activeDescriptor?.label}
@@ -139,7 +139,7 @@ export function ConceptSwitcher({
           aria-haspopup="dialog"
           aria-label={`Skills concept switcher. Currently showing ${activeDescriptor?.label}. Tap to ${isOpen ? "close" : "open"}`}
           className={cn(
-            "group flex h-9 items-center gap-2.5 rounded-full border border-beige/25 bg-[#202724]/90 pl-3.5 pr-1 py-1 text-sm shadow-md backdrop-blur-md transition-all duration-200 hover:border-mainGreen/60 hover:bg-[#2c3531] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-mainGreen cursor-pointer",
+            "group flex h-11 items-center gap-2.5 rounded-full border border-beige/25 bg-[#202724]/90 pl-3.5 pr-1 py-1 text-sm shadow-md backdrop-blur-md transition-all duration-200 hover:border-mainGreen/60 hover:bg-[#2c3531] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-mainGreen cursor-pointer",
             isOpen && "border-mainGreen/70 bg-[#2c3531]",
           )}
         >
