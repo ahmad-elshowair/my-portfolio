@@ -47,7 +47,7 @@ export function ConceptSwitcher({
   useEffect(() => {
     if (!isOpen) return;
 
-    function handleClickOutside(event: MouseEvent) {
+    function handleClickOutside(event: MouseEvent | TouchEvent) {
       if (
         containerRef.current &&
         !containerRef.current.contains(event.target as Node)
@@ -63,9 +63,11 @@ export function ConceptSwitcher({
     }
 
     document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("touchstart", handleClickOutside);
     window.addEventListener("keydown", handleKeyDown);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("touchstart", handleClickOutside);
       window.removeEventListener("keydown", handleKeyDown);
     };
   }, [isOpen]);
@@ -80,14 +82,6 @@ export function ConceptSwitcher({
       ref={containerRef}
       className={cn("relative inline-flex items-center", className)}
     >
-      {/* Mobile Backdrop */}
-      {isOpen && (
-        <div
-          onClick={() => setIsOpen(false)}
-          aria-hidden="true"
-          className="fixed inset-0 z-30 sm:hidden bg-black/40 backdrop-blur-[2px]"
-        />
-      )}
 
       {/* ========================================================= */}
       {/* DESKTOP VIEW (sm: and up)                                 */}
