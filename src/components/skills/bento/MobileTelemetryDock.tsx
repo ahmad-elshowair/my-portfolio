@@ -218,7 +218,7 @@ export function MobileTelemetryDock({ skill }: MobileTelemetryDockProps) {
                     type="button"
                     onClick={() => setIsExpanded(false)}
                     aria-label="Close telemetry proof"
-                    className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-beige/15 bg-beige/5 text-beige/80 hover:text-beige hover:bg-beige/10 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-mainGreen"
+                    className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-beige/15 bg-beige/5 text-beige/80 hover:text-beige hover:bg-beige/10 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-mainGreen"
                   >
                     ✕
                   </button>
