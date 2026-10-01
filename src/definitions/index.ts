@@ -95,3 +95,5 @@ export interface ProjectCardProps {
   statusNote?: string;
   images: ProjectImage[];
 }
+
+export * from "./terminal";

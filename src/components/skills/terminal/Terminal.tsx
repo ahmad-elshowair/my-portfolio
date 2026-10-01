@@ -3,67 +3,444 @@
 import { SkillGlyph } from "@/components/skills/shared";
 import { SKILL_CATEGORIES, SKILL_PROJECTS, skills } from "@/data";
 import { useSelectSkill, useSelectedSkillId } from "@/stores/skillsLabStore";
-import type { SkillCategoryId, SkillItem } from "@/definitions";
-import { useState } from "react";
+import type {
+  Command,
+  CommandGroup,
+  EntryDraft,
+  HistoryEntry,
+  SkillCategoryId,
+  SkillItem,
+  TelemetryPayload,
+} from "@/definitions";
+import { HISTORY_LIMIT } from "@/definitions";
+import { AUTHOR, SITE_DESCRIPTION, SOCIAL_LINKS } from "@/lib/site";
+import { useEffect, useRef, useState, type MouseEvent } from "react";
 import { cn } from "@/lib/utils";
 
 const GROUPS: SkillCategoryId[] = ["frontend", "backend", "tools", "languages"];
-const MAX_ENTRIES = 6;
 
-interface Entry {
-  cmd: string;
-  skill?: SkillItem;
-  batch?: string[];
-  /** Guidance line rendered without a prompt echo — teaching, not output. */
-  hint?: string;
-}
+const CATEGORY_ALIASES: Record<string, SkillCategoryId> = {
+  "--frontend": "frontend",
+  "--backend": "backend",
+  "--tools": "tools",
+};
 
-function inspectEntry(skill: SkillItem): Entry {
-  return { cmd: `ahmad-cli inspect --skill="${skill.name}"`, skill };
-}
+type FlagCategory = Exclude<SkillCategoryId, "languages">;
+
+const FLAG_CATEGORY: Record<string, FlagCategory> = {
+  "--fe": "frontend",
+  "--be": "backend",
+  "--tools": "tools",
+};
+
+const FLAG_NAME: Record<FlagCategory, "fe" | "be" | "tools"> = {
+  frontend: "fe",
+  backend: "be",
+  tools: "tools",
+};
+
+const HELP_LINES = [
+  "available commands:",
+  "  inspect <skill>                       telemetry for a skill (fuzzy match)",
+  "  inspect --frontend | --backend | --tools",
+  "                                        list one category",
+  "  skills [--fe | --be | --tools]        list skills by category",
+  "  cat resume                            whoami payload",
+  "  clear                                 flush the stream",
+  "  Tab                                   complete skill names",
+];
+
+const normalize = (value: string) => value.toLowerCase();
 
 const byId = new Map(skills.map((s) => [s.id, s]));
 
-/** Developer terminal — dual pane with instant CLI-style inspection. */
+function isSubsequence(needle: string, haystack: string): boolean {
+  if (!needle) return false;
+  let matched = 0;
+  for (const char of haystack) {
+    if (matched < needle.length && char === needle[matched]) matched += 1;
+  }
+  return matched === needle.length;
+}
+
+/**
+ * Relevance score for a fuzzy query; 0 means no match. Exact id/name wins,
+ * then prefix, then subsequence — tighter (shorter) candidates rank higher
+ * within each tier so a single best suggestion is always derivable.
+ */
+function skillScore(skill: SkillItem, query: string): number {
+  const q = normalize(query);
+  const id = normalize(skill.id);
+  const name = normalize(skill.name);
+  if (id === q || name === q) return Number.MAX_SAFE_INTEGER;
+  if (id.startsWith(q) || name.startsWith(q)) {
+    return 1_000 - Math.min(id.length, name.length);
+  }
+  const tightest = [id, name]
+    .filter((candidate) => isSubsequence(q, candidate))
+    .sort((a, b) => a.length - b.length)[0];
+  return tightest ? 500 - tightest.length : 0;
+}
+
+function parseCommand(raw: string): Command {
+  const tokens = raw.trim().split(/\s+/);
+  const [head = "", ...rest] = tokens;
+  const arg = rest.join(" ").trim();
+  switch (normalize(head)) {
+    case "inspect": {
+      const alias = CATEGORY_ALIASES[arg];
+      if (alias) return { kind: "inspect-category", category: alias };
+      return { kind: "inspect", query: arg };
+    }
+    case "skills": {
+      if (!rest.length) return { kind: "skills" };
+      const category = FLAG_CATEGORY[normalize(rest[0])];
+      return category
+        ? { kind: "skills", flag: FLAG_NAME[category] }
+        : { kind: "unknown", name: `${head} ${rest[0]}` };
+    }
+    case "help":
+      return { kind: "help" };
+    case "clear":
+      return { kind: "clear" };
+    case "cat":
+      return arg === "resume"
+        ? { kind: "cat", target: "resume" }
+        : { kind: "unknown", name: arg ? `cat ${arg}` : "cat" };
+    default:
+      return { kind: "unknown", name: head };
+  }
+}
+
+interface ExecutionResult {
+  drafts: EntryDraft[];
+  /** The skill a successful inspect should select (drives the cross-glow). */
+  selectedSkillId: string | null;
+}
+
+function skillTelemetry(skill: SkillItem): TelemetryPayload {
+  return {
+    skill: {
+      name: skill.name,
+      category: SKILL_CATEGORIES[skill.category],
+      context: skill.context,
+      projects: skill.projects.map((p) => ({
+        name: SKILL_PROJECTS[p].name,
+        anchorId: p,
+      })),
+    },
+  };
+}
+
+function resumeTelemetry(): TelemetryPayload {
+  return {
+    resume: {
+      name: AUTHOR.name,
+      role: AUTHOR.role,
+      summary: SITE_DESCRIPTION,
+      location: `${AUTHOR.location.city}, ${AUTHOR.location.country}`,
+      links: [
+        { label: "github", href: SOCIAL_LINKS.github },
+        { label: "linkedin", href: SOCIAL_LINKS.linkedin },
+      ],
+    },
+  };
+}
+
+function categoryListing(category: SkillCategoryId): EntryDraft[] {
+  const names = skills
+    .filter((s) => s.category === category)
+    .map((s) => s.name);
+  return [{ kind: "listing", category, names }];
+}
+
+function executeCommand(command: Command): ExecutionResult {
+  switch (command.kind) {
+    case "help":
+      return { drafts: [{ kind: "info", lines: HELP_LINES }], selectedSkillId: null };
+    case "inspect-category":
+      return { drafts: categoryListing(command.category), selectedSkillId: null };
+    case "skills":
+      if (command.flag) {
+        const category = FLAG_CATEGORY[`--${command.flag}`];
+        return { drafts: categoryListing(category), selectedSkillId: null };
+      }
+      return { drafts: GROUPS.flatMap(categoryListing), selectedSkillId: null };
+    case "inspect": {
+      if (!command.query) {
+        return {
+          drafts: [
+            {
+              kind: "error",
+              message: "usage: inspect <skill>",
+              hint: "run 'skills' to list all",
+            },
+          ],
+          selectedSkillId: null,
+        };
+      }
+      const exact = byId.get(command.query) ?? skills.find(
+        (s) => normalize(s.name) === normalize(command.query),
+      );
+      if (exact) {
+        return {
+          drafts: [{ kind: "telemetry", payload: skillTelemetry(exact) }],
+          selectedSkillId: exact.id,
+        };
+      }
+      const nearest = skills
+        .map((s) => ({ skill: s, score: skillScore(s, command.query) }))
+        .sort((a, b) => b.score - a.score)[0];
+      if (nearest && nearest.score > 0) {
+        return {
+          drafts: [
+            { kind: "hint", message: `did you mean '${nearest.skill.name}'?` },
+          ],
+          selectedSkillId: null,
+        };
+      }
+      return {
+        drafts: [
+          {
+            kind: "error",
+            message: `no skill matches '${command.query}'`,
+            hint: "try 'skills'",
+          },
+        ],
+        selectedSkillId: null,
+      };
+    }
+    case "cat":
+      return {
+        drafts: [{ kind: "telemetry", payload: resumeTelemetry() }],
+        selectedSkillId: null,
+      };
+    case "unknown":
+      return {
+        drafts: [
+          {
+            kind: "error",
+            message: `command not found: ${command.name}`,
+            hint: "type 'help'",
+          },
+        ],
+        selectedSkillId: null,
+      };
+    case "clear":
+      return { drafts: [], selectedSkillId: null };
+  }
+}
+
+function commonPrefix(values: string[]): string {
+  let prefix = values[0] ?? "";
+  for (const value of values) {
+    while (prefix && !value.startsWith(prefix)) prefix = prefix.slice(0, -1);
+  }
+  return prefix;
+}
+
+/**
+ * Tab completion for an `inspect <query>` line: one candidate completes the
+ * token; several fill the longest common prefix and report the candidate set
+ * so a repeated Tab can list them in-stream.
+ */
+function completeInspectToken(
+  input: string,
+): { next: string; candidates: string[] } {
+  const parts = input.split(/\s+/);
+  const head = parts[0] ?? "";
+  if (normalize(head) !== "inspect" || parts.length < 2) {
+    return { next: input, candidates: [] };
+  }
+  const query = normalize(parts[parts.length - 1] ?? "");
+  const candidates = skills
+    .filter(
+      (s) =>
+        normalize(s.name).startsWith(query) ||
+        normalize(s.id).startsWith(query),
+    )
+    .map((s) => s.name);
+  if (candidates.length === 0) return { next: input, candidates: [] };
+  if (candidates.length === 1) {
+    return { next: [...parts.slice(0, -1), candidates[0]].join(" "), candidates: [] };
+  }
+  const prefix = commonPrefix(candidates);
+  return { next: [...parts.slice(0, -1), prefix].join(" "), candidates };
+}
+
+function EntryView({ entry }: { entry: HistoryEntry }) {
+  switch (entry.kind) {
+    case "echo":
+      return (
+        <p>
+          <span className="text-mainGreen">$</span> {entry.text}
+        </p>
+      );
+    case "hint":
+      return <p className="pl-2 text-beige/60">{entry.message}</p>;
+    case "error":
+      return (
+        <p className="pl-2 text-beige/70">
+          ✗ {entry.message}
+          {entry.hint ? (
+            <span className="text-beige/50"> — {entry.hint}</span>
+          ) : null}
+        </p>
+      );
+    case "info":
+      return (
+        <pre className="pl-2 whitespace-pre-wrap text-beige/70">
+          {entry.lines.join("\n")}
+        </pre>
+      );
+    case "listing":
+      return (
+        <p className="pl-2 text-beige/85">
+          {SKILL_CATEGORIES[entry.category]} ({entry.names.length}):{" "}
+          {entry.names.join(", ")}
+        </p>
+      );
+    case "telemetry":
+      return <TelemetryPre payload={entry.payload} />;
+  }
+}
+
+function TelemetryPre({ payload }: { payload: TelemetryPayload }) {
+  const skill = payload.skill;
+  const resume = payload.resume;
+  if (skill) {
+    return (
+      <pre className="pl-2 whitespace-pre-wrap text-beige/85">{`{
+  "technology": "${skill.name}",
+  "category": "${skill.category}",
+  "capabilities": "${skill.context}",
+  "production_evidence": [${skill.projects
+    .map((p) => `"${p.name}"`)
+    .join(", ")}],
+  "status": "Verified in Resume"
+}`}</pre>
+    );
+  }
+  if (resume) {
+    return (
+      <pre className="pl-2 whitespace-pre-wrap text-beige/85">{`{
+  "name": "${resume.name}",
+  "role": "${resume.role}",
+  "summary": "${resume.summary}",
+  "location": "${resume.location}",
+  "links": [${resume.links.map((l) => `"${l.label}"`).join(", ")}]
+}`}</pre>
+    );
+  }
+  return null;
+}
+
+/** Developer terminal — dual pane with a live in-memory CLI. */
 export default function Concept012() {
   const selectedSkillId = useSelectedSkillId();
   const selectSkill = useSelectSkill();
   // A carried-over selection is inspected once, at first render.
-  const [entries, setEntries] = useState<Entry[]>(() => {
+  const [history, setHistory] = useState<CommandGroup[]>(() => {
     const skill = selectedSkillId ? byId.get(selectedSkillId) : undefined;
-    return skill ? [inspectEntry(skill)] : [];
+    if (!skill) return [];
+    const { drafts } = executeCommand({ kind: "inspect", query: skill.id });
+    return [
+      {
+        id: -1,
+        entries: [
+          { id: -1, kind: "echo", text: `inspect ${skill.id}` },
+          ...drafts.map((draft, index) => ({ ...draft, id: -2 - index })),
+        ],
+      },
+    ];
   });
+  const [input, setInput] = useState("");
+  const inputRef = useRef<HTMLInputElement>(null);
+  const streamRef = useRef<HTMLDivElement>(null);
+  const groupIdRef = useRef(0);
+  const entryIdRef = useRef(0);
+  const tabCandidatesRef = useRef<{ input: string; candidates: string[] } | null>(
+    null,
+  );
 
-  const pushEntry = (entry: Entry) =>
-    setEntries((prev) => [...prev, entry].slice(-MAX_ENTRIES));
+  useEffect(() => {
+    const stream = streamRef.current;
+    if (stream) stream.scrollTop = stream.scrollHeight;
+  }, [history]);
 
-  const inspect = (id: string) => {
-    selectSkill(id);
-    const skill = byId.get(id);
-    if (skill) pushEntry(inspectEntry(skill));
+  const appendGroups = (groups: { entries: EntryDraft[] }[]) => {
+    setHistory((prev) => {
+      const stamped: CommandGroup[] = groups.map((group) => ({
+        id: (groupIdRef.current += 1),
+        entries: group.entries.map((entry) => ({
+          ...entry,
+          id: (entryIdRef.current += 1),
+        })),
+      }));
+      return [...prev, ...stamped].slice(-HISTORY_LIMIT);
+    });
   };
 
-  const runPreset = (category: SkillCategoryId | "clear") => {
-    if (category === "clear") {
-      setEntries([]);
+  const runInput = (raw: string) => {
+    const text = raw.trim();
+    if (!text) return;
+    const command = parseCommand(text);
+    if (command.kind === "clear") {
+      setHistory([]);
       selectSkill(null);
+      setInput("");
       return;
     }
-    const names = skills
-      .filter((s) => s.category === category)
-      .map((s) => s.name);
-    pushEntry({ cmd: `ahmad-cli inspect --${category}`, batch: names });
+    const { drafts, selectedSkillId: inspected } = executeCommand(command);
+    if (inspected) selectSkill(inspected);
+    appendGroups([{ entries: [{ kind: "echo", text }, ...drafts] }]);
+    setInput("");
+  };
+
+  const handleTab = () => {
+    const { next, candidates } = completeInspectToken(input);
+    const repeated =
+      candidates.length > 1 &&
+      tabCandidatesRef.current?.input === input &&
+      tabCandidatesRef.current.candidates.length === candidates.length;
+    tabCandidatesRef.current =
+      candidates.length > 1 ? { input: next, candidates } : null;
+    setInput(next);
+    if (repeated) {
+      appendGroups([
+        {
+          entries: [
+            { kind: "hint", message: `candidates: ${candidates.join(", ")}` },
+          ],
+        },
+      ]);
+    }
+  };
+
+  /** Typing anywhere else in the chrome lands in the prompt, not on a stray node. */
+  const steerFocus = (event: MouseEvent<HTMLDivElement>) => {
+    if ((event.target as HTMLElement).closest("button, a, input")) return;
+    event.preventDefault();
+    inputRef.current?.focus();
+  };
+
+  const runPreset = (preset: SkillCategoryId | "clear") => {
+    runInput(preset === "clear" ? "clear" : `inspect --${preset}`);
   };
 
   /** Before any telemetry exists, the copy action teaches the command instead. */
   const copyLatestJson = () => {
-    setEntries((prev) => {
-      const hasTelemetry = prev.some((entry) => entry.skill !== undefined);
-      if (hasTelemetry) return prev;
-      return [...prev, { cmd: "", hint: "nothing to copy — run inspect <skill> first" }].slice(
-        -MAX_ENTRIES,
-      );
-    });
+    const hasTelemetry = history.some((group) =>
+      group.entries.some((entry) => entry.kind === "telemetry"),
+    );
+    if (hasTelemetry) return;
+    appendGroups([
+      {
+        entries: [
+          { kind: "hint", message: "nothing to copy — run inspect <skill> first" },
+        ],
+      },
+    ]);
   };
 
   return (
@@ -85,7 +462,7 @@ export default function Concept012() {
                     key={skill.id}
                     type="button"
                     aria-pressed={selectedSkillId === skill.id}
-                    onClick={() => inspect(skill.id)}
+                    onClick={() => runInput(`inspect ${skill.id}`)}
                     className={cn(
                       "flex min-h-[44px] items-center gap-1.5 rounded-lg border px-3 py-1 text-sm transition-colors duration-200 [&_svg]:text-lg",
                       selectedSkillId === skill.id
@@ -103,7 +480,10 @@ export default function Concept012() {
       </div>
 
       <div className="flex flex-col gap-3">
-        <div className="overflow-hidden rounded-xl border border-beige/20 bg-bgGreen/85 shadow-[0_8px_32px_rgba(22,26,25,0.5)] backdrop-blur-md">
+        <div
+          onMouseDown={steerFocus}
+          className="overflow-hidden rounded-xl border border-beige/20 bg-bgGreen/85 shadow-[0_8px_32px_rgba(22,26,25,0.5)] backdrop-blur-md"
+        >
           <div className="flex items-center gap-2 border-b border-beige/10 px-4 py-2.5">
             <span className="h-3 w-3 rounded-full bg-beige/30" aria-hidden="true" />
             <span className="h-3 w-3 rounded-full bg-beige/30" aria-hidden="true" />
@@ -121,6 +501,7 @@ export default function Concept012() {
             </button>
           </div>
           <div
+            ref={streamRef}
             aria-live="polite"
             className="flex max-h-96 min-h-[16rem] flex-col gap-3 overflow-y-auto p-4 font-mono text-xs leading-relaxed text-beige/90 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-beige/20"
           >
@@ -128,37 +509,46 @@ export default function Concept012() {
               <span className="text-mainGreen">$</span>{" "}
               ahmad.inspectStack() --role=&quot;Full-Stack Developer&quot;
             </p>
-            {entries.map((entry, index) => (
-              <div key={`${entry.cmd}-${index}`}>
-                {entry.cmd ? (
-                  <p>
-                    <span className="text-mainGreen">$</span> {entry.cmd}
-                  </p>
-                ) : null}
-                {entry.hint ? (
-                  <p className="pl-2 text-beige/60">{entry.hint}</p>
-                ) : null}
-                {entry.skill ? (
-                  <>
-                    <p className="pl-2 text-beige/60">
-                      &gt; Querying production registry…
-                    </p>
-                    <pre className="pl-2 whitespace-pre-wrap text-beige/85">{`{
-  "technology": "${entry.skill.name}",
-  "category": "${SKILL_CATEGORIES[entry.skill.category]}",
-  "capabilities": "${entry.skill.context}",
-  "production_evidence": [${entry.skill.projects
-    .map((p) => `"${SKILL_PROJECTS[p].name}"`)
-    .join(", ")}],
-  "status": "Verified in Resume"
-}`}</pre>
-                  </>
-                ) : entry.batch ? (
-                  <p className="pl-2 text-beige/85">{`> [${entry.batch.join(", ")}]`}</p>
-                ) : null}
+            {history.map((group) => (
+              <div key={group.id} className="flex flex-col gap-1">
+                {group.entries.map((entry) => (
+                  <EntryView key={entry.id} entry={entry} />
+                ))}
               </div>
             ))}
           </div>
+          <form
+            onSubmit={(event) => {
+              event.preventDefault();
+              runInput(input);
+            }}
+            className="flex items-center gap-2 border-t border-beige/10 px-4 py-3"
+          >
+            <label
+              htmlFor="terminal-command-input"
+              className="shrink-0 font-mono text-xs text-mainGreen"
+            >
+              ahmad@portfolio:~$
+            </label>
+            <input
+              id="terminal-command-input"
+              ref={inputRef}
+              value={input}
+              onChange={(event) => setInput(event.target.value)}
+              onKeyDown={(event) => {
+                if (event.key === "Tab") {
+                  event.preventDefault();
+                  handleTab();
+                }
+              }}
+              aria-label="Terminal command input"
+              autoComplete="off"
+              autoCapitalize="none"
+              spellCheck={false}
+              placeholder="type 'help' for commands"
+              className="w-full bg-transparent font-mono text-xs text-beige caret-beige outline-none placeholder:text-beige/40 selection:bg-mainGreen/30 selection:text-beige"
+            />
+          </form>
         </div>
 
         <div className="flex flex-wrap gap-2">
