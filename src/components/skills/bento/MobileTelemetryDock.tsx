@@ -196,7 +196,7 @@ export function MobileTelemetryDock({ skill }: MobileTelemetryDockProps) {
 
               {/* Header */}
               <div className="flex items-center justify-between border-b border-beige/10 pb-3">
-                <span className="text-[11px] font-mono uppercase tracking-widest text-mainGreen">
+                <span className="text-[11px] letter-spacing-0 font-mono uppercase tracking-widest text-mainGreen">
                   Telemetry HUD · Live Proof
                 </span>
                 <div className="flex items-center gap-2">
@@ -212,7 +212,9 @@ export function MobileTelemetryDock({ skill }: MobileTelemetryDockProps) {
                       )}
                       aria-hidden="true"
                     />
-                    <span>{status}</span>
+                    <span className="text-[.5rem] text-md-[11px]">
+                      {status}
+                    </span>
                   </span>
                   <button
                     type="button"
@@ -260,10 +262,7 @@ export function MobileTelemetryDock({ skill }: MobileTelemetryDockProps) {
                     </span>
                     <div className="flex flex-wrap gap-2">
                       {skill.projects.map((projId) => (
-                        <div
-                          key={projId}
-                          onClick={() => setIsExpanded(false)}
-                        >
+                        <div key={projId} onClick={() => setIsExpanded(false)}>
                           <ProjectJumpPill projectId={projId} />
                         </div>
                       ))}
