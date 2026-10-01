@@ -14,6 +14,8 @@ interface Entry {
   cmd: string;
   skill?: SkillItem;
   batch?: string[];
+  /** Guidance line rendered without a prompt echo — teaching, not output. */
+  hint?: string;
 }
 
 function inspectEntry(skill: SkillItem): Entry {
@@ -53,12 +55,26 @@ export default function Concept012() {
     pushEntry({ cmd: `ahmad-cli inspect --${category}`, batch: names });
   };
 
+  /** Before any telemetry exists, the copy action teaches the command instead. */
+  const copyLatestJson = () => {
+    setEntries((prev) => {
+      const hasTelemetry = prev.some((entry) => entry.skill !== undefined);
+      if (hasTelemetry) return prev;
+      return [...prev, { cmd: "", hint: "nothing to copy — run inspect <skill> first" }].slice(
+        -MAX_ENTRIES,
+      );
+    });
+  };
+
   return (
     <div className="grid gap-6 lg:grid-cols-[1fr_1.2fr]">
       <div className="flex flex-col gap-4">
         {GROUPS.map((category) => (
-          <div key={category}>
-            <h3 className="mb-2 text-sm font-semibold uppercase tracking-wide text-beige/60">
+          <section
+            key={category}
+            className="rounded-2xl border border-beige/15 bg-mainGreen/10 p-4 backdrop-blur-md"
+          >
+            <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-beige/60">
               {SKILL_CATEGORIES[category]}
             </h3>
             <div className="flex flex-wrap gap-2">
@@ -82,37 +98,64 @@ export default function Concept012() {
                   </button>
                 ))}
             </div>
-          </div>
+          </section>
         ))}
       </div>
 
       <div className="flex flex-col gap-3">
-        <div className="overflow-hidden rounded-xl border border-beige/20 bg-bgGreen/80 backdrop-blur-sm">
-          <div className="flex items-center gap-2 border-b border-beige/10 px-4 py-2">
-            <span className="h-3 w-3 rounded-full bg-beige/20" aria-hidden="true" />
-            <span className="h-3 w-3 rounded-full bg-beige/20" aria-hidden="true" />
-            <span className="h-3 w-3 rounded-full bg-mainGreen/60" aria-hidden="true" />
-            <span className="ml-2 font-mono text-xs text-beige/70">elshowair@stack:~$</span>
+        <div className="overflow-hidden rounded-xl border border-beige/20 bg-bgGreen/85 shadow-[0_8px_32px_rgba(22,26,25,0.5)] backdrop-blur-md">
+          <div className="flex items-center gap-2 border-b border-beige/10 px-4 py-2.5">
+            <span className="h-3 w-3 rounded-full bg-beige/30" aria-hidden="true" />
+            <span className="h-3 w-3 rounded-full bg-beige/30" aria-hidden="true" />
+            <span className="h-3 w-3 rounded-full bg-beige/30" aria-hidden="true" />
+            <span className="ml-2 font-mono text-xs text-beige/70">
+              ahmad@stack:~ (zsh - 80x24)
+            </span>
+            <button
+              type="button"
+              onClick={copyLatestJson}
+              aria-label="Copy the latest inspection JSON"
+              className="ml-auto min-h-[44px] rounded-md border border-beige/20 bg-beige/5 px-3 font-mono text-xs text-beige/80 transition-colors duration-200 hover:bg-beige/10"
+            >
+              Copy JSON
+            </button>
           </div>
-          <div aria-live="polite" className="flex max-h-96 min-h-[16rem] flex-col gap-3 overflow-y-auto p-4 font-mono text-xs leading-relaxed text-beige/90">
-            <p><span className="text-mainGreen">$</span> ahmad.inspectStack() --role=&quot;Full-Stack Developer&quot;</p>
+          <div
+            aria-live="polite"
+            className="flex max-h-96 min-h-[16rem] flex-col gap-3 overflow-y-auto p-4 font-mono text-xs leading-relaxed text-beige/90 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-beige/20"
+          >
+            <p>
+              <span className="text-mainGreen">$</span>{" "}
+              ahmad.inspectStack() --role=&quot;Full-Stack Developer&quot;
+            </p>
             {entries.map((entry, index) => (
               <div key={`${entry.cmd}-${index}`}>
-                <p><span className="text-mainGreen">$</span> {entry.cmd}</p>
-                <p className="pl-2 text-beige/60">&gt; Querying production registry…</p>
+                {entry.cmd ? (
+                  <p>
+                    <span className="text-mainGreen">$</span> {entry.cmd}
+                  </p>
+                ) : null}
+                {entry.hint ? (
+                  <p className="pl-2 text-beige/60">{entry.hint}</p>
+                ) : null}
                 {entry.skill ? (
-                  <pre className="pl-2 whitespace-pre-wrap text-beige/85">{`{
+                  <>
+                    <p className="pl-2 text-beige/60">
+                      &gt; Querying production registry…
+                    </p>
+                    <pre className="pl-2 whitespace-pre-wrap text-beige/85">{`{
   "technology": "${entry.skill.name}",
   "category": "${SKILL_CATEGORIES[entry.skill.category]}",
   "capabilities": "${entry.skill.context}",
-  "production_evidence": [${entry.skill.projects.map((p) => `"${SKILL_PROJECTS[p].name}"`).join(", ")}],
+  "production_evidence": [${entry.skill.projects
+    .map((p) => `"${SKILL_PROJECTS[p].name}"`)
+    .join(", ")}],
   "status": "Verified in Resume"
 }`}</pre>
-                ) : (
-                  entry.batch && (
-                    <p className="pl-2 text-beige/85">{`> [${entry.batch.join(", ")}]`}</p>
-                  )
-                )}
+                  </>
+                ) : entry.batch ? (
+                  <p className="pl-2 text-beige/85">{`> [${entry.batch.join(", ")}]`}</p>
+                ) : null}
               </div>
             ))}
           </div>
