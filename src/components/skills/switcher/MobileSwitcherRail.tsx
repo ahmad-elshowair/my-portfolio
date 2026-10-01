@@ -57,7 +57,7 @@ export function MobileSwitcherRail({
           <div
             key={item.id}
             className={cn(
-              "relative flex h-8 w-8 items-center justify-end",
+              "relative flex h-11 w-11 items-center justify-end",
               isHovered ? "z-30" : "z-10",
             )}
           >
@@ -76,13 +76,13 @@ export function MobileSwitcherRail({
               onBlur={() => setHoveredId(null)}
               onTouchStart={() => setHoveredId(item.id)}
               className={cn(
-                "absolute right-0 top-0 flex h-8 items-center rounded-full transition-colors duration-200 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-mainGreen",
+                "absolute right-0 top-0 flex h-11 items-center rounded-full transition-colors duration-200 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-mainGreen",
                 isActive
                   ? "bg-mainGreen text-bgGreen font-bold shadow-[0_0_12px_rgba(141,165,91,0.55)] border border-mainGreen"
                   : isHovered
                   ? "bg-[#202724] border border-mainGreen/70 text-beige shadow-xl"
                   : "bg-beige/10 text-beige hover:bg-[#2c3531] hover:text-mainGreen border border-transparent",
-                isHovered ? "pl-3.5 pr-0.5 gap-2" : "w-8 justify-center p-0",
+                isHovered ? "pl-3.5 pr-0.5 gap-2" : "w-11 justify-center p-0",
               )}
             >
               {/* When hovered, label expands to the left inside the pill */}

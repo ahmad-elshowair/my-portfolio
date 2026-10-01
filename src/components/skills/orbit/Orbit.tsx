@@ -7,6 +7,7 @@ import { useDesktopViewport, usePrefersReducedMotion } from "@/hooks";
 import { useSelectSkill, useSelectedSkillId } from "@/stores/skillsLabStore";
 import type { SkillItem } from "@/definitions";
 import { cn } from "@/lib/utils";
+import type { CSSProperties } from "react";
 
 /**
  * Orbit constellation. Concentric category rings (tools inner, front-end
@@ -15,10 +16,15 @@ import { cn } from "@/lib/utils";
  * ruling lands — this is the complete static experience, not a stub.
  */
 
+// Ring diameters scale with the rendered container: the 240px reserve keeps
+// the widest chip's half-label overhang (105px measured) inside the section
+// at the narrowest desktop container; the cap preserves the visual scale.
+const RING_OUTER = "min(520px, calc(100cqw - 240px))";
+
 const RINGS = [
-  { category: "tools", radius: 130 },
-  { category: "frontend", radius: 195 },
-  { category: "backend", radius: 260 },
+  { category: "tools", sizeFactor: 0.5 },
+  { category: "frontend", sizeFactor: 0.75 },
+  { category: "backend", sizeFactor: 1 },
 ] as const;
 
 const byCategory = (category: SkillItem["category"]) =>
@@ -46,13 +52,23 @@ export default function Concept016() {
       </div>
 
       {useOrbit ? (
-        <div className="relative mx-auto h-[38rem] w-full max-w-3xl">
-          {RINGS.map(({ category, radius }) => (
+        <div
+          className="relative mx-auto h-[38rem] w-full max-w-3xl [container-type:inline-size]"
+          style={{ "--ring-outer": RING_OUTER } as CSSProperties}
+        >
+          {RINGS.map(({ category, sizeFactor }) => (
             <div
               key={category}
               aria-label={`${SKILL_CATEGORIES[category]} ring`}
               className="absolute left-1/2 top-1/2 rounded-full border border-beige/10"
-              style={{ width: radius * 2, height: radius * 2, transform: "translate(-50%, -50%)" }}
+              style={
+                {
+                  width: `calc(var(--ring-outer) * ${sizeFactor})`,
+                  height: `calc(var(--ring-outer) * ${sizeFactor})`,
+                  transform: "translate(-50%, -50%)",
+                  "--ring-radius": `calc(var(--ring-outer) * ${sizeFactor / 2})`,
+                } as CSSProperties
+              }
             >
               {byCategory(category).map((skill, index, all) => {
                 const angle = (index / all.length) * 360 - 90;
@@ -60,9 +76,10 @@ export default function Concept016() {
                   <span
                     key={skill.id}
                     className="absolute left-1/2 top-1/2 h-0 w-0"
-                    style={{ transform: `rotate(${angle}deg) translate(${radius}px)` }}
+                    style={{ transform: `rotate(${angle}deg) translate(var(--ring-radius))` }}
                   >
                     <RingChip
+                      className="-translate-x-1/2 -translate-y-1/2"
                       skill={skill}
                       selected={selectedSkillId === skill.id}
                       onSelect={() => selectSkill(selectedSkillId === skill.id ? null : skill.id)}
@@ -123,14 +140,21 @@ export default function Concept016() {
   );
 }
 
+/**
+ * Ring placement composes the chip's centering transform through `className`;
+ * flow layouts (the static grid) render the chip with none — the two views
+ * share no geometry assumptions.
+ */
 function RingChip({
   skill,
   selected,
   onSelect,
+  className,
 }: {
   skill: SkillItem;
   selected: boolean;
   onSelect: () => void;
+  className?: string;
 }) {
   return (
     <button
@@ -138,10 +162,11 @@ function RingChip({
       aria-pressed={selected}
       onClick={onSelect}
       className={cn(
-        "flex -translate-x-1/2 -translate-y-1/2 items-center gap-1 whitespace-nowrap rounded-full border px-2.5 py-1 text-xs transition-colors duration-200 [&_svg]:text-sm",
+        "flex items-center gap-1 whitespace-nowrap rounded-full border px-2.5 py-1 text-xs transition-colors duration-200 [&_svg]:text-sm",
         selected
           ? "border-mainGreen bg-mainGreen/30 text-beige shadow-[0_0_12px_rgba(141,165,91,0.3)]"
           : "border-beige/20 bg-bgGreen/80 text-beige/90 hover:bg-beige/10",
+        className,
       )}
     >
       <SkillGlyph skill={skill} />

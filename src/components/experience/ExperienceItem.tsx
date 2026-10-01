@@ -56,7 +56,7 @@ const ExperienceItem: React.FC<ExperienceItemProps> = ({
       {/* Vertical line */}
       <div className="absolute left-[5px] -top-5 w-[2px] h-full bg-mainGreen/30" />
 
-      <div className="flex flex-col gap-1">
+      <div className="flex min-w-0 flex-col gap-1">
         <div className="flex items-baseline justify-between">
           <h3 className="text-2xl font-semibold text-beige">{title}</h3>
           <span className="text-gray-300 text-sm">{period}</span>
@@ -73,7 +73,7 @@ const ExperienceItem: React.FC<ExperienceItemProps> = ({
           {company}
         </Link>
         {renderDescription()}
-        <div className="flex gap-3 mt-3">
+        <div className="flex flex-wrap gap-3 mt-3">
           {technologies.map((tech) => (
             <div
               key={tech.name}

@@ -196,8 +196,8 @@ export function MobileTelemetryDock({ skill }: MobileTelemetryDockProps) {
 
               {/* Header */}
               <div className="flex items-center justify-between border-b border-beige/10 pb-3">
-                <span className="text-[11px] letter-spacing-0 font-mono uppercase tracking-widest text-mainGreen">
-                  Telemetry HUD · Live Proof
+                <span className="text-[11px] font-mono uppercase tracking-widest text-mainGreen">
+                  Live Proof
                 </span>
                 <div className="flex items-center gap-2">
                   <span className="inline-flex items-center gap-1.5 rounded-full border border-mainGreen/40 bg-mainGreen/20 px-2.5 py-0.5 text-xs font-semibold text-beige">
@@ -212,15 +212,13 @@ export function MobileTelemetryDock({ skill }: MobileTelemetryDockProps) {
                       )}
                       aria-hidden="true"
                     />
-                    <span className="text-[.5rem] text-md-[11px]">
-                      {status}
-                    </span>
+                    <span className="text-[11px]">{status}</span>
                   </span>
                   <button
                     type="button"
                     onClick={() => setIsExpanded(false)}
                     aria-label="Close telemetry proof"
-                    className="flex h-9 w-9 items-center justify-center rounded-xl border border-beige/15 bg-beige/5 text-beige/80 hover:text-beige hover:bg-beige/10 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-mainGreen"
+                    className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-beige/15 bg-beige/5 text-beige/80 hover:text-beige hover:bg-beige/10 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-mainGreen"
                   >
                     ✕
                   </button>
