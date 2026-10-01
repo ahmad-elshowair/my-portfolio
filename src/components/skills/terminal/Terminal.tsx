@@ -11,9 +11,11 @@ import type {
   SkillCategoryId,
   SkillItem,
   TelemetryPayload,
+  TelemetryProjectBadge,
 } from "@/definitions";
 import { HISTORY_LIMIT } from "@/definitions";
 import { AUTHOR, SITE_DESCRIPTION, SOCIAL_LINKS } from "@/lib/site";
+import { usePrefersReducedMotion } from "@/hooks";
 import { useEffect, useRef, useState, type MouseEvent } from "react";
 import { cn } from "@/lib/utils";
 
@@ -301,35 +303,111 @@ function EntryView({ entry }: { entry: HistoryEntry }) {
         </p>
       );
     case "telemetry":
-      return <TelemetryPre payload={entry.payload} />;
+      return <TelemetryBlock payload={entry.payload} />;
   }
 }
 
-function TelemetryPre({ payload }: { payload: TelemetryPayload }) {
+/** JSON key/value line — keys carry the accent, values the page voice. */
+function TelemetryRow({
+  name,
+  value,
+  last,
+}: {
+  name: string;
+  value: string;
+  last?: boolean;
+}) {
+  return (
+    <p>
+      <span className="text-mainGreen">&quot;{name}&quot;</span>
+      <span className="text-beige/50">: </span>
+      <span className="text-beige">&quot;{value}&quot;</span>
+      {last ? null : <span className="text-beige/50">,</span>}
+    </p>
+  );
+}
+
+/**
+ * The click's job is the scroll; the destination card's glow is carried by
+ * the selection-derived highlight payload, not by this button.
+ */
+function ProjectBadge({ project }: { project: TelemetryProjectBadge }) {
+  const reduceMotion = usePrefersReducedMotion();
+  return (
+    <button
+      type="button"
+      onClick={() => {
+        document
+          .getElementById(`project-${project.anchorId}`)
+          ?.scrollIntoView({
+            behavior: reduceMotion ? "auto" : "smooth",
+          });
+      }}
+      className="min-h-[44px] rounded-full border border-mainGreen/40 bg-mainGreen/10 px-3 text-xs text-beige transition-colors duration-200 hover:bg-mainGreen/25"
+    >
+      [🚀 SHIPPED IN {project.name.toUpperCase()}]
+    </button>
+  );
+}
+
+function StatusPill({ children }: { children: string }) {
+  return (
+    <span className="rounded-full border border-beige/25 bg-beige/10 px-2.5 py-0.5 text-beige/85">
+      {children}
+    </span>
+  );
+}
+
+function TelemetryBlock({ payload }: { payload: TelemetryPayload }) {
   const skill = payload.skill;
   const resume = payload.resume;
   if (skill) {
     return (
-      <pre className="pl-2 whitespace-pre-wrap text-beige/85">{`{
-  "technology": "${skill.name}",
-  "category": "${skill.category}",
-  "capabilities": "${skill.context}",
-  "production_evidence": [${skill.projects
-    .map((p) => `"${p.name}"`)
-    .join(", ")}],
-  "status": "Verified in Resume"
-}`}</pre>
+      <div className="flex flex-col gap-1 pl-2">
+        <span className="text-beige/50">{"{"}</span>
+        <div className="flex flex-col gap-1 pl-2">
+          <TelemetryRow name="technology" value={skill.name} />
+          <TelemetryRow name="category" value={skill.category} />
+          <TelemetryRow name="capabilities" value={skill.context} />
+          <p className="flex flex-wrap items-center gap-2">
+            <span className="text-mainGreen">&quot;production_evidence&quot;</span>
+            <span className="text-beige/50">: </span>
+            {skill.projects.length > 0 ? (
+              skill.projects.map((project) => (
+                <ProjectBadge key={project.anchorId} project={project} />
+              ))
+            ) : (
+              <span className="text-beige/50">[]</span>
+            )}
+            <span className="text-beige/50">,</span>
+          </p>
+          <p className="flex flex-wrap items-center gap-2">
+            <span className="text-mainGreen">&quot;status&quot;</span>
+            <span className="text-beige/50">: </span>
+            <StatusPill>✔ VERIFIED IN RESUME</StatusPill>
+          </p>
+        </div>
+        <span className="text-beige/50">{"}"}</span>
+      </div>
     );
   }
   if (resume) {
     return (
-      <pre className="pl-2 whitespace-pre-wrap text-beige/85">{`{
-  "name": "${resume.name}",
-  "role": "${resume.role}",
-  "summary": "${resume.summary}",
-  "location": "${resume.location}",
-  "links": [${resume.links.map((l) => `"${l.label}"`).join(", ")}]
-}`}</pre>
+      <div className="flex flex-col gap-1 pl-2">
+        <span className="text-beige/50">{"{"}</span>
+        <div className="flex flex-col gap-1 pl-2">
+          <TelemetryRow name="name" value={resume.name} />
+          <TelemetryRow name="role" value={resume.role} />
+          <TelemetryRow name="summary" value={resume.summary} />
+          <TelemetryRow name="location" value={resume.location} />
+          <TelemetryRow
+            name="links"
+            value={resume.links.map((link) => link.label).join(", ")}
+            last
+          />
+        </div>
+        <span className="text-beige/50">{"}"}</span>
+      </div>
     );
   }
   return null;
@@ -340,25 +418,38 @@ export default function Concept012() {
   const selectedSkillId = useSelectedSkillId();
   const selectSkill = useSelectSkill();
   // A carried-over selection is inspected once, at first render.
-  const [history, setHistory] = useState<CommandGroup[]>(() => {
+  const [initialRun] = useState(() => {
     const skill = selectedSkillId ? byId.get(selectedSkillId) : undefined;
-    if (!skill) return [];
+    if (!skill) {
+      return { history: [] as CommandGroup[], telemetry: null as TelemetryPayload | null };
+    }
     const { drafts } = executeCommand({ kind: "inspect", query: skill.id });
-    return [
-      {
-        id: -1,
-        entries: [
-          { id: -1, kind: "echo", text: `inspect ${skill.id}` },
-          ...drafts.map((draft, index) => ({ ...draft, id: -2 - index })),
-        ],
-      },
+    const entries: HistoryEntry[] = [
+      { id: -1, kind: "echo", text: `inspect ${skill.id}` },
+      ...drafts.map((draft, index) => ({ ...draft, id: -2 - index })),
     ];
+    return {
+      history: [{ id: -1, entries }],
+      telemetry:
+        drafts.find(
+          (draft): draft is Extract<EntryDraft, { kind: "telemetry" }> =>
+            draft.kind === "telemetry",
+        )?.payload ?? null,
+    };
   });
+  const [history, setHistory] = useState<CommandGroup[]>(initialRun.history);
+  const [lastTelemetry, setLastTelemetry] = useState<TelemetryPayload | null>(
+    initialRun.telemetry,
+  );
+  const [copyState, setCopyState] = useState<"idle" | "copied" | "unavailable">(
+    "idle",
+  );
   const [input, setInput] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
   const streamRef = useRef<HTMLDivElement>(null);
   const groupIdRef = useRef(0);
   const entryIdRef = useRef(0);
+  const copyResetRef = useRef<number | undefined>(undefined);
   const tabCandidatesRef = useRef<{ input: string; candidates: string[] } | null>(
     null,
   );
@@ -367,6 +458,8 @@ export default function Concept012() {
     const stream = streamRef.current;
     if (stream) stream.scrollTop = stream.scrollHeight;
   }, [history]);
+
+  useEffect(() => () => window.clearTimeout(copyResetRef.current), []);
 
   const appendGroups = (groups: { entries: EntryDraft[] }[]) => {
     setHistory((prev) => {
@@ -393,6 +486,11 @@ export default function Concept012() {
     }
     const { drafts, selectedSkillId: inspected } = executeCommand(command);
     if (inspected) selectSkill(inspected);
+    const telemetry = drafts.find(
+      (draft): draft is Extract<EntryDraft, { kind: "telemetry" }> =>
+        draft.kind === "telemetry",
+    );
+    if (telemetry) setLastTelemetry(telemetry.payload);
     appendGroups([{ entries: [{ kind: "echo", text }, ...drafts] }]);
     setInput("");
   };
@@ -428,19 +526,35 @@ export default function Concept012() {
     runInput(preset === "clear" ? "clear" : `inspect --${preset}`);
   };
 
-  /** Before any telemetry exists, the copy action teaches the command instead. */
-  const copyLatestJson = () => {
-    const hasTelemetry = history.some((group) =>
-      group.entries.some((entry) => entry.kind === "telemetry"),
-    );
-    if (hasTelemetry) return;
-    appendGroups([
-      {
-        entries: [
-          { kind: "hint", message: "nothing to copy — run inspect <skill> first" },
-        ],
-      },
-    ]);
+  /** Copy teaches the command before any payload exists; reports failure in-stream. */
+  const copyLatestJson = async () => {
+    if (!lastTelemetry) {
+      appendGroups([
+        {
+          entries: [
+            {
+              kind: "hint",
+              message: "nothing to copy — run inspect <skill> first",
+            },
+          ],
+        },
+      ]);
+      return;
+    }
+    try {
+      await navigator.clipboard.writeText(
+        JSON.stringify(lastTelemetry, null, 2),
+      );
+      setCopyState("copied");
+    } catch {
+      setCopyState("unavailable");
+      appendGroups([
+        { entries: [{ kind: "hint", message: "copy unavailable" }] },
+      ]);
+    } finally {
+      window.clearTimeout(copyResetRef.current);
+      copyResetRef.current = window.setTimeout(() => setCopyState("idle"), 1500);
+    }
   };
 
   return (
@@ -497,7 +611,7 @@ export default function Concept012() {
               aria-label="Copy the latest inspection JSON"
               className="ml-auto min-h-[44px] rounded-md border border-beige/20 bg-beige/5 px-3 font-mono text-xs text-beige/80 transition-colors duration-200 hover:bg-beige/10"
             >
-              Copy JSON
+              {copyState === "copied" ? "copied ✓" : "Copy JSON"}
             </button>
           </div>
           <div
@@ -557,7 +671,7 @@ export default function Concept012() {
               key={category}
               type="button"
               onClick={() => runPreset(category)}
-              className="min-h-[36px] rounded-full border border-beige/20 bg-beige/5 px-3 py-1 font-mono text-xs text-beige/80 transition-colors duration-200 hover:bg-beige/10"
+              className="min-h-[44px] rounded-full border border-beige/20 bg-beige/5 px-3 py-1 font-mono text-xs text-beige/80 transition-colors duration-200 hover:bg-beige/10"
             >
               $ inspect --{category}
             </button>
@@ -565,7 +679,7 @@ export default function Concept012() {
           <button
             type="button"
             onClick={() => runPreset("clear")}
-            className="min-h-[36px] rounded-full border border-beige/20 bg-beige/5 px-3 py-1 font-mono text-xs text-beige/80 transition-colors duration-200 hover:bg-beige/10"
+            className="min-h-[44px] rounded-full border border-beige/20 bg-beige/5 px-3 py-1 font-mono text-xs text-beige/80 transition-colors duration-200 hover:bg-beige/10"
           >
             $ clear
           </button>
