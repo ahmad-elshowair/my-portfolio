@@ -65,10 +65,28 @@ function isSubsequence(needle: string, haystack: string): boolean {
   return matched === needle.length;
 }
 
+/** Classic edit distance — candidate strings are short skill ids/names. */
+function editDistance(a: string, b: string): number {
+  let prev = Array.from({ length: b.length + 1 }, (_, j) => j);
+  for (let i = 1; i <= a.length; i += 1) {
+    const curr = [i];
+    for (let j = 1; j <= b.length; j += 1) {
+      curr[j] = Math.min(
+        prev[j] + 1,
+        curr[j - 1] + 1,
+        prev[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1),
+      );
+    }
+    prev = curr;
+  }
+  return prev[b.length];
+}
+
 /**
  * Relevance score for a fuzzy query; 0 means no match. Exact id/name wins,
- * then prefix, then subsequence — tighter (shorter) candidates rank higher
- * within each tier so a single best suggestion is always derivable.
+ * then prefix, then subsequence, then prefix-anchored typo distance —
+ * tighter candidates rank higher within each tier so a single best
+ * suggestion is always derivable.
  */
 function skillScore(skill: SkillItem, query: string): number {
   const q = normalize(query);
@@ -81,7 +99,14 @@ function skillScore(skill: SkillItem, query: string): number {
   const tightest = [id, name]
     .filter((candidate) => isSubsequence(q, candidate))
     .sort((a, b) => a.length - b.length)[0];
-  return tightest ? 500 - tightest.length : 0;
+  if (tightest) return 500 - tightest.length;
+  if (q.length >= 4) {
+    const typo = [id, name]
+      .map((candidate) => editDistance(q, candidate.slice(0, q.length)))
+      .sort((a, b) => a - b)[0];
+    if (typo <= 2) return 250 - typo;
+  }
+  return 0;
 }
 
 function parseCommand(raw: string): Command {
@@ -233,12 +258,20 @@ function executeCommand(command: Command): ExecutionResult {
   }
 }
 
+/** Case-insensitive common prefix, cased from the first candidate. */
 function commonPrefix(values: string[]): string {
-  let prefix = values[0] ?? "";
+  const first = values[0] ?? "";
+  let length = first.length;
   for (const value of values) {
-    while (prefix && !value.startsWith(prefix)) prefix = prefix.slice(0, -1);
+    length = Math.min(length, value.length);
+    while (
+      length > 0 &&
+      normalize(first.slice(0, length)) !== normalize(value.slice(0, length))
+    ) {
+      length -= 1;
+    }
   }
-  return prefix;
+  return first.slice(0, length);
 }
 
 /**
@@ -417,6 +450,7 @@ function TelemetryBlock({ payload }: { payload: TelemetryPayload }) {
 export default function Concept012() {
   const selectedSkillId = useSelectedSkillId();
   const selectSkill = useSelectSkill();
+  const reduceMotion = usePrefersReducedMotion();
   // A carried-over selection is inspected once, at first render.
   const [initialRun] = useState(() => {
     const skill = selectedSkillId ? byId.get(selectedSkillId) : undefined;
@@ -456,8 +490,12 @@ export default function Concept012() {
 
   useEffect(() => {
     const stream = streamRef.current;
-    if (stream) stream.scrollTop = stream.scrollHeight;
-  }, [history]);
+    if (!stream) return;
+    stream.scrollTo({
+      top: stream.scrollHeight,
+      behavior: reduceMotion ? "auto" : "smooth",
+    });
+  }, [history, reduceMotion]);
 
   useEffect(() => () => window.clearTimeout(copyResetRef.current), []);
 
@@ -616,7 +654,10 @@ export default function Concept012() {
           </div>
           <div
             ref={streamRef}
+            role="region"
+            aria-label="Terminal output"
             aria-live="polite"
+            tabIndex={0}
             className="flex max-h-96 min-h-[16rem] flex-col gap-3 overflow-y-auto p-4 font-mono text-xs leading-relaxed text-beige/90 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-beige/20"
           >
             <p>
@@ -624,7 +665,13 @@ export default function Concept012() {
               ahmad.inspectStack() --role=&quot;Full-Stack Developer&quot;
             </p>
             {history.map((group) => (
-              <div key={group.id} className="flex flex-col gap-1">
+              <div
+                key={group.id}
+                className={cn(
+                  "flex flex-col gap-1",
+                  !reduceMotion && "animate-in fade-in duration-150",
+                )}
+              >
                 {group.entries.map((entry) => (
                   <EntryView key={entry.id} entry={entry} />
                 ))}
@@ -660,7 +707,7 @@ export default function Concept012() {
               autoCapitalize="none"
               spellCheck={false}
               placeholder="type 'help' for commands"
-              className="w-full bg-transparent font-mono text-xs text-beige caret-beige outline-none placeholder:text-beige/40 selection:bg-mainGreen/30 selection:text-beige"
+              className="w-full min-h-[44px] bg-transparent font-mono text-xs text-beige caret-beige outline-none placeholder:text-beige/40 selection:bg-mainGreen/30 selection:text-beige motion-reduce:[caret-blink:0]"
             />
           </form>
         </div>
