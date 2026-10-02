@@ -1,6 +1,7 @@
 "use client";
 
-import { ProjectPills, SkillEvidence, SkillGlyph } from "@/components/skills/shared";
+import Iconify from "@/components/iconify";
+import { ProjectPills, SkillEvidence } from "@/components/skills/shared";
 import { SKILL_CATEGORIES, SKILL_PROJECTS, skills } from "@/data";
 import { useSelectSkill, useSelectedSkillId } from "@/stores/skillsLabStore";
 import type { SkillCategoryId, SkillItem, SkillProjectId } from "@/definitions";
@@ -130,7 +131,7 @@ function WallChip({
         dimmed && "opacity-25",
       )}
     >
-      <SkillGlyph skill={skill} />
+      <Iconify icon={skill.icon} className="h-[1em] w-[1em] shrink-0" />
       {skill.name}
     </button>
   );

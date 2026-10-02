@@ -1,6 +1,6 @@
 "use client";
 
-import { SkillGlyph } from "@/components/skills/shared";
+import Iconify from "@/components/iconify";
 import type { SkillItem } from "@/definitions";
 import { cn } from "@/lib/utils";
 import { statusBadge } from "./bento.constants";
@@ -46,9 +46,9 @@ export function LiveInspectorHUD({ skill }: LiveInspectorHUDProps) {
 
       {/* Skill Identity: 32px Glyph + Inika Title */}
       <div className="flex items-center gap-3 min-w-0">
-        <SkillGlyph
-          skill={skill}
-          className="text-mainGreen text-[2rem] [&_svg]:text-[2rem] shrink-0"
+        <Iconify
+          icon={skill.icon}
+          className="text-mainGreen text-[2rem] h-[1em] w-[1em] shrink-0"
         />
         <div className="flex flex-col min-w-0 flex-1">
           <h4 className="font-inika text-2xl font-bold tracking-tight text-beige truncate">

@@ -1,6 +1,6 @@
 "use client";
 
-import { SkillGlyph } from "@/components/skills/shared";
+import Iconify from "@/components/iconify";
 import type { SkillItem } from "@/definitions";
 import { cn } from "@/lib/utils";
 
@@ -50,11 +50,11 @@ export function SkillChipButton({
           aria-hidden="true"
         />
       )}
-      <SkillGlyph
-        skill={skill}
+      <Iconify
+        icon={skill.icon}
         className={cn(
-          "text-mainGreen shrink-0 transition-transform duration-200 group-hover:scale-105 motion-reduce:transform-none",
-          isHero ? "[&_svg]:text-xl" : "[&_svg]:text-lg",
+          "text-mainGreen shrink-0 transition-transform duration-200 group-hover:scale-105 motion-reduce:transform-none h-[1em] w-[1em]",
+          isHero ? "text-xl" : "text-lg",
         )}
       />
       <span className="tracking-tight">{skill.name}</span>

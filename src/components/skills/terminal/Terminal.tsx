@@ -1,143 +1,287 @@
 "use client";
 
-import { SkillGlyph } from "@/components/skills/shared";
-import { SKILL_CATEGORIES, SKILL_PROJECTS, skills } from "@/data";
+import type {
+  CommandGroup,
+  EntryDraft,
+  FlagCategory,
+  HistoryEntry,
+  TelemetryDraft,
+  TelemetryPayload,
+} from "@/definitions";
+import { HISTORY_LIMIT } from "@/definitions";
 import { useSelectSkill, useSelectedSkillId } from "@/stores/skillsLabStore";
-import type { SkillCategoryId, SkillItem } from "@/definitions";
-import { useState } from "react";
+import { useDesktopViewport } from "@/hooks";
 import { cn } from "@/lib/utils";
+import { useEffect, useRef, useState, type MouseEvent } from "react";
+import {
+  completeInspectToken,
+  executeCommand,
+  findSkillById,
+  parseCommand,
+} from "./cli";
+import { CopyAction } from "./CopyAction";
+import { MobileTerminalDock } from "./MobileTerminalDock";
+import { PresetQuickRun } from "./PresetQuickRun";
+import { SkillCatalog } from "./SkillCatalog";
+import { StreamView, type RevealSignal } from "./StreamView";
+import { TerminalHeader } from "./TerminalHeader";
 
-const GROUPS: SkillCategoryId[] = ["frontend", "backend", "tools", "languages"];
-const MAX_ENTRIES = 6;
-
-interface Entry {
-  cmd: string;
-  skill?: SkillItem;
-  batch?: string[];
-}
-
-function inspectEntry(skill: SkillItem): Entry {
-  return { cmd: `ahmad-cli inspect --skill="${skill.name}"`, skill };
-}
-
-const byId = new Map(skills.map((s) => [s.id, s]));
-
-/** Developer terminal — dual pane with instant CLI-style inspection. */
-export default function Concept012() {
+/** Developer terminal — dual pane with a live in-memory CLI. */
+export default function Terminal() {
   const selectedSkillId = useSelectedSkillId();
   const selectSkill = useSelectSkill();
+  const isDesktop = useDesktopViewport();
   // A carried-over selection is inspected once, at first render.
-  const [entries, setEntries] = useState<Entry[]>(() => {
-    const skill = selectedSkillId ? byId.get(selectedSkillId) : undefined;
-    return skill ? [inspectEntry(skill)] : [];
+  const [initialRun] = useState(() => {
+    const skill = selectedSkillId ? findSkillById(selectedSkillId) : undefined;
+    if (!skill) {
+      return {
+        history: [] as CommandGroup[],
+        telemetry: null as TelemetryPayload | null,
+      };
+    }
+    const { drafts } = executeCommand({ kind: "inspect", query: skill.id });
+    const entries: HistoryEntry[] = [
+      { id: -1, kind: "echo", text: `inspect ${skill.id}` },
+      ...drafts.map((draft, index) => ({ ...draft, id: -2 - index })),
+    ];
+    return {
+      history: [{ id: -1, entries }],
+      telemetry:
+        drafts.find(
+          (draft): draft is TelemetryDraft => draft.kind === "telemetry",
+        )?.payload ?? null,
+    };
   });
+  const [history, setHistory] = useState<CommandGroup[]>(initialRun.history);
+  const [lastTelemetry, setLastTelemetry] = useState<TelemetryPayload | null>(
+    initialRun.telemetry,
+  );
+  const [copyState, setCopyState] = useState<"idle" | "copied" | "unavailable">(
+    "idle",
+  );
+  const [input, setInput] = useState("");
+  const [reveal, setReveal] = useState<RevealSignal | null>(null);
+  const [mobileExpanded, setMobileExpanded] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const revealNonceRef = useRef(0);
+  const groupIdRef = useRef(0);
+  const entryIdRef = useRef(0);
+  const copyResetRef = useRef<number | undefined>(undefined);
+  const tabCandidatesRef = useRef<{
+    input: string;
+    candidates: string[];
+  } | null>(null);
 
-  const pushEntry = (entry: Entry) =>
-    setEntries((prev) => [...prev, entry].slice(-MAX_ENTRIES));
+  useEffect(() => () => window.clearTimeout(copyResetRef.current), []);
 
-  const inspect = (id: string) => {
-    selectSkill(id);
-    const skill = byId.get(id);
-    if (skill) pushEntry(inspectEntry(skill));
+  const appendGroups = (groups: { entries: EntryDraft[] }[]) => {
+    setHistory((prev) => {
+      const stamped: CommandGroup[] = groups.map((group) => ({
+        id: (groupIdRef.current += 1),
+        entries: group.entries.map((entry) => ({
+          ...entry,
+          id: (entryIdRef.current += 1),
+        })),
+      }));
+      return [...prev, ...stamped].slice(-HISTORY_LIMIT);
+    });
   };
 
-  const runPreset = (category: SkillCategoryId | "clear") => {
-    if (category === "clear") {
-      setEntries([]);
+  const revealGroup = (groupId: number) => {
+    revealNonceRef.current += 1;
+    setReveal({ groupId, nonce: revealNonceRef.current });
+  };
+
+  const echoTextOf = (group: CommandGroup | undefined) => {
+    const first = group?.entries[0];
+    return first?.kind === "echo" ? first.text : null;
+  };
+
+  const runInput = (raw: string) => {
+    const text = raw.trim();
+    if (!text) return;
+    const command = parseCommand(text);
+    if (command.kind === "clear") {
+      setHistory([]);
       selectSkill(null);
+      setInput("");
       return;
     }
-    const names = skills
-      .filter((s) => s.category === category)
-      .map((s) => s.name);
-    pushEntry({ cmd: `ahmad-cli inspect --${category}`, batch: names });
+    // Output already in the stream? Surface it instead of stacking a copy.
+    const existing = history.find((group) => echoTextOf(group) === text);
+    if (existing) {
+      revealGroup(existing.id);
+      setInput("");
+      return;
+    }
+    const { drafts, selectedSkillId: inspected } = executeCommand(command);
+    if (inspected) selectSkill(inspected);
+    const telemetry = drafts.find(
+      (draft): draft is TelemetryDraft => draft.kind === "telemetry",
+    );
+    if (telemetry) setLastTelemetry(telemetry.payload);
+    appendGroups([{ entries: [{ kind: "echo", text }, ...drafts] }]);
+    setInput("");
   };
 
-  return (
-    <div className="grid gap-6 lg:grid-cols-[1fr_1.2fr]">
-      <div className="flex flex-col gap-4">
-        {GROUPS.map((category) => (
-          <div key={category}>
-            <h3 className="mb-2 text-sm font-semibold uppercase tracking-wide text-beige/60">
-              {SKILL_CATEGORIES[category]}
-            </h3>
-            <div className="flex flex-wrap gap-2">
-              {skills
-                .filter((s) => s.category === category)
-                .map((skill) => (
-                  <button
-                    key={skill.id}
-                    type="button"
-                    aria-pressed={selectedSkillId === skill.id}
-                    onClick={() => inspect(skill.id)}
-                    className={cn(
-                      "flex min-h-[44px] items-center gap-1.5 rounded-lg border px-3 py-1 text-sm transition-colors duration-200 [&_svg]:text-lg",
-                      selectedSkillId === skill.id
-                        ? "border-mainGreen bg-mainGreen/25 text-beige"
-                        : "border-beige/15 bg-beige/5 text-beige/90 hover:bg-beige/10",
-                    )}
-                  >
-                    <SkillGlyph skill={skill} />
-                    {skill.name}
-                  </button>
-                ))}
-            </div>
-          </div>
-        ))}
-      </div>
+  const handleTab = () => {
+    const { next, candidates } = completeInspectToken(input);
+    const repeated =
+      candidates.length > 1 &&
+      tabCandidatesRef.current?.input === input &&
+      tabCandidatesRef.current.candidates.length === candidates.length;
+    tabCandidatesRef.current =
+      candidates.length > 1 ? { input: next, candidates } : null;
+    setInput(next);
+    if (repeated) {
+      tabCandidatesRef.current = null;
+      appendGroups([
+        {
+          entries: [
+            { kind: "hint", message: `candidates: ${candidates.join(", ")}` },
+          ],
+        },
+      ]);
+    }
+  };
 
-      <div className="flex flex-col gap-3">
-        <div className="overflow-hidden rounded-xl border border-beige/20 bg-bgGreen/80 backdrop-blur-sm">
-          <div className="flex items-center gap-2 border-b border-beige/10 px-4 py-2">
-            <span className="h-3 w-3 rounded-full bg-beige/20" aria-hidden="true" />
-            <span className="h-3 w-3 rounded-full bg-beige/20" aria-hidden="true" />
-            <span className="h-3 w-3 rounded-full bg-mainGreen/60" aria-hidden="true" />
-            <span className="ml-2 font-mono text-xs text-beige/70">elshowair@stack:~$</span>
-          </div>
-          <div aria-live="polite" className="flex max-h-96 min-h-[16rem] flex-col gap-3 overflow-y-auto p-4 font-mono text-xs leading-relaxed text-beige/90">
-            <p><span className="text-mainGreen">$</span> ahmad.inspectStack() --role=&quot;Full-Stack Developer&quot;</p>
-            {entries.map((entry, index) => (
-              <div key={`${entry.cmd}-${index}`}>
-                <p><span className="text-mainGreen">$</span> {entry.cmd}</p>
-                <p className="pl-2 text-beige/60">&gt; Querying production registry…</p>
-                {entry.skill ? (
-                  <pre className="pl-2 whitespace-pre-wrap text-beige/85">{`{
-  "technology": "${entry.skill.name}",
-  "category": "${SKILL_CATEGORIES[entry.skill.category]}",
-  "capabilities": "${entry.skill.context}",
-  "production_evidence": [${entry.skill.projects.map((p) => `"${SKILL_PROJECTS[p].name}"`).join(", ")}],
-  "status": "Verified in Resume"
-}`}</pre>
-                ) : (
-                  entry.batch && (
-                    <p className="pl-2 text-beige/85">{`> [${entry.batch.join(", ")}]`}</p>
-                  )
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
+  /** Plain clicks land in the prompt; drags that select output text keep it. */
+  const steerFocus = (event: MouseEvent<HTMLDivElement>) => {
+    if ((event.target as HTMLElement).closest("button, a, input")) return;
+    if (!window.getSelection()?.isCollapsed) return;
+    inputRef.current?.focus();
+  };
 
-        <div className="flex flex-wrap gap-2">
-          {GROUPS.slice(0, 3).map((category) => (
-            <button
-              key={category}
-              type="button"
-              onClick={() => runPreset(category)}
-              className="min-h-[36px] rounded-full border border-beige/20 bg-beige/5 px-3 py-1 font-mono text-xs text-beige/80 transition-colors duration-200 hover:bg-beige/10"
-            >
-              $ inspect --{category}
-            </button>
-          ))}
-          <button
-            type="button"
-            onClick={() => runPreset("clear")}
-            className="min-h-[36px] rounded-full border border-beige/20 bg-beige/5 px-3 py-1 font-mono text-xs text-beige/80 transition-colors duration-200 hover:bg-beige/10"
+  const runPreset = (preset: FlagCategory | "clear") => {
+    runInput(preset === "clear" ? "clear" : `inspect --${preset}`);
+  };
+
+  /** Copy teaches the command before any payload exists; reports failure in-stream. */
+  const copyLatestJson = async () => {
+    if (!lastTelemetry) {
+      appendGroups([
+        {
+          entries: [
+            {
+              kind: "hint",
+              message: "nothing to copy — run inspect <skill> first",
+            },
+          ],
+        },
+      ]);
+      return;
+    }
+    try {
+      await navigator.clipboard.writeText(
+        JSON.stringify(lastTelemetry, null, 2),
+      );
+      setCopyState("copied");
+    } catch {
+      setCopyState("unavailable");
+      appendGroups([
+        { entries: [{ kind: "hint", message: "copy unavailable" }] },
+      ]);
+    } finally {
+      window.clearTimeout(copyResetRef.current);
+      copyResetRef.current = window.setTimeout(
+        () => setCopyState("idle"),
+        1500,
+      );
+    }
+  };
+
+  const dockTitle = echoTextOf(history[history.length - 1]) ?? "terminal";
+  const focusPrompt = () => inputRef.current?.focus();
+
+  /** The deck flexes to fill the mobile dock; on desktop it sizes itself. */
+  const renderDeck = (fitStream: boolean) => (
+    <div
+      className={cn("flex flex-col", fitStream ? "min-h-0 flex-1" : "gap-3")}
+    >
+      <div
+        onClick={steerFocus}
+        className={cn(
+          "relative overflow-hidden rounded-xl border border-beige/20 bg-bgGreen/85 shadow-[0_8px_32px_rgba(22,26,25,0.5)] backdrop-blur-md",
+          fitStream &&
+            "flex min-h-0 flex-1 flex-col rounded-none border-0 bg-transparent shadow-none backdrop-blur-none",
+        )}
+      >
+        {!fitStream && (
+          <TerminalHeader copyState={copyState} onCopy={copyLatestJson} />
+        )}
+        {fitStream && lastTelemetry && (
+          <div className="absolute top-2.5 right-3 z-10">
+            <CopyAction copyState={copyState} onCopy={copyLatestJson} />
+          </div>
+        )}
+        <StreamView
+          history={history}
+          reveal={reveal}
+          fitContainer={fitStream}
+        />
+        <form
+          onSubmit={(event) => {
+            event.preventDefault();
+            runInput(input);
+          }}
+          className="flex items-center gap-2 border-t border-beige/10 px-4 py-2"
+        >
+          <label
+            htmlFor="terminal-command-input"
+            className="shrink-0 font-mono text-[11px] text-mainGreen sm:text-xs"
           >
-            $ clear
-          </button>
-        </div>
+            ahmad@portfolio:~$
+          </label>
+          <input
+            id="terminal-command-input"
+            ref={inputRef}
+            value={input}
+            onChange={(event) => setInput(event.target.value)}
+            onKeyDown={(event) => {
+              if (event.key === "Tab") {
+                event.preventDefault();
+                handleTab();
+              }
+            }}
+            aria-label="Terminal command input"
+            autoComplete="off"
+            autoCapitalize="none"
+            spellCheck={false}
+            placeholder="Type 'help' for commands"
+            className="w-full min-h-[40px] bg-transparent font-mono text-[11px] text-beige caret-beige outline-none focus:outline-none placeholder:text-cyan-400/80 selection:bg-mainGreen/30 selection:text-beige sm:text-xs motion-reduce:[caret-blink:0]"
+          />
+        </form>
       </div>
+
+      <div className={cn(fitStream && "border-t border-beige/10 px-4 py-2.5")}>
+        <PresetQuickRun onRun={runPreset} />
+      </div>
+    </div>
+  );
+
+  return (
+    <div className="grid items-start gap-6 pb-24 lg:grid-cols-[1fr_1.2fr] lg:pb-0">
+      <SkillCatalog
+        selectedSkillId={selectedSkillId}
+        onInspect={(id) => {
+          runInput(`inspect ${id}`);
+          setMobileExpanded(true);
+        }}
+      />
+
+      {isDesktop ? (
+        <div className="lg:sticky lg:top-28">{renderDeck(false)}</div>
+      ) : (
+        <MobileTerminalDock
+          title={dockTitle}
+          expanded={mobileExpanded}
+          onExpandedChange={setMobileExpanded}
+          onExpanded={focusPrompt}
+        >
+          {renderDeck(true)}
+        </MobileTerminalDock>
+      )}
     </div>
   );
 }

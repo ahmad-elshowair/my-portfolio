@@ -1,10 +1,10 @@
 "use client";
 
-import { SkillGlyph } from "@/components/skills/shared";
+import Iconify from "@/components/iconify";
 import type { SkillItem } from "@/definitions";
 import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
-import { usePrefersReducedMotion } from "@/hooks";
+import { usePrefersReducedMotion, useSkillsSectionActive } from "@/hooks";
 import { useEffect, useState, useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
 import { statusBadge } from "./bento.constants";
@@ -32,23 +32,8 @@ export function MobileTelemetryDock({ skill }: MobileTelemetryDockProps) {
   const isClient = useIsClient();
   const prefersReducedMotion = usePrefersReducedMotion();
   const [isExpanded, setIsExpanded] = useState(false);
-  const [inSkillsSection, setInSkillsSection] = useState(true);
+  const inSkillsSection = useSkillsSectionActive();
   const status = statusBadge(skill);
-
-  useEffect(() => {
-    const el = document.getElementById("skills");
-    if (!el) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        setInSkillsSection(entry.isIntersecting);
-      },
-      { threshold: 0.05 },
-    );
-
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
 
   // Close sheet on Escape key
   useEffect(() => {
@@ -98,9 +83,9 @@ export function MobileTelemetryDock({ skill }: MobileTelemetryDockProps) {
             className="flex min-w-0 flex-1 items-center gap-2.5 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-mainGreen rounded-xl p-1 active:scale-[0.98] transition-transform"
           >
             <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-beige/10 bg-beige/5">
-              <SkillGlyph
-                skill={skill}
-                className="text-mainGreen text-xl [&_svg]:text-xl shrink-0"
+              <Iconify
+                icon={skill.icon}
+                className="text-mainGreen text-xl h-[1em] w-[1em] shrink-0"
               />
             </div>
             <div className="flex flex-col min-w-0">
@@ -227,9 +212,9 @@ export function MobileTelemetryDock({ skill }: MobileTelemetryDockProps) {
 
               {/* Skill Identity: 32px Glyph + Inika Title */}
               <div className="flex items-center gap-3 min-w-0">
-                <SkillGlyph
-                  skill={skill}
-                  className="text-mainGreen text-[2rem] [&_svg]:text-[2rem] shrink-0"
+                <Iconify
+                  icon={skill.icon}
+                  className="text-mainGreen text-[2rem] h-[1em] w-[1em] shrink-0"
                 />
                 <div className="flex flex-col min-w-0 flex-1">
                   <h4 className="font-inika text-2xl font-bold tracking-tight text-beige truncate">

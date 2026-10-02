@@ -1,6 +1,7 @@
 "use client";
 
-import { SkillEvidence, SkillGlyph } from "@/components/skills/shared";
+import Iconify from "@/components/iconify";
+import { SkillEvidence } from "@/components/skills/shared";
 import { SKILL_CATEGORIES, skills } from "@/data";
 import { AUTHOR } from "@/lib/site";
 import { useDesktopViewport, usePrefersReducedMotion } from "@/hooks";
@@ -169,7 +170,7 @@ function RingChip({
         className,
       )}
     >
-      <SkillGlyph skill={skill} />
+      <Iconify icon={skill.icon} className="h-[1em] w-[1em] shrink-0" />
       {skill.name}
     </button>
   );

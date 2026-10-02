@@ -12,18 +12,6 @@ import { SKILL_PROJECTS } from "@/data";
  * these instead of re-implementing claim markup, so no concept can drift the
  */
 
-/** Renders a skill's official icon with its screen-reader name; text badge when iconless. */
-export function SkillGlyph({
-  skill,
-  className,
-}: {
-  skill: SkillItem;
-  className?: string;
-}) {
-  if (!skill.icon) return null;
-  return <Iconify icon={skill.icon} name={skill.name} className={className} />;
-}
-
 /** Pill links that jump to the cited project's card anchor (#project-<anchor>). */
 export function ProjectPills({
   ids,
@@ -77,7 +65,10 @@ export function SkillEvidence({
       )}
     >
       <div className="flex items-center gap-2 text-lg text-beige *:shrink-0">
-        <SkillGlyph skill={skill} className="[&_svg]:text-2xl" />
+        <Iconify
+          icon={skill.icon}
+          className="text-2xl h-[1em] w-[1em] shrink-0"
+        />
         <span className="font-medium">{skill.name}</span>
       </div>
       <p className="text-sm leading-relaxed text-beige/90">{skill.context}</p>
