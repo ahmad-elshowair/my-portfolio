@@ -5,6 +5,7 @@ import type {
   EntryDraft,
   FlagCategory,
   HistoryEntry,
+  TelemetryDraft,
   TelemetryPayload,
 } from "@/definitions";
 import { HISTORY_LIMIT } from "@/definitions";
@@ -48,8 +49,7 @@ export default function Terminal() {
       history: [{ id: -1, entries }],
       telemetry:
         drafts.find(
-          (draft): draft is Extract<EntryDraft, { kind: "telemetry" }> =>
-            draft.kind === "telemetry",
+          (draft): draft is TelemetryDraft => draft.kind === "telemetry",
         )?.payload ?? null,
     };
   });
@@ -118,8 +118,7 @@ export default function Terminal() {
     const { drafts, selectedSkillId: inspected } = executeCommand(command);
     if (inspected) selectSkill(inspected);
     const telemetry = drafts.find(
-      (draft): draft is Extract<EntryDraft, { kind: "telemetry" }> =>
-        draft.kind === "telemetry",
+      (draft): draft is TelemetryDraft => draft.kind === "telemetry",
     );
     if (telemetry) setLastTelemetry(telemetry.payload);
     appendGroups([{ entries: [{ kind: "echo", text }, ...drafts] }]);

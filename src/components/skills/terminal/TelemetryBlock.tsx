@@ -55,9 +55,8 @@ function StatusPill({ children }: { children: string }) {
 }
 
 export function TelemetryBlock({ payload }: { payload: TelemetryPayload }) {
-  const skill = payload.skill;
-  const resume = payload.resume;
-  if (skill) {
+  if (payload.kind === "skill") {
+    const skill = payload.skill;
     return (
       <div className="flex flex-col gap-1 pl-2">
         <span className="text-beige/50">{"{"}</span>
@@ -87,7 +86,8 @@ export function TelemetryBlock({ payload }: { payload: TelemetryPayload }) {
       </div>
     );
   }
-  if (resume) {
+  if (payload.kind === "resume") {
+    const resume = payload.resume;
     return (
       <div className="flex flex-col gap-1 pl-2">
         <span className="text-beige/50">{"{"}</span>
@@ -106,5 +106,4 @@ export function TelemetryBlock({ payload }: { payload: TelemetryPayload }) {
       </div>
     );
   }
-  return null;
 }

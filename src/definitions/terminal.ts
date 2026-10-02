@@ -37,11 +37,10 @@ export interface ResumeTelemetry {
   links: { label: string; href: string }[];
 }
 
-/** One inspection payload — exactly one branch is populated. */
-export interface TelemetryPayload {
-  skill?: SkillTelemetry;
-  resume?: ResumeTelemetry;
-}
+/** One inspection payload — the variant tag makes "exactly one branch" a type-level fact. */
+export type TelemetryPayload =
+  | { kind: "skill"; skill: SkillTelemetry }
+  | { kind: "resume"; resume: ResumeTelemetry };
 
 /** One row of the help listing — a command form plus what it does. */
 export interface HelpRow {
@@ -72,3 +71,6 @@ type DistributiveOmit<T, K extends PropertyKey> = T extends unknown
 
 /** Draft entries before the stream stamps identity onto them. */
 export type EntryDraft = DistributiveOmit<HistoryEntry, "id">;
+
+/** The telemetry-bearing draft — what the copy action serializes. */
+export type TelemetryDraft = Extract<EntryDraft, { kind: "telemetry" }>;

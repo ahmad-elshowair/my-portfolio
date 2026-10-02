@@ -137,6 +137,7 @@ export interface ExecutionResult {
 
 function skillTelemetry(skill: SkillItem): TelemetryPayload {
   return {
+    kind: "skill",
     skill: {
       name: skill.name,
       category: SKILL_CATEGORIES[skill.category],
@@ -151,6 +152,7 @@ function skillTelemetry(skill: SkillItem): TelemetryPayload {
 
 function resumeTelemetry(): TelemetryPayload {
   return {
+    kind: "resume",
     resume: {
       name: AUTHOR.name,
       role: AUTHOR.role,
