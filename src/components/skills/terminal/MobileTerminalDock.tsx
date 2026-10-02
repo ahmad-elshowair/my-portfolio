@@ -1,7 +1,13 @@
 "use client";
 
 import Iconify from "@/components/iconify";
-import { useEffect, useRef, useState, useSyncExternalStore, type ReactNode } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  useSyncExternalStore,
+  type ReactNode,
+} from "react";
 import { createPortal } from "react-dom";
 import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
@@ -23,19 +29,21 @@ function useIsClient() {
  * When collapsed, it smoothly slides down and retracts back into the small dock pill.
  * Automatically collapses when the user taps outside of the dock.
  */
+
+interface MobileTerminalDockProps {
+  title: string;
+  expanded: boolean;
+  onExpandedChange: (expanded: boolean) => void;
+  onExpanded?: () => void;
+  children: ReactNode;
+}
 export function MobileTerminalDock({
   title,
   expanded,
   onExpandedChange,
   onExpanded,
   children,
-}: {
-  title: string;
-  expanded: boolean;
-  onExpandedChange: (expanded: boolean) => void;
-  onExpanded?: () => void;
-  children: ReactNode;
-}) {
+}: MobileTerminalDockProps) {
   const dockRef = useRef<HTMLDivElement>(null);
   const onExpandedRef = useRef(onExpanded);
   const expandedRef = useRef(expanded);
