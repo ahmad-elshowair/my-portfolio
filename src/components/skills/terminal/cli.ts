@@ -1,6 +1,7 @@
 import type {
   Command,
   EntryDraft,
+  FlagCategory,
   HelpRow,
   SkillCategoryId,
   SkillItem,
@@ -17,24 +18,15 @@ export const GROUPS: SkillCategoryId[] = [
   "languages",
 ];
 
-const CATEGORY_ALIASES: Record<string, SkillCategoryId> = {
-  "--frontend": "frontend",
-  "--backend": "backend",
-  "--tools": "tools",
-};
+/** Flag-bearing categories — the single source `inspect --*` aliases and the quick-run presets derive from. */
+export const FLAG_CATEGORIES: FlagCategory[] = GROUPS.filter(
+  (category): category is FlagCategory => category !== "languages",
+);
 
-type FlagCategory = Exclude<SkillCategoryId, "languages">;
-
-const FLAG_CATEGORY: Record<string, FlagCategory> = {
+const SKILLS_FLAG: Record<string, FlagCategory> = {
   "--fe": "frontend",
   "--be": "backend",
   "--tools": "tools",
-};
-
-const FLAG_NAME: Record<FlagCategory, "fe" | "be" | "tools"> = {
-  frontend: "fe",
-  backend: "be",
-  tools: "tools",
 };
 
 /** Help listing, as structured rows — the stream renders them responsively. */
@@ -113,15 +105,15 @@ export function parseCommand(raw: string): Command {
   const arg = rest.join(" ").trim();
   switch (normalize(head)) {
     case "inspect": {
-      const alias = CATEGORY_ALIASES[arg];
+      const alias = FLAG_CATEGORIES.find((category) => arg === `--${category}`);
       if (alias) return { kind: "inspect-category", category: alias };
       return { kind: "inspect", query: arg };
     }
     case "skills": {
       if (!rest.length) return { kind: "skills" };
-      const category = FLAG_CATEGORY[normalize(rest[0])];
+      const category = SKILLS_FLAG[normalize(rest[0])];
       return category
-        ? { kind: "skills", flag: FLAG_NAME[category] }
+        ? { kind: "skills", flag: category }
         : { kind: "unknown", name: `${head} ${rest[0]}` };
     }
     case "help":
@@ -187,8 +179,7 @@ export function executeCommand(command: Command): ExecutionResult {
       return { drafts: categoryListing(command.category), selectedSkillId: null };
     case "skills":
       if (command.flag) {
-        const category = FLAG_CATEGORY[`--${command.flag}`];
-        return { drafts: categoryListing(category), selectedSkillId: null };
+        return { drafts: categoryListing(command.flag), selectedSkillId: null };
       }
       return { drafts: GROUPS.flatMap(categoryListing), selectedSkillId: null };
     case "inspect": {

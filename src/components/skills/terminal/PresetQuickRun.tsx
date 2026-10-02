@@ -1,16 +1,16 @@
 "use client";
 
-import type { SkillCategoryId } from "@/definitions";
-import { GROUPS } from "./cli";
+import type { FlagCategory } from "@/definitions";
+import { FLAG_CATEGORIES } from "./cli";
 
 export function PresetQuickRun({
   onRun,
 }: {
-  onRun: (preset: SkillCategoryId | "clear") => void;
+  onRun: (preset: FlagCategory | "clear") => void;
 }) {
   return (
     <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">
-      {GROUPS.slice(0, 3).map((category) => (
+      {FLAG_CATEGORIES.map((category) => (
         <button
           key={category}
           type="button"

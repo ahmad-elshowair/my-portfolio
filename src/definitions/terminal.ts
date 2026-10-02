@@ -3,11 +3,14 @@ import type { SkillCategoryId, SkillProjectId } from "./index";
 /** Stream capacity: the newest N command groups are kept; older scroll out. */
 export const HISTORY_LIMIT = 8;
 
+/** Categories that carry a `--*` flag; languages is list-only. */
+export type FlagCategory = Exclude<SkillCategoryId, "languages">;
+
 /** Every raw input parses to exactly one command variant (total function). */
 export type Command =
   | { kind: "inspect"; query: string }
-  | { kind: "inspect-category"; category: SkillCategoryId }
-  | { kind: "skills"; flag?: "fe" | "be" | "tools" }
+  | { kind: "inspect-category"; category: FlagCategory }
+  | { kind: "skills"; flag?: FlagCategory }
   | { kind: "help" }
   | { kind: "clear" }
   | { kind: "cat"; target: "resume" }

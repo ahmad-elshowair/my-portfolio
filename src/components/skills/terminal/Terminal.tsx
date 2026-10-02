@@ -3,8 +3,8 @@
 import type {
   CommandGroup,
   EntryDraft,
+  FlagCategory,
   HistoryEntry,
-  SkillCategoryId,
   TelemetryPayload,
 } from "@/definitions";
 import { HISTORY_LIMIT } from "@/definitions";
@@ -154,7 +154,7 @@ export default function Terminal() {
     inputRef.current?.focus();
   };
 
-  const runPreset = (preset: SkillCategoryId | "clear") => {
+  const runPreset = (preset: FlagCategory | "clear") => {
     runInput(preset === "clear" ? "clear" : `inspect --${preset}`);
   };
 
