@@ -1,9 +1,9 @@
 "use client";
 
-import { SkillGlyph } from "@/components/skills/shared";
 import { SKILL_CATEGORIES, skills } from "@/data";
 import { GROUPS } from "./cli";
 import { cn } from "@/lib/utils";
+import Iconify from "@/components/iconify";
 
 export function SkillCatalog({
   selectedSkillId,
@@ -38,7 +38,7 @@ export function SkillCatalog({
                       : "border-beige/15 bg-beige/5 text-beige/90 hover:bg-beige/10",
                   )}
                 >
-                  <SkillGlyph skill={skill} />
+                  <Iconify icon={skill.icon} className="h-[1em] w-[1em]" />
                   {skill.name}
                 </button>
               ))}

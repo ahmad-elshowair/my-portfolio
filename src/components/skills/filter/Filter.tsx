@@ -1,6 +1,6 @@
 "use client";
 
-import { SkillGlyph } from "@/components/skills/shared";
+import Iconify from "@/components/iconify";
 import { SKILL_CATEGORIES, SKILL_PROJECTS, skills } from "@/data";
 import { useSelectSkill, useSelectedSkillId } from "@/stores/skillsLabStore";
 import { useState } from "react";
@@ -109,7 +109,7 @@ export default function Filter() {
                 !isMatch && "opacity-25",
               )}
             >
-              <SkillGlyph skill={skill} />
+              <Iconify icon={skill.icon} className="h-[1em] w-[1em] shrink-0" />
               {skill.name}
             </button>
           );

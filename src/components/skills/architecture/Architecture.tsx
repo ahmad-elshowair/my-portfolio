@@ -1,6 +1,7 @@
 "use client";
 
-import { SkillEvidence, SkillGlyph } from "@/components/skills/shared";
+import Iconify from "@/components/iconify";
+import { SkillEvidence } from "@/components/skills/shared";
 import { skills } from "@/data";
 import { useSelectSkill, useSelectedSkillId } from "@/stores/skillsLabStore";
 import { cn } from "@/lib/utils";
@@ -73,7 +74,7 @@ export default function Concept011() {
                       !isSelected && !isRelated && "border-beige/15 bg-beige/5 text-beige/90 hover:bg-beige/10",
                     )}
                   >
-                    <SkillGlyph skill={skill} />
+                    <Iconify icon={skill.icon} className="h-[1em] w-[1em] shrink-0" />
                     {skill.name}
                   </button>
                 );
