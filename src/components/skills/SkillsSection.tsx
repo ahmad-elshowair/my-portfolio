@@ -8,7 +8,7 @@ import type { ConceptId } from "@/definitions";
 import { useCallback, useEffect, useState } from "react";
 
 const STORAGE_KEY = "skills-concept";
-const DEFAULT_CONCEPT: ConceptId = "009";
+const DEFAULT_CONCEPT: ConceptId = "012";
 
 function isConceptId(value: string | null): value is ConceptId {
   return value !== null && value in CONCEPT_REGISTRY;

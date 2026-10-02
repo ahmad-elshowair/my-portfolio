@@ -1,11 +1,20 @@
 "use client";
 
 import Iconify from "@/components/iconify";
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
 import { usePrefersReducedMotion } from "@/hooks";
+
+const emptySubscribe = () => () => {};
+function useIsClient() {
+  return useSyncExternalStore(
+    emptySubscribe,
+    () => true,
+    () => false,
+  );
+}
 
 /**
  * Mobile shell for the terminal: a persistent, non-modal bottom panel.
@@ -31,6 +40,7 @@ export function MobileTerminalDock({
   const onExpandedRef = useRef(onExpanded);
   const expandedRef = useRef(expanded);
   const onExpandedChangeRef = useRef(onExpandedChange);
+  const isClient = useIsClient();
   const [inSkillsSection, setInSkillsSection] = useState(true);
   const reduceMotion = usePrefersReducedMotion();
 
@@ -109,6 +119,8 @@ export function MobileTerminalDock({
   useEffect(() => {
     if (expanded) onExpandedRef.current?.();
   }, [expanded]);
+
+  if (!isClient) return null;
 
   // Portal to the body: the host section carries a backdrop-blur, which
   // would otherwise become the containing block for this fixed panel.
