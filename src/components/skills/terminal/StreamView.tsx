@@ -107,13 +107,25 @@ export function StreamView({
       tabIndex={0}
       className={cn(
         "flex flex-col gap-3 overflow-y-auto p-4 font-mono text-[11px] leading-relaxed text-beige/90 sm:text-xs [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-beige/20",
-        fitContainer ? "min-h-0 flex-1" : "max-h-96 min-h-[16rem]",
+        fitContainer ? "min-h-0 flex-1 px-4 py-3 pr-14" : "max-h-96 min-h-[16rem]",
       )}
     >
-      <p className="hidden sm:block">
-        <span className="text-mainGreen">$</span> ahmad.inspectStack()
-        --role=&quot;Full-Stack Developer&quot;
-      </p>
+      {/* Empty state welcome message */}
+      {history.length === 0 ? (
+        <div className="flex flex-col gap-1 py-1 font-mono text-[11px] text-beige/50 sm:text-xs">
+          <p>
+            <span className="text-mainGreen">$</span> ahmad.init()
+          </p>
+          <p className="text-beige/40">
+            terminal ready: zsh (interactive)
+          </p>
+          <p className="text-beige/40">
+            hint: tap a skill card above, or type <span className="text-cyan-400/80">&apos;help&apos;</span> below
+          </p>
+        </div>
+      ) : null}
+
+      {/* command history */}
       {history.map((group) => (
         <div
           key={group.id}

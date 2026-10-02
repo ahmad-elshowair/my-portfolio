@@ -1,10 +1,12 @@
 "use client";
 
+import { CopyAction, type CopyActionProps } from "./CopyAction";
+
 export function TerminalHeader({
-  copyLabel,
+  copyState,
   onCopy,
 }: {
-  copyLabel: string;
+  copyState: CopyActionProps["copyState"];
   onCopy: () => void;
 }) {
   return (
@@ -24,13 +26,9 @@ export function TerminalHeader({
       <span className="ml-2 min-w-0 flex-1 truncate font-mono text-[10px] text-beige/70 sm:text-xs">
         ahmad@stack:~ (zsh - 80x24)
       </span>
-      <button
-        type="button"
-        onClick={onCopy}
-        className="ml-auto min-h-[44px] shrink-0 whitespace-nowrap rounded-md border border-beige/20 bg-beige/5 px-2.5 font-mono text-[10px] text-beige/80 transition-colors duration-200 hover:bg-beige/10 sm:px-3 sm:text-xs"
-      >
-        {copyLabel}
-      </button>
+      <div className="ml-auto">
+        <CopyAction copyState={copyState} onCopy={onCopy} />
+      </div>
     </div>
   );
 }

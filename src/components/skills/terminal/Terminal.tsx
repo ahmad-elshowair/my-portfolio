@@ -18,6 +18,7 @@ import {
   findSkillById,
   parseCommand,
 } from "./cli";
+import { CopyAction } from "./CopyAction";
 import { MobileTerminalDock } from "./MobileTerminalDock";
 import { PresetQuickRun } from "./PresetQuickRun";
 import { SkillCatalog } from "./SkillCatalog";
@@ -195,18 +196,25 @@ export default function Terminal() {
 
   /** The deck flexes to fill the mobile dock; on desktop it sizes itself. */
   const renderDeck = (fitStream: boolean) => (
-    <div className={cn("flex flex-col gap-3", fitStream && "min-h-0 flex-1")}>
+    <div
+      className={cn("flex flex-col", fitStream ? "min-h-0 flex-1" : "gap-3")}
+    >
       <div
         onMouseDown={steerFocus}
         className={cn(
-          "overflow-hidden rounded-xl border border-beige/20 bg-bgGreen/85 shadow-[0_8px_32px_rgba(22,26,25,0.5)] backdrop-blur-md",
-          fitStream && "flex min-h-0 flex-1 flex-col",
+          "relative overflow-hidden rounded-xl border border-beige/20 bg-bgGreen/85 shadow-[0_8px_32px_rgba(22,26,25,0.5)] backdrop-blur-md",
+          fitStream &&
+            "flex min-h-0 flex-1 flex-col rounded-none border-0 bg-transparent shadow-none backdrop-blur-none",
         )}
       >
-        <TerminalHeader
-          copyLabel={copyState === "copied" ? "copied ✓" : "Copy JSON"}
-          onCopy={copyLatestJson}
-        />
+        {!fitStream && (
+          <TerminalHeader copyState={copyState} onCopy={copyLatestJson} />
+        )}
+        {fitStream && lastTelemetry && (
+          <div className="absolute top-2.5 right-3 z-10">
+            <CopyAction copyState={copyState} onCopy={copyLatestJson} />
+          </div>
+        )}
         <StreamView
           history={history}
           reveal={reveal}
@@ -217,7 +225,7 @@ export default function Terminal() {
             event.preventDefault();
             runInput(input);
           }}
-          className="flex items-center gap-2 border-t border-beige/10 px-4 py-3"
+          className="flex items-center gap-2 border-t border-beige/10 px-4 py-2"
         >
           <label
             htmlFor="terminal-command-input"
@@ -240,13 +248,15 @@ export default function Terminal() {
             autoComplete="off"
             autoCapitalize="none"
             spellCheck={false}
-            placeholder="type 'help' for commands"
-            className="w-full min-h-[44px] bg-transparent font-mono text-[11px] text-beige caret-beige outline-none focus:outline-none placeholder:text-beige/40 selection:bg-mainGreen/30 selection:text-beige sm:text-xs motion-reduce:[caret-blink:0]"
+            placeholder="Type 'help' for commands"
+            className="w-full min-h-[40px] bg-transparent font-mono text-[11px] text-beige caret-beige outline-none focus:outline-none placeholder:text-cyan-400/80 selection:bg-mainGreen/30 selection:text-beige sm:text-xs motion-reduce:[caret-blink:0]"
           />
         </form>
       </div>
 
-      <PresetQuickRun onRun={runPreset} />
+      <div className={cn(fitStream && "border-t border-beige/10 px-4 py-2.5")}>
+        <PresetQuickRun onRun={runPreset} />
+      </div>
     </div>
   );
 
