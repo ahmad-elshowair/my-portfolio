@@ -41,7 +41,7 @@ function ProjectBadge({ project }: { project: TelemetryProjectBadge }) {
       }}
       className="min-h-[44px] rounded-full border border-mainGreen/40 bg-mainGreen/10 px-3 text-[11px] text-beige transition-colors duration-200 hover:bg-mainGreen/25 sm:text-xs"
     >
-      [🚀 SHIPPED IN {project.name.toUpperCase()}]
+      [<span aria-hidden="true">🚀</span> SHIPPED IN {project.name.toUpperCase()}]
     </button>
   );
 }

@@ -136,6 +136,7 @@ export default function Terminal() {
       candidates.length > 1 ? { input: next, candidates } : null;
     setInput(next);
     if (repeated) {
+      tabCandidatesRef.current = null;
       appendGroups([
         {
           entries: [
@@ -146,10 +147,10 @@ export default function Terminal() {
     }
   };
 
-  /** Typing anywhere else in the chrome lands in the prompt, not on a stray node. */
+  /** Plain clicks land in the prompt; drags that select output text keep it. */
   const steerFocus = (event: MouseEvent<HTMLDivElement>) => {
     if ((event.target as HTMLElement).closest("button, a, input")) return;
-    event.preventDefault();
+    if (!window.getSelection()?.isCollapsed) return;
     inputRef.current?.focus();
   };
 
@@ -200,7 +201,7 @@ export default function Terminal() {
       className={cn("flex flex-col", fitStream ? "min-h-0 flex-1" : "gap-3")}
     >
       <div
-        onMouseDown={steerFocus}
+        onClick={steerFocus}
         className={cn(
           "relative overflow-hidden rounded-xl border border-beige/20 bg-bgGreen/85 shadow-[0_8px_32px_rgba(22,26,25,0.5)] backdrop-blur-md",
           fitStream &&

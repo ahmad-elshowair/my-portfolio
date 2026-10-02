@@ -33,7 +33,7 @@ export function CopyAction({ copyState, onCopy, className }: CopyActionProps) {
             transition={{ duration: 0.2, ease: "easeOut" }}
             className="flex h-7 items-center rounded-md border border-mainGreen/40 bg-mainGreen/20 px-2.5 font-mono text-[11px] leading-none text-beige shadow-sm"
           >
-            copied ✓
+            copied <span aria-hidden="true">✓</span>
           </motion.div>
         ) : (
           <motion.button
