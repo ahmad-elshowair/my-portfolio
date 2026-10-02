@@ -9,6 +9,7 @@ import type {
 } from "@/definitions";
 import { HISTORY_LIMIT } from "@/definitions";
 import { useSelectSkill, useSelectedSkillId } from "@/stores/skillsLabStore";
+import { useDesktopViewport } from "@/hooks";
 import { useEffect, useRef, useState, type MouseEvent } from "react";
 import {
   completeInspectToken,
@@ -16,6 +17,7 @@ import {
   findSkillById,
   parseCommand,
 } from "./cli";
+import { MobileTerminalDock } from "./MobileTerminalDock";
 import { PresetQuickRun } from "./PresetQuickRun";
 import { SkillCatalog } from "./SkillCatalog";
 import { StreamView, type RevealSignal } from "./StreamView";
@@ -25,6 +27,7 @@ import { TerminalHeader } from "./TerminalHeader";
 export default function Concept012() {
   const selectedSkillId = useSelectedSkillId();
   const selectSkill = useSelectSkill();
+  const isDesktop = useDesktopViewport();
   // A carried-over selection is inspected once, at first render.
   const [initialRun] = useState(() => {
     const skill = selectedSkillId ? findSkillById(selectedSkillId) : undefined;
@@ -57,6 +60,7 @@ export default function Concept012() {
   );
   const [input, setInput] = useState("");
   const [reveal, setReveal] = useState<RevealSignal | null>(null);
+  const [mobileExpanded, setMobileExpanded] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const revealNonceRef = useRef(0);
   const groupIdRef = useRef(0);
@@ -185,59 +189,80 @@ export default function Concept012() {
     }
   };
 
+  const dockTitle = echoTextOf(history[history.length - 1]) ?? "terminal";
+  const focusPrompt = () => inputRef.current?.focus();
+
+  const deck = (
+    <div className="flex flex-col gap-3">
+      <div
+        onMouseDown={steerFocus}
+        className="overflow-hidden rounded-xl border border-beige/20 bg-bgGreen/85 shadow-[0_8px_32px_rgba(22,26,25,0.5)] backdrop-blur-md"
+      >
+        <TerminalHeader
+          copyLabel={copyState === "copied" ? "copied ✓" : "Copy JSON"}
+          onCopy={copyLatestJson}
+        />
+        <StreamView history={history} reveal={reveal} />
+        <form
+          onSubmit={(event) => {
+            event.preventDefault();
+            runInput(input);
+          }}
+          className="flex items-center gap-2 border-t border-beige/10 px-4 py-3"
+        >
+          <label
+            htmlFor="terminal-command-input"
+            className="shrink-0 font-mono text-xs text-mainGreen"
+          >
+            ahmad@portfolio:~$
+          </label>
+          <input
+            id="terminal-command-input"
+            ref={inputRef}
+            value={input}
+            onChange={(event) => setInput(event.target.value)}
+            onKeyDown={(event) => {
+              if (event.key === "Tab") {
+                event.preventDefault();
+                handleTab();
+              }
+            }}
+            aria-label="Terminal command input"
+            autoComplete="off"
+            autoCapitalize="none"
+            spellCheck={false}
+            placeholder="type 'help' for commands"
+            className="w-full min-h-[44px] bg-transparent font-mono text-xs text-beige caret-beige outline-none focus:outline-none placeholder:text-beige/40 selection:bg-mainGreen/30 selection:text-beige motion-reduce:[caret-blink:0]"
+          />
+        </form>
+      </div>
+
+      <PresetQuickRun onRun={runPreset} />
+    </div>
+  );
+
   return (
-    <div className="grid items-start gap-6 lg:grid-cols-[1fr_1.2fr]">
+    <div className="grid items-start gap-6 pb-24 lg:grid-cols-[1fr_1.2fr] lg:pb-0">
       <SkillCatalog
         selectedSkillId={selectedSkillId}
-        onInspect={(id) => runInput(`inspect ${id}`)}
+        onInspect={(id) => {
+          runInput(`inspect ${id}`);
+          setMobileExpanded(true);
+        }}
       />
 
-      <div className="flex flex-col gap-3 lg:sticky lg:top-28">
-        <div
-          onMouseDown={steerFocus}
-          className="overflow-hidden rounded-xl border border-beige/20 bg-bgGreen/85 shadow-[0_8px_32px_rgba(22,26,25,0.5)] backdrop-blur-md"
+      {isDesktop ? (
+        <div className="lg:sticky lg:top-28">{deck}</div>
+      ) : (
+        <MobileTerminalDock
+          title={dockTitle}
+          expanded={mobileExpanded}
+          onExpandedChange={setMobileExpanded}
+          onExpanded={focusPrompt}
         >
-          <TerminalHeader
-            copyLabel={copyState === "copied" ? "copied ✓" : "Copy JSON"}
-            onCopy={copyLatestJson}
-          />
-          <StreamView history={history} reveal={reveal} />
-          <form
-            onSubmit={(event) => {
-              event.preventDefault();
-              runInput(input);
-            }}
-            className="flex items-center gap-2 border-t border-beige/10 px-4 py-3"
-          >
-            <label
-              htmlFor="terminal-command-input"
-              className="shrink-0 font-mono text-xs text-mainGreen"
-            >
-              ahmad@portfolio:~$
-            </label>
-            <input
-              id="terminal-command-input"
-              ref={inputRef}
-              value={input}
-              onChange={(event) => setInput(event.target.value)}
-              onKeyDown={(event) => {
-                if (event.key === "Tab") {
-                  event.preventDefault();
-                  handleTab();
-                }
-              }}
-              aria-label="Terminal command input"
-              autoComplete="off"
-              autoCapitalize="none"
-              spellCheck={false}
-              placeholder="type 'help' for commands"
-              className="w-full min-h-[44px] bg-transparent font-mono text-xs text-beige caret-beige outline-none focus:outline-none placeholder:text-beige/40 selection:bg-mainGreen/30 selection:text-beige motion-reduce:[caret-blink:0]"
-            />
-          </form>
-        </div>
-
-        <PresetQuickRun onRun={runPreset} />
-      </div>
+          {deck}
+        </MobileTerminalDock>
+      )}
     </div>
   );
 }
