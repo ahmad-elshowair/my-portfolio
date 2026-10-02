@@ -89,8 +89,12 @@ export function StreamView({
       `[data-group-id="${reveal.groupId}"]`,
     );
     if (!stream || !target) return;
+    // Rect-relative math — offsetTop would silently break if a positioned
+    // ancestor ever sat between the stream and its groups.
+    const streamRect = stream.getBoundingClientRect();
+    const targetRect = target.getBoundingClientRect();
     stream.scrollTo({
-      top: Math.max(0, target.offsetTop - stream.offsetTop - 8),
+      top: Math.max(0, stream.scrollTop + targetRect.top - streamRect.top - 8),
       behavior: reduceMotion ? "auto" : "smooth",
     });
     setFlashId(reveal.groupId);
