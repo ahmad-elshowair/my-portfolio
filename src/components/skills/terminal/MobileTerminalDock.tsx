@@ -53,7 +53,12 @@ export function MobileTerminalDock({
   return createPortal(
     <div
       className={cn(
-        "fixed bottom-4 inset-x-4 sm:inset-x-8 z-40 flex flex-col overflow-hidden rounded-2xl border border-beige/20 bg-bgGreen/95 shadow-[0_12px_40px_rgba(22,26,25,0.6)] backdrop-blur-xl transition-all duration-300 ease-out motion-reduce:transition-none lg:hidden",
+        "fixed z-40 flex flex-col overflow-hidden border border-beige/20 bg-bgGreen/95 shadow-[0_12px_40px_rgba(22,26,25,0.6)] backdrop-blur-xl transition-all duration-300 ease-out motion-reduce:transition-none lg:hidden",
+        // Collapsed: an inset pill. Expanded: a full-bleed sheet docked to
+        // the bottom edge, clearing the home-indicator via the safe area.
+        expanded
+          ? "inset-x-0 bottom-0 max-h-[85dvh] rounded-t-2xl border-x-0 border-b-0 pb-[env(safe-area-inset-bottom)]"
+          : "bottom-4 inset-x-4 rounded-2xl sm:inset-x-8",
         inSkillsSection
           ? "translate-y-0 opacity-100"
           : "pointer-events-none translate-y-8 opacity-0",
@@ -64,9 +69,9 @@ export function MobileTerminalDock({
         onClick={() => onExpandedChange(!expanded)}
         aria-expanded={expanded}
         aria-controls="terminal-mobile-deck"
-        className="flex min-h-[44px] w-full items-center justify-between gap-3 px-3 py-2.5 text-left transition-colors duration-200 hover:bg-beige/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-mainGreen"
+        className="flex min-h-[44px] w-full shrink-0 items-center justify-between gap-3 px-3 py-2.5 text-left transition-colors duration-200 hover:bg-beige/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-mainGreen"
       >
-        <span className="flex min-w-0 items-center gap-2 font-mono text-xs text-beige/90">
+        <span className="flex min-w-0 items-center gap-2 font-mono text-[11px] text-beige/90 sm:text-xs">
           <span className="text-mainGreen">$</span>
           {/* key remount re-triggers the entrance when the command changes */}
           <span
@@ -76,7 +81,7 @@ export function MobileTerminalDock({
             {title}
           </span>
         </span>
-        <span className="flex shrink-0 items-center gap-1.5 text-xs text-beige/60">
+        <span className="flex shrink-0 items-center gap-1.5 text-[11px] text-beige/60 sm:text-xs">
           {expanded ? "collapse" : "terminal"}
           <Iconify
             icon={expanded ? "lucide:chevron-down" : "lucide:chevron-up"}
@@ -88,7 +93,7 @@ export function MobileTerminalDock({
       {expanded ? (
         <div
           id="terminal-mobile-deck"
-          className="flex max-h-[70vh] flex-col gap-3 overflow-y-auto border-t border-beige/10 p-3 animate-in slide-in-from-bottom-2 duration-200 motion-reduce:animate-none"
+          className="flex min-h-0 flex-1 flex-col gap-3 overflow-hidden border-t border-beige/10 p-3 animate-in slide-in-from-bottom-2 duration-200 motion-reduce:animate-none"
         >
           {children}
         </div>

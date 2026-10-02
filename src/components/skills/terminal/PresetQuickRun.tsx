@@ -15,7 +15,7 @@ export function PresetQuickRun({
           key={category}
           type="button"
           onClick={() => onRun(category)}
-          className="min-h-[44px] rounded-full border border-beige/20 bg-beige/5 px-3 py-1 font-mono text-xs text-beige/80 transition-colors duration-200 hover:bg-beige/10"
+          className="min-h-[44px] rounded-full border border-beige/20 bg-beige/5 px-3 py-1 font-mono text-[11px] text-beige/80 transition-colors duration-200 hover:bg-beige/10 sm:text-xs"
         >
           $ inspect --{category}
         </button>
@@ -23,7 +23,7 @@ export function PresetQuickRun({
       <button
         type="button"
         onClick={() => onRun("clear")}
-        className="min-h-[44px] rounded-full border border-beige/20 bg-beige/5 px-3 py-1 font-mono text-xs text-beige/80 transition-colors duration-200 hover:bg-beige/10"
+        className="min-h-[44px] rounded-full border border-beige/20 bg-beige/5 px-3 py-1 font-mono text-[11px] text-beige/80 transition-colors duration-200 hover:bg-beige/10 sm:text-xs"
       >
         $ clear
       </button>

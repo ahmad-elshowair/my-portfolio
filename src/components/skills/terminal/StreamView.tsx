@@ -3,7 +3,7 @@
 import type { CommandGroup, HistoryEntry } from "@/definitions";
 import { SKILL_CATEGORIES } from "@/data";
 import { usePrefersReducedMotion } from "@/hooks";
-import { useEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import { TelemetryBlock } from "./TelemetryBlock";
 
@@ -32,11 +32,19 @@ function EntryView({ entry }: { entry: HistoryEntry }) {
           ) : null}
         </p>
       );
-    case "info":
+    case "help":
       return (
-        <pre className="pl-2 whitespace-pre-wrap text-beige/70">
-          {entry.lines.join("\n")}
-        </pre>
+        <div className="flex flex-col gap-2 pl-2">
+          <p className="text-beige/60">available commands:</p>
+          <dl className="flex flex-col gap-1.5 lg:grid lg:grid-cols-[auto_1fr] lg:gap-x-8 lg:gap-y-1">
+            {entry.rows.map((row) => (
+              <Fragment key={row.command}>
+                <dt className="whitespace-nowrap text-beige">{row.command}</dt>
+                <dd className="text-beige/60">{row.description}</dd>
+              </Fragment>
+            ))}
+          </dl>
+        </div>
       );
     case "listing":
       return (
@@ -53,9 +61,12 @@ function EntryView({ entry }: { entry: HistoryEntry }) {
 export function StreamView({
   history,
   reveal,
+  fitContainer = false,
 }: {
   history: CommandGroup[];
   reveal: RevealSignal | null;
+  /** In the mobile dock the stream fills the leftover panel height. */
+  fitContainer?: boolean;
 }) {
   const streamRef = useRef<HTMLDivElement>(null);
   const reduceMotion = usePrefersReducedMotion();
@@ -94,11 +105,14 @@ export function StreamView({
       aria-label="Terminal output"
       aria-live="polite"
       tabIndex={0}
-      className="flex max-h-96 min-h-[16rem] flex-col gap-3 overflow-y-auto p-4 font-mono text-xs leading-relaxed text-beige/90 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-beige/20"
+      className={cn(
+        "flex flex-col gap-3 overflow-y-auto p-4 font-mono text-[11px] leading-relaxed text-beige/90 sm:text-xs [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-beige/20",
+        fitContainer ? "min-h-0 flex-1" : "max-h-96 min-h-[16rem]",
+      )}
     >
-      <p>
-        <span className="text-mainGreen">$</span>{" "}
-        ahmad.inspectStack() --role=&quot;Full-Stack Developer&quot;
+      <p className="hidden sm:block">
+        <span className="text-mainGreen">$</span> ahmad.inspectStack()
+        --role=&quot;Full-Stack Developer&quot;
       </p>
       {history.map((group) => (
         <div

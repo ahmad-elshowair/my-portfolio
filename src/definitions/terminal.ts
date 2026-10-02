@@ -40,11 +40,17 @@ export interface TelemetryPayload {
   resume?: ResumeTelemetry;
 }
 
+/** One row of the help listing — a command form plus what it does. */
+export interface HelpRow {
+  command: string;
+  description: string;
+}
+
 export type HistoryEntry =
   | { id: number; kind: "echo"; text: string }
   | { id: number; kind: "telemetry"; payload: TelemetryPayload }
   | { id: number; kind: "listing"; category: SkillCategoryId; names: string[] }
-  | { id: number; kind: "info"; lines: string[] }
+  | { id: number; kind: "help"; rows: HelpRow[] }
   | { id: number; kind: "error"; message: string; hint?: string }
   | { id: number; kind: "hint"; message: string };
 

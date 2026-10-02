@@ -10,6 +10,7 @@ import type {
 import { HISTORY_LIMIT } from "@/definitions";
 import { useSelectSkill, useSelectedSkillId } from "@/stores/skillsLabStore";
 import { useDesktopViewport } from "@/hooks";
+import { cn } from "@/lib/utils";
 import { useEffect, useRef, useState, type MouseEvent } from "react";
 import {
   completeInspectToken,
@@ -24,7 +25,7 @@ import { StreamView, type RevealSignal } from "./StreamView";
 import { TerminalHeader } from "./TerminalHeader";
 
 /** Developer terminal — dual pane with a live in-memory CLI. */
-export default function Concept012() {
+export default function Terminal() {
   const selectedSkillId = useSelectedSkillId();
   const selectSkill = useSelectSkill();
   const isDesktop = useDesktopViewport();
@@ -192,17 +193,25 @@ export default function Concept012() {
   const dockTitle = echoTextOf(history[history.length - 1]) ?? "terminal";
   const focusPrompt = () => inputRef.current?.focus();
 
-  const deck = (
-    <div className="flex flex-col gap-3">
+  /** The deck flexes to fill the mobile dock; on desktop it sizes itself. */
+  const renderDeck = (fitStream: boolean) => (
+    <div className={cn("flex flex-col gap-3", fitStream && "min-h-0 flex-1")}>
       <div
         onMouseDown={steerFocus}
-        className="overflow-hidden rounded-xl border border-beige/20 bg-bgGreen/85 shadow-[0_8px_32px_rgba(22,26,25,0.5)] backdrop-blur-md"
+        className={cn(
+          "overflow-hidden rounded-xl border border-beige/20 bg-bgGreen/85 shadow-[0_8px_32px_rgba(22,26,25,0.5)] backdrop-blur-md",
+          fitStream && "flex min-h-0 flex-1 flex-col",
+        )}
       >
         <TerminalHeader
           copyLabel={copyState === "copied" ? "copied ✓" : "Copy JSON"}
           onCopy={copyLatestJson}
         />
-        <StreamView history={history} reveal={reveal} />
+        <StreamView
+          history={history}
+          reveal={reveal}
+          fitContainer={fitStream}
+        />
         <form
           onSubmit={(event) => {
             event.preventDefault();
@@ -212,7 +221,7 @@ export default function Concept012() {
         >
           <label
             htmlFor="terminal-command-input"
-            className="shrink-0 font-mono text-xs text-mainGreen"
+            className="shrink-0 font-mono text-[11px] text-mainGreen sm:text-xs"
           >
             ahmad@portfolio:~$
           </label>
@@ -232,7 +241,7 @@ export default function Concept012() {
             autoCapitalize="none"
             spellCheck={false}
             placeholder="type 'help' for commands"
-            className="w-full min-h-[44px] bg-transparent font-mono text-xs text-beige caret-beige outline-none focus:outline-none placeholder:text-beige/40 selection:bg-mainGreen/30 selection:text-beige motion-reduce:[caret-blink:0]"
+            className="w-full min-h-[44px] bg-transparent font-mono text-[11px] text-beige caret-beige outline-none focus:outline-none placeholder:text-beige/40 selection:bg-mainGreen/30 selection:text-beige sm:text-xs motion-reduce:[caret-blink:0]"
           />
         </form>
       </div>
@@ -252,7 +261,7 @@ export default function Concept012() {
       />
 
       {isDesktop ? (
-        <div className="lg:sticky lg:top-28">{deck}</div>
+        <div className="lg:sticky lg:top-28">{renderDeck(false)}</div>
       ) : (
         <MobileTerminalDock
           title={dockTitle}
@@ -260,7 +269,7 @@ export default function Concept012() {
           onExpandedChange={setMobileExpanded}
           onExpanded={focusPrompt}
         >
-          {deck}
+          {renderDeck(true)}
         </MobileTerminalDock>
       )}
     </div>

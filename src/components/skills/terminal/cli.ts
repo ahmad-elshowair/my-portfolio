@@ -1,6 +1,7 @@
 import type {
   Command,
   EntryDraft,
+  HelpRow,
   SkillCategoryId,
   SkillItem,
   TelemetryPayload,
@@ -36,15 +37,17 @@ const FLAG_NAME: Record<FlagCategory, "fe" | "be" | "tools"> = {
   tools: "tools",
 };
 
-const HELP_LINES = [
-  "available commands:",
-  "  inspect <skill>                       telemetry for a skill (fuzzy match)",
-  "  inspect --frontend | --backend | --tools",
-  "                                        list one category",
-  "  skills [--fe | --be | --tools]        list skills by category",
-  "  cat resume                            whoami payload",
-  "  clear                                 flush the stream",
-  "  Tab                                   complete skill names",
+/** Help listing, as structured rows — the stream renders them responsively. */
+const HELP_ROWS: HelpRow[] = [
+  { command: "inspect <skill>", description: "telemetry for a skill (fuzzy match)" },
+  {
+    command: "inspect --frontend | --backend | --tools",
+    description: "list one category",
+  },
+  { command: "skills [--fe | --be | --tools]", description: "list skills by category" },
+  { command: "cat resume", description: "whoami payload" },
+  { command: "clear", description: "flush the stream" },
+  { command: "Tab", description: "complete skill names" },
 ];
 
 const normalize = (value: string) => value.toLowerCase();
@@ -179,7 +182,7 @@ function categoryListing(category: SkillCategoryId): EntryDraft[] {
 export function executeCommand(command: Command): ExecutionResult {
   switch (command.kind) {
     case "help":
-      return { drafts: [{ kind: "info", lines: HELP_LINES }], selectedSkillId: null };
+      return { drafts: [{ kind: "help", rows: HELP_ROWS }], selectedSkillId: null };
     case "inspect-category":
       return { drafts: categoryListing(command.category), selectedSkillId: null };
     case "skills":
