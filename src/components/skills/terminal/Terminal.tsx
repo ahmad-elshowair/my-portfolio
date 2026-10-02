@@ -18,7 +18,7 @@ import {
 } from "./cli";
 import { PresetQuickRun } from "./PresetQuickRun";
 import { SkillCatalog } from "./SkillCatalog";
-import { StreamView } from "./StreamView";
+import { StreamView, type RevealSignal } from "./StreamView";
 import { TerminalHeader } from "./TerminalHeader";
 
 /** Developer terminal — dual pane with a live in-memory CLI. */
@@ -56,7 +56,9 @@ export default function Concept012() {
     "idle",
   );
   const [input, setInput] = useState("");
+  const [reveal, setReveal] = useState<RevealSignal | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const revealNonceRef = useRef(0);
   const groupIdRef = useRef(0);
   const entryIdRef = useRef(0);
   const copyResetRef = useRef<number | undefined>(undefined);
@@ -80,6 +82,16 @@ export default function Concept012() {
     });
   };
 
+  const revealGroup = (groupId: number) => {
+    revealNonceRef.current += 1;
+    setReveal({ groupId, nonce: revealNonceRef.current });
+  };
+
+  const echoTextOf = (group: CommandGroup | undefined) => {
+    const first = group?.entries[0];
+    return first?.kind === "echo" ? first.text : null;
+  };
+
   const runInput = (raw: string) => {
     const text = raw.trim();
     if (!text) return;
@@ -87,6 +99,13 @@ export default function Concept012() {
     if (command.kind === "clear") {
       setHistory([]);
       selectSkill(null);
+      setInput("");
+      return;
+    }
+    // Output already in the stream? Surface it instead of stacking a copy.
+    const existing = history.find((group) => echoTextOf(group) === text);
+    if (existing) {
+      revealGroup(existing.id);
       setInput("");
       return;
     }
@@ -182,7 +201,7 @@ export default function Concept012() {
             copyLabel={copyState === "copied" ? "copied ✓" : "Copy JSON"}
             onCopy={copyLatestJson}
           />
-          <StreamView history={history} />
+          <StreamView history={history} reveal={reveal} />
           <form
             onSubmit={(event) => {
               event.preventDefault();

@@ -3,9 +3,15 @@
 import type { CommandGroup, HistoryEntry } from "@/definitions";
 import { SKILL_CATEGORIES } from "@/data";
 import { usePrefersReducedMotion } from "@/hooks";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import { TelemetryBlock } from "./TelemetryBlock";
+
+/** Identity of a group to surface; the nonce re-triggers repeats. */
+export interface RevealSignal {
+  groupId: number;
+  nonce: number;
+}
 
 function EntryView({ entry }: { entry: HistoryEntry }) {
   switch (entry.kind) {
@@ -44,9 +50,16 @@ function EntryView({ entry }: { entry: HistoryEntry }) {
   }
 }
 
-export function StreamView({ history }: { history: CommandGroup[] }) {
+export function StreamView({
+  history,
+  reveal,
+}: {
+  history: CommandGroup[];
+  reveal: RevealSignal | null;
+}) {
   const streamRef = useRef<HTMLDivElement>(null);
   const reduceMotion = usePrefersReducedMotion();
+  const [flashId, setFlashId] = useState<number | null>(null);
 
   useEffect(() => {
     const stream = streamRef.current;
@@ -56,6 +69,23 @@ export function StreamView({ history }: { history: CommandGroup[] }) {
       behavior: reduceMotion ? "auto" : "smooth",
     });
   }, [history, reduceMotion]);
+
+  // Surface a group: scroll it into view and pulse it once.
+  useEffect(() => {
+    if (!reveal) return;
+    const stream = streamRef.current;
+    const target = stream?.querySelector<HTMLElement>(
+      `[data-group-id="${reveal.groupId}"]`,
+    );
+    if (!stream || !target) return;
+    stream.scrollTo({
+      top: Math.max(0, target.offsetTop - stream.offsetTop - 8),
+      behavior: reduceMotion ? "auto" : "smooth",
+    });
+    setFlashId(reveal.groupId);
+    const reset = window.setTimeout(() => setFlashId(null), 700);
+    return () => window.clearTimeout(reset);
+  }, [reveal, reduceMotion]);
 
   return (
     <div
@@ -73,9 +103,11 @@ export function StreamView({ history }: { history: CommandGroup[] }) {
       {history.map((group) => (
         <div
           key={group.id}
+          data-group-id={group.id}
           className={cn(
-            "flex flex-col gap-1",
+            "flex flex-col gap-1 rounded-lg px-2 -mx-2 transition-colors duration-500",
             !reduceMotion && "animate-in fade-in duration-150",
+            flashId === group.id && "bg-mainGreen/15",
           )}
         >
           {group.entries.map((entry) => (
