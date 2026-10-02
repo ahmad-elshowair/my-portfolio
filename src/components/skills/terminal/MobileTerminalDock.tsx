@@ -4,14 +4,13 @@ import Iconify from "@/components/iconify";
 import {
   useEffect,
   useRef,
-  useState,
   useSyncExternalStore,
   type ReactNode,
 } from "react";
 import { createPortal } from "react-dom";
 import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
-import { usePrefersReducedMotion } from "@/hooks";
+import { usePrefersReducedMotion, useSkillsSectionActive } from "@/hooks";
 
 const emptySubscribe = () => () => {};
 function useIsClient() {
@@ -49,7 +48,7 @@ export function MobileTerminalDock({
   const expandedRef = useRef(expanded);
   const onExpandedChangeRef = useRef(onExpandedChange);
   const isClient = useIsClient();
-  const [inSkillsSection, setInSkillsSection] = useState(true);
+  const inSkillsSection = useSkillsSectionActive();
   const reduceMotion = usePrefersReducedMotion();
 
   useEffect(() => {
@@ -79,50 +78,13 @@ export function MobileTerminalDock({
     return () => document.removeEventListener("pointerdown", handlePointerDown);
   }, []);
 
-  // The panel strictly belongs to the skills section:
-  // It only shows when the user is viewing #skills, and immediately hides
-  // (and collapses) the moment they scroll past #skills or into #projects.
+  // The panel strictly belongs to the skills section: leaving it collapses
+  // the drawer so it never floats over unrelated content.
   useEffect(() => {
-    const skillsSection = document.getElementById("skills");
-    const projectsSection = document.getElementById("projects");
-    if (!skillsSection) return;
-
-    const checkVisibility = () => {
-      const skillsRect = skillsSection.getBoundingClientRect();
-      const windowHeight = window.innerHeight;
-
-      let projectsOverlapping = false;
-      if (projectsSection) {
-        const projectsRect = projectsSection.getBoundingClientRect();
-        // The moment the projects section enters the screen (top < 75% of viewport):
-        if (projectsRect.top < windowHeight * 0.75) {
-          projectsOverlapping = true;
-        }
-      }
-
-      // Skills section is active when its top has reached the viewport,
-      // its bottom has not scrolled past the top of the screen,
-      // and the projects section has not taken over.
-      const isSkillsActive =
-        skillsRect.top < windowHeight * 0.75 &&
-        skillsRect.bottom > windowHeight * 0.25 &&
-        !projectsOverlapping;
-
-      setInSkillsSection(isSkillsActive);
-      if (!isSkillsActive && expandedRef.current) {
-        onExpandedChangeRef.current(false);
-      }
-    };
-
-    window.addEventListener("scroll", checkVisibility, { passive: true });
-    window.addEventListener("resize", checkVisibility, { passive: true });
-    checkVisibility();
-
-    return () => {
-      window.removeEventListener("scroll", checkVisibility);
-      window.removeEventListener("resize", checkVisibility);
-    };
-  }, []);
+    if (!inSkillsSection && expandedRef.current) {
+      onExpandedChangeRef.current(false);
+    }
+  }, [inSkillsSection]);
 
   useEffect(() => {
     if (expanded) onExpandedRef.current?.();

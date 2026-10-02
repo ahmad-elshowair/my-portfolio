@@ -4,7 +4,7 @@ import Iconify from "@/components/iconify";
 import type { SkillItem } from "@/definitions";
 import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
-import { usePrefersReducedMotion } from "@/hooks";
+import { usePrefersReducedMotion, useSkillsSectionActive } from "@/hooks";
 import { useEffect, useState, useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
 import { statusBadge } from "./bento.constants";
@@ -32,23 +32,8 @@ export function MobileTelemetryDock({ skill }: MobileTelemetryDockProps) {
   const isClient = useIsClient();
   const prefersReducedMotion = usePrefersReducedMotion();
   const [isExpanded, setIsExpanded] = useState(false);
-  const [inSkillsSection, setInSkillsSection] = useState(true);
+  const inSkillsSection = useSkillsSectionActive();
   const status = statusBadge(skill);
-
-  useEffect(() => {
-    const el = document.getElementById("skills");
-    if (!el) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        setInSkillsSection(entry.isIntersecting);
-      },
-      { threshold: 0.05 },
-    );
-
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
 
   // Close sheet on Escape key
   useEffect(() => {
