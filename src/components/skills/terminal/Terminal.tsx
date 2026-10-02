@@ -29,7 +29,10 @@ export default function Concept012() {
   const [initialRun] = useState(() => {
     const skill = selectedSkillId ? findSkillById(selectedSkillId) : undefined;
     if (!skill) {
-      return { history: [] as CommandGroup[], telemetry: null as TelemetryPayload | null };
+      return {
+        history: [] as CommandGroup[],
+        telemetry: null as TelemetryPayload | null,
+      };
     }
     const { drafts } = executeCommand({ kind: "inspect", query: skill.id });
     const entries: HistoryEntry[] = [
@@ -57,9 +60,10 @@ export default function Concept012() {
   const groupIdRef = useRef(0);
   const entryIdRef = useRef(0);
   const copyResetRef = useRef<number | undefined>(undefined);
-  const tabCandidatesRef = useRef<{ input: string; candidates: string[] } | null>(
-    null,
-  );
+  const tabCandidatesRef = useRef<{
+    input: string;
+    candidates: string[];
+  } | null>(null);
 
   useEffect(() => () => window.clearTimeout(copyResetRef.current), []);
 
@@ -155,18 +159,21 @@ export default function Concept012() {
       ]);
     } finally {
       window.clearTimeout(copyResetRef.current);
-      copyResetRef.current = window.setTimeout(() => setCopyState("idle"), 1500);
+      copyResetRef.current = window.setTimeout(
+        () => setCopyState("idle"),
+        1500,
+      );
     }
   };
 
   return (
-    <div className="grid gap-6 lg:grid-cols-[1fr_1.2fr]">
+    <div className="grid items-start gap-6 lg:grid-cols-[1fr_1.2fr]">
       <SkillCatalog
         selectedSkillId={selectedSkillId}
         onInspect={(id) => runInput(`inspect ${id}`)}
       />
 
-      <div className="flex flex-col gap-3">
+      <div className="flex flex-col gap-3 lg:sticky lg:top-28">
         <div
           onMouseDown={steerFocus}
           className="overflow-hidden rounded-xl border border-beige/20 bg-bgGreen/85 shadow-[0_8px_32px_rgba(22,26,25,0.5)] backdrop-blur-md"
@@ -205,7 +212,7 @@ export default function Concept012() {
               autoCapitalize="none"
               spellCheck={false}
               placeholder="type 'help' for commands"
-              className="w-full min-h-[44px] bg-transparent font-mono text-xs text-beige caret-beige outline-none placeholder:text-beige/40 selection:bg-mainGreen/30 selection:text-beige motion-reduce:[caret-blink:0]"
+              className="w-full min-h-[44px] bg-transparent font-mono text-xs text-beige caret-beige outline-none focus:outline-none placeholder:text-beige/40 selection:bg-mainGreen/30 selection:text-beige motion-reduce:[caret-blink:0]"
             />
           </form>
         </div>
