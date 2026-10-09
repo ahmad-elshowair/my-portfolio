@@ -8,7 +8,10 @@ import { projects } from "@/data";
 
 export const Projects = () => {
   return (
-    <section className="py-20 backdrop-blur-sm" id="projects">
+    <section
+      className="py-20 backdrop-blur-sm relative has-[[data-covering]]:z-[60]"
+      id="projects"
+    >
       <div className="max-w-5xl mx-auto relative">
         <div className="flex items-baseline gap-5 mb-32">
           <h2
@@ -27,9 +30,19 @@ export const Projects = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+        <div className="relative grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
           {projects.map((project, index) => (
-            <ProjectCard key={index} {...project} />
+            <div
+              key={index}
+              data-slot={project.featured ? "featured" : "grid"}
+              className={
+                project.featured
+                  ? "h-[300px] md:col-span-2 md:h-[380px]"
+                  : "h-[300px]"
+              }
+            >
+              <ProjectCard {...project} />
+            </div>
           ))}
         </div>
 

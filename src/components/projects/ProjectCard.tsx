@@ -4,10 +4,35 @@ import { ProjectCardProps } from "@/definitions";
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import Iconify from "@/components/iconify";
 import { usePrefersReducedMotion, useProjectHighlight } from "@/hooks";
 import { inika } from "@/lib/fonts";
+
+type ExpandRect = { left: number; top: number; width: number; height: number };
+
+// Grid-relative bounding box of the slots matching `matches`.
+const gridBox = (
+  root: HTMLDivElement | null,
+  matches: (slot: HTMLElement) => boolean,
+): ExpandRect | null => {
+  const grid = root?.parentElement?.parentElement;
+  if (!grid) return null;
+  const gridRect = grid.getBoundingClientRect();
+  const slots = ([...grid.children] as HTMLElement[]).filter(matches);
+  if (slots.length === 0) return null;
+  const rects = slots.map((slot) => slot.getBoundingClientRect());
+  const left = Math.min(...rects.map((rect) => rect.left));
+  const top = Math.min(...rects.map((rect) => rect.top));
+  const right = Math.max(...rects.map((rect) => rect.right));
+  const bottom = Math.max(...rects.map((rect) => rect.bottom));
+  return {
+    left: left - gridRect.left,
+    top: top - gridRect.top,
+    width: right - left,
+    height: bottom - top,
+  };
+};
 
 const ProjectCard: FC<ProjectCardProps> = ({
   anchorId,
@@ -27,6 +52,61 @@ const ProjectCard: FC<ProjectCardProps> = ({
   const highlighted = useProjectHighlight(anchorId);
   const hasImages = images.length > 0;
 
+  // Desktop-only hover expansion: the card parks over its wrapper slot as
+  // an absolute overlay, so growing across siblings never reflows the grid.
+  const rootRef = useRef<HTMLDivElement>(null);
+  const hoveredRef = useRef(false);
+  const [rect, setRect] = useState<ExpandRect | null>(null);
+  const [covering, setCovering] = useState(false);
+  const [canExpand, setCanExpand] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 768px) and (hover: hover)");
+    const sync = () => setCanExpand(mq.matches);
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
+  }, []);
+
+  // Include the hovered slot in the cover block: excluding it strands the
+  // cursor off-card and thrashes enter/leave mid-transition.
+  useEffect(() => {
+    if (!canExpand || featured) return;
+    const sync = () =>
+      setRect(
+        gridBox(rootRef.current, (slot) =>
+          hoveredRef.current
+            ? slot.dataset.slot === "grid"
+            : slot === rootRef.current?.parentElement,
+        ),
+      );
+    sync();
+    window.addEventListener("resize", sync);
+    return () => window.removeEventListener("resize", sync);
+  }, [canExpand, featured]);
+
+  const handleMouseEnter = () => {
+    setIsPaused(true);
+    hoveredRef.current = true;
+    // The featured card sits outside the cover interaction entirely.
+    if (!canExpand || featured) return;
+    setCovering(true);
+    setRect(gridBox(rootRef.current, (slot) => slot.dataset.slot === "grid"));
+  };
+
+  const handleMouseLeave = () => {
+    setIsPaused(false);
+    hoveredRef.current = false;
+    setCovering(false);
+    if (!canExpand || featured) return;
+    setRect(
+      gridBox(
+        rootRef.current,
+        (slot) => slot === rootRef.current?.parentElement,
+      ),
+    );
+  };
+
   useEffect(() => {
     // Screenshot-free cards have nothing to rotate; reduced motion stays static.
     if (!hasImages || prefersReducedMotion || isPaused || rotationStopped)
@@ -36,7 +116,7 @@ const ProjectCard: FC<ProjectCardProps> = ({
       setCurrentImageIndex((prevIndex) =>
         prevIndex === images.length - 1 ? 0 : prevIndex + 1,
       );
-    }, 3000); // Change slide every 3 seconds
+    }, 3000);
 
     return () => clearInterval(timer);
   }, [
@@ -55,14 +135,33 @@ const ProjectCard: FC<ProjectCardProps> = ({
   return (
     <motion.div
       id={anchorId ? `project-${anchorId}` : undefined}
-      whileHover={prefersReducedMotion ? undefined : { scale: 1.02 }}
-      onMouseEnter={() => setIsPaused(true)}
-      onMouseLeave={() => setIsPaused(false)}
+      ref={rootRef}
+      data-covering={covering ? "" : undefined}
+      whileHover={
+        canExpand || prefersReducedMotion ? undefined : { scale: 1.02 }
+      }
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
       onFocus={() => setIsPaused(true)}
       onBlur={() => setIsPaused(false)}
-      className={`relative bg-mainGreen/10 backdrop-blur-sm rounded-lg overflow-hidden shadow-lg group cursor-pointer h-[300px] transition-shadow duration-300 ${
-        featured ? "md:col-span-2 md:h-[380px]" : ""
-      } ${
+      style={
+        rect
+          ? {
+              position: "absolute",
+              left: rect.left,
+              top: rect.top,
+              width: rect.width,
+              height: rect.height,
+              zIndex: covering ? 30 : 20,
+              transition: prefersReducedMotion
+                ? "none"
+                : covering
+                  ? "left 0.5s ease-in-out, top 0.5s ease-in-out, width 0.5s ease-in-out, height 0.5s ease-in-out, z-index 0s"
+                  : "left 0.5s ease-in-out, top 0.5s ease-in-out, width 0.5s ease-in-out, height 0.5s ease-in-out, z-index 0s 0.5s",
+            }
+          : undefined
+      }
+      className={`relative bg-mainGreen/10 backdrop-blur-sm rounded-lg overflow-hidden shadow-lg group cursor-pointer h-full transition-shadow duration-300 ${
         highlighted
           ? "ring-2 ring-mainGreen/70 shadow-[0_0_25px_rgba(141,165,91,0.35)]"
           : ""
@@ -79,7 +178,7 @@ const ProjectCard: FC<ProjectCardProps> = ({
               exit={{ opacity: 0, x: -20 }}
               transition={{ duration: 0.5 }}
             >
-              {/* Uncropped slide: blurred cover stage behind the sharp contained screenshot */}
+              {/* Blurred stage behind the sharp contained slide */}
               <div className="absolute inset-0 transition-transform duration-300 ease-in-out group-hover:scale-105">
                 <Image
                   src={images[currentImageIndex].url}
@@ -121,7 +220,7 @@ const ProjectCard: FC<ProjectCardProps> = ({
           </div>
         )}
 
-        {/* Slide indicators — indicate the number of pictures */}
+        {/* Slide indicators */}
         {hasImages && (
           <div className="absolute bottom-[0.1rem] left-1/2 transform -translate-x-1/2 flex space-x-2 z-20">
             {images.map((_, index) => (
