@@ -9,8 +9,6 @@ import Iconify from "@/components/iconify";
 import { usePrefersReducedMotion, useProjectHighlight } from "@/hooks";
 import { inika } from "@/lib/fonts";
 
-const MotionImage = motion.create(Image);
-
 const ProjectCard: FC<ProjectCardProps> = ({
   anchorId,
   title,
@@ -73,30 +71,54 @@ const ProjectCard: FC<ProjectCardProps> = ({
       <div className="absolute inset-0 w-full h-full">
         {hasImages && !prefersReducedMotion && (
           <AnimatePresence mode="wait">
-            <MotionImage
+            <motion.div
               key={currentImageIndex}
-              src={images[currentImageIndex].url}
-              alt={images[currentImageIndex].alt}
-              fill
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              className="object-cover transition-transform duration-300 ease-in-out group-hover:scale-105"
+              className="absolute inset-0"
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -20 }}
               transition={{ duration: 0.5 }}
-            />
+            >
+              {/* Uncropped slide: blurred cover stage behind the sharp contained screenshot */}
+              <div className="absolute inset-0 transition-transform duration-300 ease-in-out group-hover:scale-105">
+                <Image
+                  src={images[currentImageIndex].url}
+                  alt=""
+                  aria-hidden="true"
+                  fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  className="object-cover blur-lg scale-110"
+                />
+                <Image
+                  src={images[currentImageIndex].url}
+                  alt={images[currentImageIndex].alt}
+                  fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  className="object-contain"
+                />
+              </div>
+            </motion.div>
           </AnimatePresence>
         )}
 
         {hasImages && prefersReducedMotion && (
-          <Image
-            key={currentImageIndex}
-            src={images[currentImageIndex].url}
-            alt={images[currentImageIndex].alt}
-            fill
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            className="object-cover"
-          />
+          <div key={currentImageIndex} className="absolute inset-0">
+            <Image
+              src={images[currentImageIndex].url}
+              alt=""
+              aria-hidden="true"
+              fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              className="object-cover blur-lg scale-110"
+            />
+            <Image
+              src={images[currentImageIndex].url}
+              alt={images[currentImageIndex].alt}
+              fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              className="object-contain"
+            />
+          </div>
         )}
 
         {/* Slide indicators — indicate the number of pictures */}
