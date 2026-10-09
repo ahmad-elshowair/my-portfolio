@@ -1,23 +1,6 @@
 import type { SkillCategoryId, SkillItem, SkillProjectId } from "@/definitions";
 
-/* ─── Skills Lab dataset ──────────────────────────────────────────────
- * Single source for every skills-concept variant.
- * Names and context sentences are resume-verbatim; project associations mirror the
- * card technologies arrays, extended ONLY by the following traceable evidence:
- *   nodejs→pointcraft (PointCraft experience array lists Node.js);
- *   redis→clearcargo (caching/rate-limiting bullet);
- *   jwt-rbac→clearcargo+post-it (RBAC / dual-token JWT bullets);
- *   pwa→kun (PWA project bullet); zustand→post-it (Zustand bullet);
- *   realtime-dashboards→clearcargo (shipment-tracking bullet);
- *   bilingual-ui→kun (English/Arabic bullet);
- *   performance-optimization→clearcargo (hot-path bullet);
- *   acid-transactions→post-it (ACID bullet);
- *   responsive-ui→pointcraft (viewport bullet);
- *   vercel→kun (live vercel.app deployment in projects).
- * Membership is pinned to exactly 35 skills: 13 front-end, 11 back-end,
- * 9 tools & practices, 2 languages. Figma is intentionally absent — it is
- * not a resume CORE SKILLS entry (it stays rendered on project cards only).
- */
+/* ─── Skills Lab dataset ────────────────────────────────────────────── */
 
 export const SKILL_CATEGORIES: Record<SkillCategoryId, string> = {
   frontend: "Front-End",

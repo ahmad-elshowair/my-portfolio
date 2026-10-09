@@ -1,7 +1,7 @@
 "use client";
 
 import { CONCEPT_LIST, CONCEPT_REGISTRY } from "@/components/skills/registry";
-import { ConceptSwitcher } from "@/components/skills/switcher";
+import { ConceptSwitcher } from "@/components/skills";
 import { inika } from "@/lib/fonts";
 import { useSetLabConcept } from "@/stores/skillsLabStore";
 import type { ConceptId } from "@/definitions";

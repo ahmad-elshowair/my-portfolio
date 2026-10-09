@@ -82,7 +82,6 @@ export function ConceptSwitcher({
       ref={containerRef}
       className={cn("relative inline-flex items-center", className)}
     >
-
       {/* ========================================================= */}
       {/* DESKTOP VIEW (sm: and up)                                 */}
       {/* Spreads to the left on click, and on hover expands label  */}
@@ -157,7 +156,11 @@ export function ConceptSwitcher({
             aria-hidden="true"
           >
             {isOpen ? (
-              <Iconify icon="lucide:x" className="h-3.5 w-3.5" aria-hidden="true" />
+              <Iconify
+                icon="lucide:x"
+                className="h-3.5 w-3.5"
+                aria-hidden="true"
+              />
             ) : (
               <Iconify icon={ActiveIcon} className="h-3.5 w-3.5" />
             )}
@@ -180,5 +183,3 @@ export function ConceptSwitcher({
     </div>
   );
 }
-
-export default ConceptSwitcher;
