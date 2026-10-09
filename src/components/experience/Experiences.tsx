@@ -7,7 +7,7 @@ const Experiences: React.FC = () => {
   return (
     <section
       id="experience"
-      className={`flex flex-col justify-start text-white py-20 ${inika.className} backdrop-blur`}
+      className={`flex flex-col justify-start py-20 ${inika.className} backdrop-blur`}
     >
       <article className="max-w-5xl mx-auto relative">
         <div className="flex items-baseline gap-5 mb-32">
@@ -25,8 +25,8 @@ const Experiences: React.FC = () => {
           </div>
         </div>
         <div className="ml-4">
-          {experiences.map((exp, index) => (
-            <ExperienceItem key={`exp-${index}`} {...exp} />
+          {experiences.map((exp) => (
+            <ExperienceItem key={`${exp.company}-${exp.period}`} {...exp} />
           ))}
         </div>
       </article>

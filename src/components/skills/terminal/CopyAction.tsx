@@ -46,7 +46,7 @@ export function CopyAction({ copyState, onCopy, className }: CopyActionProps) {
             onClick={onCopy}
             title="Copy terminal telemetry JSON"
             aria-label="Copy terminal telemetry JSON"
-            className="flex h-7 w-7 items-center justify-center rounded-md border border-beige/20 bg-beige/5 text-beige/70 transition-colors duration-200 hover:bg-beige/10 hover:text-beige focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-mainGreen active:scale-95"
+            className="relative flex h-7 w-7 items-center justify-center rounded-md border border-beige/20 bg-beige/5 text-beige/70 transition-colors duration-200 hover:bg-beige/10 hover:text-beige focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-mainGreen active:scale-95 after:absolute after:-inset-2 after:content-['']"
           >
             <Iconify icon="lucide:copy" className="h-3.5 w-3.5" />
           </motion.button>

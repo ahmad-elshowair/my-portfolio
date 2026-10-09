@@ -161,7 +161,7 @@ const ProjectCard: FC<ProjectCardProps> = ({
             }
           : undefined
       }
-      className={`relative bg-mainGreen/10 backdrop-blur-sm rounded-lg overflow-hidden shadow-lg group cursor-pointer h-full transition-shadow duration-300 ${
+      className={`relative bg-mainGreen/10 backdrop-blur-sm rounded-lg overflow-hidden shadow-lg group h-full transition-shadow duration-300 ${
         highlighted
           ? "ring-2 ring-mainGreen/70 shadow-[0_0_25px_rgba(141,165,91,0.35)]"
           : ""
@@ -240,7 +240,7 @@ const ProjectCard: FC<ProjectCardProps> = ({
                   className={`h-1.5 rounded-full transition-all duration-300 ${
                     index === currentImageIndex
                       ? "bg-mainGreen w-4"
-                      : "bg-gray-300 w-1.5"
+                      : "bg-beige/40 w-1.5"
                   }`}
                 />
               </button>
@@ -297,7 +297,7 @@ const ProjectCard: FC<ProjectCardProps> = ({
           {title}
         </h3>
         {statusNote && (
-          <p className="text-xs text-gray-300 mb-1">{statusNote}</p>
+          <p className="text-xs text-beige/70 mb-1">{statusNote}</p>
         )}
         <p className="text-xs md:text-sm leading-relaxed text-beige/90 line-clamp-3 mb-2">
           {description}

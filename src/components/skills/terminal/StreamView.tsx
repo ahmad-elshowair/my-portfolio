@@ -124,7 +124,7 @@ export function StreamView({
             terminal ready: zsh (interactive)
           </p>
           <p className="text-beige/40">
-            hint: tap a skill card above, or type <span className="text-cyan-400/80">&apos;help&apos;</span> below
+            hint: tap a skill card above, or type <span className="text-beige/60">&apos;help&apos;</span> below
           </p>
         </div>
       ) : null}

@@ -1,15 +1,15 @@
 {
   "name": "Ahmad Elshowair | Full-Stack Developer",
   "short_name": "Ahmad Elshowair",
-  "description": "Full-Stack Developer with expertise in React, Next.js, Node.js, and TypeScript. Harvard CS50 graduate building modern, responsive web applications.",
+  "description": "Full-stack developer with 3+ years remote experience shipping billing, POS, and payments platforms with React, Next.js, TypeScript, and Node.js.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#2c3531",
   "theme_color": "#2c3531",
   "icons": [
     {
-      "src": "/images/logo.2.png",
-      "sizes": "500x280",
+      "src": "/images/logo-512.png",
+      "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
     }

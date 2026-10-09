@@ -47,7 +47,7 @@ const Hero = () => {
             Open to remote roles
           </span>
           <span className="text-xs sm:text-sm text-beige/80">
-            {AUTHOR.location.city} , {AUTHOR.location.country} · available
+            {AUTHOR.location.city}, {AUTHOR.location.country} · available
             remote worldwide
           </span>
         </div>
@@ -68,7 +68,7 @@ const Hero = () => {
         {/* Proof Micro-Card: PointCraft & Merchants Metric */}
         <div className="flex items-center gap-3 rounded-2xl  bg-bgGreen/50 p-3.5 sm:p-4 backdrop-blur-3xl">
           <span className="relative flex h-2.5 w-2.5 shrink-0">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-mainGreen opacity-75" />
+            <span className="absolute inline-flex h-full w-full motion-safe:animate-ping rounded-full bg-mainGreen opacity-75" />
             <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-mainGreen" />
           </span>
           <p className="text-xs sm:text-sm text-beige/90 leading-snug">

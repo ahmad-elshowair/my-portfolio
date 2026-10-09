@@ -26,8 +26,8 @@ Personal developer portfolio showcasing production systems, engineering craft, a
 | Layer | Technologies |
 | :--- | :--- |
 | **Framework & Core** | Next.js 16 (App Router), React 19, TypeScript 5 (Strict Mode) |
-| **Styling & Motion** | Tailwind CSS 3, `tailwindcss-animate`, Framer Motion, Radix UI Slot |
-| **Icons & Media** | Lucide React, React Icons, Self-hosted static assets |
+| **Styling & Motion** | Tailwind CSS 3, `tailwindcss-animate`, Framer Motion |
+| **Icons & Media** | `@iconify/react` (Iconify), Self-hosted static assets |
 | **Code Quality & CI** | ESLint, TypeScript Compiler (`tsc --noEmit`), GitHub Actions CI |
 
 ---

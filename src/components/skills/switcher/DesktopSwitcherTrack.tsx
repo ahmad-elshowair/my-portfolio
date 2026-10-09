@@ -47,7 +47,7 @@ export function DesktopSwitcherTrack({
           : { type: "spring", damping: 26, stiffness: 320 }
       }
       style={{ transformOrigin: "right center" }}
-      className="relative flex items-center gap-1.5 rounded-full border border-beige/25 bg-[#202724]/95 p-1 shadow-2xl backdrop-blur-md select-none"
+      className="relative flex items-center gap-1.5 rounded-full border border-beige/25 bg-bgGreen/95 p-1 shadow-2xl backdrop-blur-md select-none"
     >
       {/* 8 Concept circle buttons spreading horizontally */}
       <div className="flex items-center gap-1.5" role="radiogroup" aria-label="Skills concepts">
@@ -73,7 +73,7 @@ export function DesktopSwitcherTrack({
                 "relative flex h-7 items-center rounded-full transition-colors duration-200 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-mainGreen",
                 isActive
                   ? "bg-mainGreen text-bgGreen font-bold shadow-[0_0_12px_rgba(141,165,91,0.5)]"
-                  : "bg-beige/10 text-beige hover:bg-[#2c3531] hover:text-mainGreen",
+                  : "bg-beige/10 text-beige hover:bg-bgGreen hover:text-mainGreen",
                 isHovered ? "px-2.5 gap-1.5" : "w-7 justify-center p-0",
               )}
             >

@@ -45,7 +45,7 @@ export function MobileSwitcherRail({
           : { type: "spring", damping: 25, stiffness: 300 }
       }
       style={{ transformOrigin: "top center" }}
-      className="absolute right-0 top-full mt-2.5 z-40 flex flex-col items-center gap-2 rounded-full border border-beige/25 bg-[#202724]/95 p-1.5 shadow-2xl backdrop-blur-md select-none"
+      className="absolute right-0 top-full mt-2.5 z-40 flex flex-col items-center gap-2 rounded-full border border-beige/25 bg-bgGreen/95 p-1.5 shadow-2xl backdrop-blur-md select-none"
       role="radiogroup"
       aria-label="Skills concepts rail"
     >
@@ -80,8 +80,8 @@ export function MobileSwitcherRail({
                 isActive
                   ? "bg-mainGreen text-bgGreen font-bold shadow-[0_0_12px_rgba(141,165,91,0.55)] border border-mainGreen"
                   : isHovered
-                  ? "bg-[#202724] border border-mainGreen/70 text-beige shadow-xl"
-                  : "bg-beige/10 text-beige hover:bg-[#2c3531] hover:text-mainGreen border border-transparent",
+                  ? "bg-bgGreen border border-mainGreen/70 text-beige shadow-xl"
+                  : "bg-beige/10 text-beige hover:bg-bgGreen hover:text-mainGreen border border-transparent",
                 isHovered ? "pl-3.5 pr-0.5 gap-2" : "w-11 justify-center p-0",
               )}
             >

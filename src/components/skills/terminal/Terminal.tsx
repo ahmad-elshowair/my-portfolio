@@ -76,16 +76,15 @@ export default function Terminal() {
   useEffect(() => () => window.clearTimeout(copyResetRef.current), []);
 
   const appendGroups = (groups: { entries: EntryDraft[] }[]) => {
-    setHistory((prev) => {
-      const stamped: CommandGroup[] = groups.map((group) => ({
-        id: (groupIdRef.current += 1),
-        entries: group.entries.map((entry) => ({
-          ...entry,
-          id: (entryIdRef.current += 1),
-        })),
-      }));
-      return [...prev, ...stamped].slice(-HISTORY_LIMIT);
-    });
+    // Stamp ids before the updater so it stays pure under double-invocation.
+    const stamped: CommandGroup[] = groups.map((group) => ({
+      id: (groupIdRef.current += 1),
+      entries: group.entries.map((entry) => ({
+        ...entry,
+        id: (entryIdRef.current += 1),
+      })),
+    }));
+    setHistory((prev) => [...prev, ...stamped].slice(-HISTORY_LIMIT));
   };
 
   const revealGroup = (groupId: number) => {
@@ -249,7 +248,7 @@ export default function Terminal() {
             autoCapitalize="none"
             spellCheck={false}
             placeholder="Type 'help' for commands"
-            className="w-full min-h-[40px] bg-transparent font-mono text-[11px] text-beige caret-beige outline-none focus:outline-none placeholder:text-cyan-400/80 selection:bg-mainGreen/30 selection:text-beige sm:text-xs motion-reduce:[caret-blink:0]"
+            className="w-full min-h-[40px] bg-transparent font-mono text-[11px] text-beige caret-beige outline-none focus:outline-none placeholder:text-beige/40 selection:bg-mainGreen/30 selection:text-beige sm:text-xs motion-reduce:[caret-blink:0]"
           />
         </form>
       </div>

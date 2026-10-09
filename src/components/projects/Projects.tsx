@@ -1,10 +1,9 @@
-"use client";
-
 import ProjectCard from "./ProjectCard";
 import { inika } from "@/lib/fonts";
 import Link from "next/link";
 import Iconify from "@/components/iconify";
 import { projects } from "@/data";
+import { SOCIAL_LINKS } from "@/lib/site";
 
 export const Projects = () => {
   return (
@@ -31,9 +30,9 @@ export const Projects = () => {
         </div>
 
         <div className="relative grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
-          {projects.map((project, index) => (
+          {projects.map((project) => (
             <div
-              key={index}
+              key={project.title}
               data-slot={project.featured ? "featured" : "grid"}
               className={
                 project.featured
@@ -48,7 +47,7 @@ export const Projects = () => {
 
         <div className="text-center">
           <Link
-            href="https://github.com/ahmad-elshowair"
+            href={SOCIAL_LINKS.github}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-3 text-beige hover:text-mainGreen transition-colors group"

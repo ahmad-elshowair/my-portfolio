@@ -43,20 +43,13 @@ export const metadata: Metadata = {
   },
   manifest: "/site.webmanifest",
   icons: {
-    icon: [
-      {
-        url: "/images/logo.1.png",
-        sizes: "32x32",
-        type: "image/png",
-      },
-      {
-        url: "/images/logo.1.png",
-        sizes: "16x16",
-        type: "image/png",
-      },
-    ],
+    icon: {
+      url: "/images/logo-180.png",
+      sizes: "180x180",
+      type: "image/png",
+    },
     apple: {
-      url: "/images/logo.1.png",
+      url: "/images/logo-180.png",
       sizes: "180x180",
       type: "image/png",
     },
@@ -78,6 +71,15 @@ const personJsonLd = {
   sameAs: [SOCIAL_LINKS.github, SOCIAL_LINKS.linkedin],
 };
 
+/** JSON-LD lives in inline markup — escaping closures keeps content from breaking out of the script element. */
+const serializeJsonLd = (data: unknown) =>
+  JSON.stringify(data)
+    .replace(/</g, "\\u003c")
+    .replace(/>/g, "\\u003e")
+    .replace(/&/g, "\\u0026")
+    .replace(/\u2028/g, "\\u2028")
+    .replace(/\u2029/g, "\\u2029");
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -88,7 +90,7 @@ export default function RootLayout({
       <head>
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
+          dangerouslySetInnerHTML={{ __html: serializeJsonLd(personJsonLd) }}
         />
       </head>
       <body

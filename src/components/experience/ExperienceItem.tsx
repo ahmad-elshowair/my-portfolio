@@ -15,7 +15,7 @@ const ExperienceItem: React.FC<ExperienceItemProps> = ({
 }) => {
   const renderDescription = () => {
     if (!projects?.length)
-      return <p className="text-gray-300 mt-2 text-sm">{description}</p>;
+      return <p className="text-beige/80 mt-2 text-sm">{description}</p>;
 
     const parts: (string | ReactNode)[] = [];
     let lastIndex = 0;
@@ -46,7 +46,7 @@ const ExperienceItem: React.FC<ExperienceItemProps> = ({
     // Add remaining text
     parts.push(description.slice(lastIndex));
 
-    return <p className="text-gray-300 mt-2 text-sm md:text-md">{parts}</p>;
+    return <p className="text-beige/80 mt-2 text-sm md:text-md">{parts}</p>;
   };
 
   return (
@@ -59,7 +59,7 @@ const ExperienceItem: React.FC<ExperienceItemProps> = ({
       <div className="flex min-w-0 flex-col gap-1">
         <div className="flex items-baseline justify-between">
           <h3 className="text-2xl font-semibold text-beige">{title}</h3>
-          <span className="text-gray-300 text-sm">{period}</span>
+          <span className="text-beige/60 text-sm">{period}</span>
         </div>
         <Link
           href={companyUrl || "#"}
@@ -77,7 +77,7 @@ const ExperienceItem: React.FC<ExperienceItemProps> = ({
           {technologies.map((tech) => (
             <div
               key={tech.name}
-              className="text-xl text-gray-400 hover:text-mainGreen transition-colors"
+              className="text-xl text-beige/60 hover:text-mainGreen transition-colors"
             >
               <Iconify name={tech.name} icon={tech.icon} />
             </div>

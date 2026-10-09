@@ -4,15 +4,16 @@ import Iconify from "@/components/iconify";
 import { inika } from "@/lib/fonts";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import { AUTHOR, SOCIAL_LINKS } from "@/lib/site";
 
-const EMAIL = "ahmad-elshowair.dev@outlook.com";
 const COPY_RESET_MS = 2000;
 type CopyState = "idle" | "copied" | "failed";
 
 /**
  * Contact destination — direct conversion channels only (email, LinkedIn)
- * plus the resume asset; the strings below are contract-frozen and any change
- * must re-verify against the canonical resume. GitHub deliberately lives in
+ * plus the resume asset; identity strings resolve from the canonical
+ * constants in site.ts and any change must re-verify against the resume.
+ * GitHub deliberately lives in
  * the Projects section and on project cards, not here.
  */
 const Contact = () => {
@@ -30,7 +31,7 @@ const Contact = () => {
   const copyEmail = async () => {
     let next: CopyState = "failed";
     try {
-      await navigator.clipboard.writeText(EMAIL);
+      await navigator.clipboard.writeText(AUTHOR.email);
       next = "copied";
     } catch {
       // The Clipboard API requires a secure context (HTTPS or localhost —
@@ -86,14 +87,14 @@ const Contact = () => {
               Open to remote full-stack and front-end roles
             </span>
             <span className="text-sm sm:text-base text-beige/80">
-              Hanoi, Vietnam · available remote worldwide
+              {AUTHOR.location.city}, {AUTHOR.location.country} · available remote worldwide
             </span>
           </div>
 
           {/* Email — primary channel: mailto plus one-click copy */}
           <div className="mt-6 sm:mt-8 flex flex-col gap-4 sm:flex-row sm:items-center rounded-2xl border border-mainGreen/40 bg-mainGreen/10 p-4 sm:p-5">
             <a
-              href={`mailto:${EMAIL}`}
+              href={`mailto:${AUTHOR.email}`}
               className="flex min-w-0 items-center gap-3 sm:gap-4 text-beige transition-opacity duration-200 hover:opacity-80"
             >
               <Iconify
@@ -102,7 +103,7 @@ const Contact = () => {
                 aria-hidden="true"
               />
               <span className="text-sm sm:text-base font-medium break-all">
-                {EMAIL}
+                {AUTHOR.email}
               </span>
             </a>
             <button
@@ -133,7 +134,7 @@ const Contact = () => {
           {/* Secondary channels: LinkedIn and the resume asset */}
           <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
             <Link
-              href="https://www.linkedin.com/in/ahmad-elshowair"
+              href={SOCIAL_LINKS.linkedin}
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center justify-between p-4 sm:p-5 rounded-2xl border border-beige/15 bg-bgGreen/40 text-beige hover:border-mainGreen/60 hover:bg-beige/5 transition-all duration-200 text-base sm:text-lg font-medium group"
