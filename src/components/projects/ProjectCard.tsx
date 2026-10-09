@@ -19,6 +19,7 @@ const ProjectCard: FC<ProjectCardProps> = ({
   link,
   githubUrl,
   statusNote,
+  featured,
   images,
 }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -62,6 +63,8 @@ const ProjectCard: FC<ProjectCardProps> = ({
       onFocus={() => setIsPaused(true)}
       onBlur={() => setIsPaused(false)}
       className={`relative bg-mainGreen/10 backdrop-blur-sm rounded-lg overflow-hidden shadow-lg group cursor-pointer h-[300px] transition-shadow duration-300 ${
+        featured ? "md:col-span-2 md:h-[380px]" : ""
+      } ${
         highlighted
           ? "ring-2 ring-mainGreen/70 shadow-[0_0_25px_rgba(141,165,91,0.35)]"
           : ""

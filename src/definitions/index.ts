@@ -93,6 +93,8 @@ export interface ProjectCardProps {
   githubUrl?: string;
   /** Honest availability note shown under the card title (e.g. redeploy status). Optional, data-driven. */
   statusNote?: string;
+  /** Featured cards span the full grid row and grow taller — reserved for the flagship project. */
+  featured?: boolean;
   images: ProjectImage[];
 }
 

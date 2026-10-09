@@ -4,6 +4,7 @@ export const projects: ProjectCardProps[] = [
   {
     anchorId: "pointcraft",
     title: "PointCraft — POS & Billing Suite",
+    featured: true,
     description:
       "PointCraft's POS, self-checkout, and invoice tools streamlining transaction tracking and record reconciliation — shipped as production React and MUI interfaces with accessible, theme-consistent design.",
     technologies: [
@@ -141,6 +142,37 @@ export const projects: ProjectCardProps[] = [
       {
         url: "/images/kun-min-aldhaakirin-3.png",
         alt: "Arabic dhikr counters with the light, dark, and system theme menu open",
+      },
+    ],
+  },
+
+  {
+    anchorId: "hayya-ala-al-salah",
+    title: "Hayya 'Ala Al-Salah — Masjid Kiosk Display",
+    description:
+      "24/7 masjid kiosk display with a live prayer countdown, Hijri and Gregorian dates, an announcements ticker, and a fundraising overlay — engineered unattended-safe with auto-recovering error boundaries, service-worker offline caching, and full Arabic RTL and English support.",
+    technologies: [
+      { name: "React", icon: "simple-icons:react" },
+      { name: "TypeScript", icon: "simple-icons:typescript" },
+      { name: "MUI", icon: "simple-icons:mui" },
+      { name: "Zustand", icon: "devicon-plain:zustand" },
+      { name: "Vite", icon: "simple-icons:vite" },
+      { name: "Github", icon: "simple-icons:github" },
+    ],
+    link: "https://ahmad-pointcraft.github.io/hayya-ala-al-salah/",
+    githubUrl: "https://github.com/ahmad-pointcraft/hayya-ala-al-salah",
+    images: [
+      {
+        url: "/images/hayya-1.png",
+        alt: "Masjid display with five prayer cards showing Adhan and Iqama times, a countdown to the next prayer, and Hijri and Gregorian dates",
+      },
+      {
+        url: "/images/hayya-2.png",
+        alt: "Fundraising overlay with collected and goal amounts, donation progress, and a QR code over the dimmed display",
+      },
+      {
+        url: "/images/hayya-3.png",
+        alt: "Prayer-in-progress state with a silence message",
       },
     ],
   },
