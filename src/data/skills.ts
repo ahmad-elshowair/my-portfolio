@@ -14,7 +14,7 @@ export const SKILL_PROJECTS: Record<
   { name: string; anchor: string }
 > = {
   pointcraft: { name: "PointCraft", anchor: "pointcraft" },
-  clearcargo: { name: "ClearCarGO", anchor: "clearcargo" },
+  clearcargo: { name: "ClearCarGo", anchor: "clearcargo" },
   "post-it": { name: "Post-It", anchor: "post-it" },
   "kun-min-aldhaakirin": {
     name: "Kun Min Aldhaakirin",
@@ -38,7 +38,7 @@ export const skills: SkillItem[] = [
     icon: "simple-icons:typescript",
     category: "frontend",
     context:
-      "Shipped in the PointCraft suite, ClearCarGO, Post-It, and the remembrance PWA.",
+      "Shipped in the PointCraft suite, ClearCarGo, Post-It, and the remembrance PWA.",
     projects: ["pointcraft", "clearcargo", "post-it", "kun-min-aldhaakirin"],
   },
   {
@@ -56,7 +56,7 @@ export const skills: SkillItem[] = [
     icon: "simple-icons:nextdotjs",
     category: "frontend",
     context:
-      "Next.js 14 on ClearCarGO; Next.js 15 App Router on the Kun Min Aldhaakirin PWA.",
+      "Next.js 14 on ClearCarGo; Next.js 15 App Router on the Kun Min Aldhaakirin PWA.",
     projects: ["clearcargo", "kun-min-aldhaakirin"],
   },
   {
@@ -82,7 +82,7 @@ export const skills: SkillItem[] = [
     name: "Tailwind CSS",
     icon: "simple-icons:tailwindcss",
     category: "frontend",
-    context: "UI layer for ClearCarGO and the bilingual remembrance PWA.",
+    context: "UI layer for ClearCarGo and the bilingual remembrance PWA.",
     projects: ["clearcargo", "kun-min-aldhaakirin"],
   },
   {
@@ -195,7 +195,7 @@ export const skills: SkillItem[] = [
     icon: "simple-icons:supabase",
     category: "backend",
     context:
-      "Persistent storage and authentication for ClearCarGO and the remembrance PWA.",
+      "Persistent storage and authentication for ClearCarGo and the remembrance PWA.",
     projects: ["clearcargo", "kun-min-aldhaakirin"],
   },
   {
@@ -228,7 +228,7 @@ export const skills: SkillItem[] = [
     name: "Stripe payments integration",
     icon: "simple-icons:stripe",
     category: "backend",
-    context: "Automated Stripe payment workflows in ClearCarGO.",
+    context: "Automated Stripe payment workflows in ClearCarGo.",
     projects: ["clearcargo"],
   },
   {
@@ -278,7 +278,7 @@ export const skills: SkillItem[] = [
     name: "Real-time dashboards",
     icon: "lucide:activity",
     category: "tools",
-    context: "Real-time shipment tracking in ClearCarGO.",
+    context: "Real-time shipment tracking in ClearCarGo.",
     projects: ["clearcargo", "pointcraft"],
   },
   {
