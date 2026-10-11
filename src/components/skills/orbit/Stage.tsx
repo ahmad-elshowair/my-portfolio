@@ -94,11 +94,14 @@ export function OrbitStage({
     cancelAnimationFrame(rampLoops.current.get(ring) ?? 0);
     const rotator = rotatorRefs.current.get(ring);
     if (!rotator) return;
-    let animations = ringAnimations.current.get(ring);
-    if (!animations || animations.some((a) => a.playState === "idle")) {
-      animations = rotator.getAnimations({ subtree: true });
-      ringAnimations.current.set(ring, animations);
-    }
+    const cached = ringAnimations.current.get(ring);
+
+    const animations =
+      !cached || cached.some((a) => a.playState === "idle")
+        ? rotator.getAnimations({ subtree: true })
+        : cached;
+
+    ringAnimations.current.set(ring, animations);
     const startRate = ringRates.current.get(ring) ?? 1;
     let startedAt = -1;
     const step = (now: number) => {
@@ -128,7 +131,9 @@ export function OrbitStage({
   };
 
   const chipFrom = (target: EventTarget | null): HTMLElement | null =>
-    target instanceof HTMLElement ? target.closest<HTMLElement>(".orbit-sat") : null;
+    target instanceof HTMLElement
+      ? target.closest<HTMLElement>(".orbit-sat")
+      : null;
 
   // Spotlight subject: the focused chip wins over the hovered one; both the
   // tooltip and the HUD preview ride this single state.
@@ -214,10 +219,12 @@ export function OrbitStage({
     setSpotlight(null);
   };
 
-
   // HUD subject: transient hover/focus preview, else the pinned selection.
-  const selected = selectedSkillId ? skills.find((s) => s.id === selectedSkillId) : undefined;
-  const hudSkill = skills.find((s) => s.id === (spotlight?.id ?? selectedSkillId)) ?? selected;
+  const selected = selectedSkillId
+    ? skills.find((s) => s.id === selectedSkillId)
+    : undefined;
+  const hudSkill =
+    skills.find((s) => s.id === (spotlight?.id ?? selectedSkillId)) ?? selected;
   const activeRingCategory = hudSkill?.category;
 
   return (
@@ -275,7 +282,11 @@ export function OrbitStage({
                         ? "border-mainGreen/70 shadow-[0_0_12px_rgba(141,165,91,0.3)]"
                         : "border-mainGreen/25",
                     )}
-                    style={{ width: size, height: size, transform: "translate(-50%, -50%)" }}
+                    style={{
+                      width: size,
+                      height: size,
+                      transform: "translate(-50%, -50%)",
+                    }}
                   >
                     {Array.from({ length: MARKER_COUNT }, (_, markerIndex) => (
                       <span
@@ -292,37 +303,51 @@ export function OrbitStage({
                       />
                     ))}
                   </div>
-                  {satellitesOf(ring.category, ring.offsetDeg).map(({ skill, angleDeg }) => (
-                    <span
-                      key={skill.id}
-                      className="pointer-events-none absolute left-1/2 top-1/2 h-0 w-0 [transform-style:preserve-3d]"
-                      style={{ transform: `rotate(${angleDeg}deg) translate(${radius})` }}
-                    >
+                  {satellitesOf(ring.category, ring.offsetDeg).map(
+                    ({ skill, angleDeg }) => (
                       <span
-                        className="pointer-events-none h-0 w-0 [transform-style:preserve-3d]"
-                        style={{ animation: `${spinFor(direction === 1 ? -1 : 1)} ${cycleSeconds}s linear infinite` }}
+                        key={skill.id}
+                        className="pointer-events-none absolute left-1/2 top-1/2 h-0 w-0 [transform-style:preserve-3d]"
+                        style={{
+                          transform: `rotate(${angleDeg}deg) translate(${radius})`,
+                        }}
                       >
                         <span
-                          className="pointer-events-none h-0 w-0"
-                          style={{ transform: `rotate(${-angleDeg}deg) rotateX(${-PLANE_TILT_DEG}deg)` }}
+                          className="pointer-events-none h-0 w-0 [transform-style:preserve-3d]"
+                          style={{
+                            animation: `${spinFor(direction === 1 ? -1 : 1)} ${cycleSeconds}s linear infinite`,
+                          }}
                         >
-                          <SatelliteChip
-                            className="orbit-sat -translate-x-1/2 -translate-y-1/2"
-                            dataRing={id}
-                            style={
-                              {
-                                "--orbit-cycle": `${cycleSeconds}s`,
-                                "--orbit-depth-delay": `${depthDelaySeconds(angleDeg, ring).toFixed(3)}s`,
-                              } as CSSProperties
-                            }
-                            skill={skill}
-                            selected={selectedSkillId === skill.id}
-                            onSelect={() => selectSkill(selectedSkillId === skill.id ? null : skill.id)}
-                          />
+                          <span
+                            className="pointer-events-none h-0 w-0"
+                            style={{
+                              transform: `rotate(${-angleDeg}deg) rotateX(${-PLANE_TILT_DEG}deg)`,
+                            }}
+                          >
+                            <SatelliteChip
+                              className="orbit-sat -translate-x-1/2 -translate-y-1/2"
+                              dataRing={id}
+                              style={
+                                {
+                                  "--orbit-cycle": `${cycleSeconds}s`,
+                                  "--orbit-depth-delay": `${depthDelaySeconds(angleDeg, ring).toFixed(3)}s`,
+                                } as CSSProperties
+                              }
+                              skill={skill}
+                              selected={selectedSkillId === skill.id}
+                              onSelect={() =>
+                                selectSkill(
+                                  selectedSkillId === skill.id
+                                    ? null
+                                    : skill.id,
+                                )
+                              }
+                            />
+                          </span>
                         </span>
                       </span>
-                    </span>
-                  ))}
+                    ),
+                  )}
                 </div>
               );
             })}
@@ -335,8 +360,12 @@ export function OrbitStage({
           />
 
           <div className="pointer-events-none select-none absolute left-1/2 top-1/2 flex h-24 w-24 -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center gap-0.5 rounded-full border border-beige/15 bg-mainGreen/10 text-center shadow-[0_0_25px_rgba(141,165,91,0.25)] backdrop-blur-md">
-            <span className="font-inika text-sm font-bold text-mainGreen leading-tight">{AUTHOR.name}</span>
-            <span className="px-2 text-[9.5px] leading-snug text-beige/80">{AUTHOR.role}</span>
+            <span className="font-inika text-sm font-bold text-mainGreen leading-tight">
+              {AUTHOR.name}
+            </span>
+            <span className="px-2 text-[9.5px] leading-snug text-beige/80">
+              {AUTHOR.role}
+            </span>
           </div>
         </div>
 
@@ -358,7 +387,9 @@ export function OrbitStage({
           />
         ) : (
           <div className="flex items-center justify-center gap-2 rounded-lg border border-dashed border-beige/20 bg-mainGreen/5 p-4 text-center text-sm text-beige/50 backdrop-blur-md">
-            <span aria-hidden="true" className="text-mainGreen/70">✦</span>
+            <span aria-hidden="true" className="text-mainGreen/70">
+              ✦
+            </span>
             <span>Focus or select a satellite to spotlight its evidence.</span>
           </div>
         )}
