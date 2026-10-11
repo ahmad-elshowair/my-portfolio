@@ -68,7 +68,7 @@ export function SatelliteChip({
       className={cn(
         "pointer-events-auto flex h-11 w-11 items-center justify-center rounded-full border transition-all duration-200 hover:shadow-[0_0_12px_rgba(141,165,91,0.3)]",
         selected
-          ? "border-mainGreen bg-mainGreen/30 shadow-[0_0_12px_rgba(141,165,91,0.3)]"
+          ? "scale-110 border-mainGreen bg-mainGreen/30 ring-2 ring-mainGreen/60 shadow-[0_0_16px_rgba(141,165,91,0.4)]"
           : "border-beige/15 bg-mainGreen/10 hover:border-mainGreen/40 hover:bg-mainGreen/25 hover:scale-105",
         className,
       )}

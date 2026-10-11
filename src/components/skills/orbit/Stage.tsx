@@ -351,10 +351,15 @@ export function OrbitStage({
 
       <div aria-live="polite" className="w-full max-w-2xl">
         {hudSkill ? (
-          <SkillEvidence skill={hudSkill} className="shadow-[0_0_24px_rgba(141,165,91,0.12)]" />
+          <SkillEvidence
+            key={hudSkill.id}
+            skill={hudSkill}
+            className="animate-in fade-in duration-200 motion-reduce:animate-none shadow-[0_0_24px_rgba(141,165,91,0.12)]"
+          />
         ) : (
-          <div className="rounded-lg border border-beige/15 bg-mainGreen/10 p-4 text-center text-sm text-beige/60 backdrop-blur-md">
-            Focus or select a satellite to spotlight its evidence.
+          <div className="flex items-center justify-center gap-2 rounded-lg border border-dashed border-beige/20 bg-mainGreen/5 p-4 text-center text-sm text-beige/50 backdrop-blur-md">
+            <span aria-hidden="true" className="text-mainGreen/70">✦</span>
+            <span>Focus or select a satellite to spotlight its evidence.</span>
           </div>
         )}
       </div>
