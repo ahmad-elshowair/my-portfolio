@@ -1,15 +1,25 @@
 "use client";
 
-import Iconify from "@/components/iconify";
 import { SkillEvidence } from "@/components/skills/shared";
 import { SKILL_CATEGORIES, skills } from "@/data";
 import { AUTHOR } from "@/lib/site";
 import { useDesktopViewport, useFinePointer, usePrefersReducedMotion } from "@/hooks";
 import { useSelectSkill, useSelectedSkillId } from "@/stores/skillsLabStore";
-import { ORBIT_RINGS, type OrbitRingConfig, type SkillItem } from "@/definitions";
-import { cn } from "@/lib/utils";
+import { ORBIT_RINGS } from "@/definitions";
 import {
-  type CSSProperties,
+  MARKER_COUNT,
+  ORBIT_KEYFRAMES,
+  PLANE_TILT_DEG,
+  RAMP_MS,
+  RING_OUTER,
+  depthDelaySeconds,
+  satellitesOf,
+  spinFor,
+} from "./motion";
+import { SatelliteChip } from "./Chips";
+import { StaticGrid } from "./StaticGrid";
+import type { CSSProperties } from "react";
+import {
   type FocusEvent,
   type KeyboardEvent,
   type PointerEvent,
@@ -23,61 +33,10 @@ import {
  * Orbit constellation. Concentric category rings (tools inner, front-end
  * middle, back-end outer) carry icon-only satellites on a tilted pure-CSS 3D
  * plane around the candidate orb on desktop; a static grouped grid renders
- * everywhere else. Rings rotate on the GPU compositor (transform-only,
- * >= 60s cycles, adjacent rings counter-rotating); satellites counter-rotate
- * in lockstep and dim through the far side. Hovering or focusing a satellite
- * decelerates its ring to a stop (~300ms ambient ramp) while a name tooltip
- * and the Spotlight HUD present the evidence payload.
+ * everywhere else. Rings rotate on the GPU compositor; hovering or focusing
+ * a satellite decelerates its ring to a stop (~300ms ambient ramp) while a
+ * name tooltip and the Spotlight HUD present the evidence payload.
  */
-
-// Stage geometry: the outer diameter caps at 560px (≈280px reference radius)
-// and always keeps the icon-chip overhang inside the section container.
-const RING_OUTER = "min(560px, calc(100cqw - 240px))";
-
-// Plane tilt that reads the circular tracks as elliptical orbits; satellites
-// counter-tilt by the same angle to stand billboarded toward the viewer.
-const PLANE_TILT_DEG = 62;
-
-// Deceleration/resumption ramp (ambient-motion class, Step 3 Option B
-// ruling); tooltip entrance stays inside the 150–250ms interaction tokens.
-const RAMP_MS = 300;
-const TIP_MS = 180;
-
-const MARKER_COUNT = 8;
-
-const ORBIT_KEYFRAMES = `
-@keyframes orbit-spin-cw { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-@keyframes orbit-spin-ccw { from { transform: rotate(0deg); } to { transform: rotate(-360deg); } }
-@keyframes orbit-depth { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
-@keyframes orbit-depth-glyph { 0%, 100% { transform: scale(0.82); } 50% { transform: scale(1); } }
-@keyframes orbit-tip-in { from { opacity: 0; } to { opacity: 1; } }
-.orbit-sat { animation: orbit-depth var(--orbit-cycle) linear infinite; animation-delay: var(--orbit-depth-delay); }
-.orbit-sat svg { animation: orbit-depth-glyph var(--orbit-cycle) linear infinite; animation-delay: var(--orbit-depth-delay); }
-.orbit-tip { animation: orbit-tip-in ${TIP_MS}ms ease-out; }
-`;
-
-const byCategory = (category: SkillItem["category"]) =>
-  skills.filter((s) => s.category === category);
-
-const satellitesOf = (category: SkillItem["category"], offsetDeg: number) =>
-  byCategory(category).map((skill, index, all) => ({
-    skill,
-    angleDeg: (index / all.length) * 360 - 90 + offsetDeg,
-  }));
-
-const spinFor = (direction: 1 | -1) =>
-  direction === 1 ? "orbit-spin-cw" : "orbit-spin-ccw";
-
-/**
- * Depth phase: the satellite crosses the plane's far side (top of the
- * ellipse) when ring rotation has carried it to 270deg, so the dim cycle is
- * delayed by that fraction of the ring period — negative delay presets the
- * phase without JavaScript in the animation loop.
- */
-const depthDelaySeconds = (angleDeg: number, ring: OrbitRingConfig) => {
-  const phase = ((((270 - angleDeg) / ring.direction) % 360) + 360) % 360;
-  return -(phase / 360) * ring.cycleSeconds;
-};
 
 interface SpotlightState {
   id: string;
@@ -99,7 +58,6 @@ export default function Concept016() {
   const useOrbit = isDesktopViewport && hasFinePointer && !prefersReducedMotion;
 
   const selected = selectedSkillId ? skills.find((s) => s.id === selectedSkillId) : undefined;
-  const languages = byCategory("languages");
 
   // ---- Deceleration & spotlight (orbit branch only) ----------------------
   // Animations are read once per interaction via the ring rotator refs, then
@@ -385,7 +343,7 @@ export default function Concept016() {
             </div>
 
             <p className="mt-2 flex flex-wrap justify-center gap-x-4 text-sm text-beige/70">
-              {languages.map((skill) => (
+              {satellitesOf("languages", 0).map(({ skill }) => (
                 <span key={skill.id} className="font-medium">
                   {skill.context}
                 </span>
@@ -404,32 +362,7 @@ export default function Concept016() {
           </div>
         </div>
       ) : (
-        <div className="flex flex-col gap-5">
-          {ORBIT_RINGS.map(({ id, category }) => (
-            <div key={id}>
-              <h3 className="mb-2 text-sm font-semibold uppercase tracking-wide text-beige/60">
-                {SKILL_CATEGORIES[category]}
-              </h3>
-              <div className="flex flex-wrap gap-2">
-                {byCategory(category).map((skill) => (
-                  <GridChip
-                    key={skill.id}
-                    skill={skill}
-                    selected={selectedSkillId === skill.id}
-                    onSelect={() => selectSkill(selectedSkillId === skill.id ? null : skill.id)}
-                  />
-                ))}
-              </div>
-            </div>
-          ))}
-          <p className="flex flex-wrap gap-x-3 text-sm text-beige/70">
-            {languages.map((skill) => (
-              <span key={skill.id} className="font-medium">
-                {skill.context}
-              </span>
-            ))}
-          </p>
-        </div>
+        <StaticGrid selectedSkillId={selectedSkillId} onSelectSkill={selectSkill} />
       )}
 
       <div aria-live="polite">
@@ -457,78 +390,5 @@ export default function Concept016() {
         </div>
       )}
     </div>
-  );
-}
-
-/**
- * Flow-layout chip with the visible label — the static grid keeps names
- * on-chip (Article VI complete baseline); the orbit's icon-only variant
- * is SatelliteChip below.
- */
-function GridChip({
-  skill,
-  selected,
-  onSelect,
-  className,
-}: {
-  skill: SkillItem;
-  selected: boolean;
-  onSelect: () => void;
-  className?: string;
-}) {
-  return (
-    <button
-      type="button"
-      aria-pressed={selected}
-      onClick={onSelect}
-      className={cn(
-        "flex items-center gap-1 whitespace-nowrap rounded-full border px-2.5 py-1 text-xs transition-colors duration-200 [&_svg]:text-sm",
-        selected
-          ? "border-mainGreen bg-mainGreen/30 text-beige shadow-[0_0_12px_rgba(141,165,91,0.3)]"
-          : "border-beige/20 bg-bgGreen/80 text-beige/90 hover:bg-beige/10",
-        className,
-      )}
-    >
-      <Iconify icon={skill.icon} className="h-[1em] w-[1em] shrink-0" />
-      {skill.name}
-    </button>
-  );
-}
-
-/** Icon-only orbit satellite: the official glyph at a 44px target, named via aria-label. */
-function SatelliteChip({
-  skill,
-  selected,
-  onSelect,
-  className,
-  style,
-  dataRing,
-}: {
-  skill: SkillItem;
-  selected: boolean;
-  onSelect: () => void;
-  className?: string;
-  style?: CSSProperties;
-  dataRing: string;
-}) {
-  return (
-    <button
-      type="button"
-      aria-pressed={selected}
-      aria-label={skill.name}
-      data-ring={dataRing}
-      data-skill-id={skill.id}
-      onClick={onSelect}
-      style={style}
-      className={cn(
-        "flex h-11 w-11 items-center justify-center rounded-full border transition-colors duration-200 hover:shadow-[0_0_12px_rgba(141,165,91,0.3)]",
-        selected
-          ? "border-mainGreen bg-mainGreen/30 shadow-[0_0_12px_rgba(141,165,91,0.3)]"
-          : "border-beige/15 bg-mainGreen/10 hover:bg-mainGreen/25",
-        className,
-      )}
-    >
-      <Iconify icon={skill.icon} className="h-6 w-6 text-beige" />
-    </button>
   );
 }
