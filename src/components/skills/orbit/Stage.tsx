@@ -25,6 +25,7 @@ import {
   useRef,
   useState,
 } from "react";
+import { createPortal } from "react-dom";
 
 /**
  * The interactive orbit stage: tilted pure-CSS 3D rings, ambient GPU
@@ -57,6 +58,29 @@ export function OrbitStage({
   const focusedChip = useRef<HTMLElement | null>(null);
   const tipDismissedFor = useRef<string | null>(null);
   const [spotlight, setSpotlight] = useState<SpotlightState | null>(null);
+  const tipRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (!spotlight) return;
+    let animId: number;
+    const updatePosition = () => {
+      const chip = focusedChip.current ?? hoveredChip.current;
+      const tip = tipRef.current;
+      if (chip && tip) {
+        const rect = chip.getBoundingClientRect();
+        const tipWidth = tip.offsetWidth;
+        const tipHeight = tip.offsetHeight;
+        // Position directly above the icon, pointing down
+        const x = rect.left + rect.width / 2;
+        const y = rect.top - 8;
+        tip.style.transform = `translate3d(${Math.round(x - tipWidth / 2)}px, ${Math.round(y - tipHeight)}px, 0)`;
+        tip.style.visibility = "visible";
+      }
+      animId = requestAnimationFrame(updatePosition);
+    };
+    updatePosition();
+    return () => cancelAnimationFrame(animId);
+  }, [spotlight]);
 
   useEffect(
     () => () => {
@@ -197,21 +221,21 @@ export function OrbitStage({
   const activeRingCategory = hudSkill?.category;
 
   return (
-    <div className="grid items-start gap-6 xl:grid-cols-[minmax(0,1fr)_19rem]">
+    <div className="flex flex-col items-center gap-8 w-full">
       <style>{ORBIT_KEYFRAMES}</style>
 
-      <div>
+      <div className="w-full">
         <div
           onPointerOver={onStagePointerOver}
           onPointerOut={onStagePointerOut}
           onFocus={onStageFocus}
           onBlur={onStageBlur}
           onKeyDown={onStageKeyDown}
-          className="relative mx-auto h-[22rem] w-full max-w-4xl [container-type:inline-size] [perspective:1500px] [transform-style:preserve-3d]"
+          className="pointer-events-none relative mx-auto h-[22rem] w-full max-w-4xl [container-type:inline-size] [perspective:1500px] [transform-style:preserve-3d]"
           style={{ "--ring-outer": RING_OUTER } as CSSProperties}
         >
           <div
-            className="absolute left-1/2 top-1/2 [transform-style:preserve-3d]"
+            className="pointer-events-none absolute left-1/2 top-1/2 [transform-style:preserve-3d]"
             style={
               {
                 width: "var(--ring-outer)",
@@ -232,7 +256,7 @@ export function OrbitStage({
                     if (rotator) rotatorRefs.current.set(id, rotator);
                     else rotatorRefs.current.delete(id);
                   }}
-                  className="absolute left-1/2 top-1/2 [transform-style:preserve-3d]"
+                  className="pointer-events-none absolute left-1/2 top-1/2 [transform-style:preserve-3d]"
                   style={
                     {
                       width: size,
@@ -246,7 +270,7 @@ export function OrbitStage({
                   <div
                     aria-hidden="true"
                     className={cn(
-                      "absolute left-1/2 top-1/2 rounded-full border border-dashed transition-all duration-300",
+                      "pointer-events-none absolute left-1/2 top-1/2 rounded-full border border-dashed transition-all duration-300",
                       isRingActive
                         ? "border-mainGreen/70 shadow-[0_0_12px_rgba(141,165,91,0.3)]"
                         : "border-mainGreen/25",
@@ -271,15 +295,15 @@ export function OrbitStage({
                   {satellitesOf(ring.category, ring.offsetDeg).map(({ skill, angleDeg }) => (
                     <span
                       key={skill.id}
-                      className="absolute left-1/2 top-1/2 h-0 w-0 [transform-style:preserve-3d]"
+                      className="pointer-events-none absolute left-1/2 top-1/2 h-0 w-0 [transform-style:preserve-3d]"
                       style={{ transform: `rotate(${angleDeg}deg) translate(${radius})` }}
                     >
                       <span
-                        className="h-0 w-0 [transform-style:preserve-3d]"
+                        className="pointer-events-none h-0 w-0 [transform-style:preserve-3d]"
                         style={{ animation: `${spinFor(direction === 1 ? -1 : 1)} ${cycleSeconds}s linear infinite` }}
                       >
                         <span
-                          className="h-0 w-0"
+                          className="pointer-events-none h-0 w-0"
                           style={{ transform: `rotate(${-angleDeg}deg) rotateX(${-PLANE_TILT_DEG}deg)` }}
                         >
                           <SatelliteChip
@@ -295,20 +319,6 @@ export function OrbitStage({
                             selected={selectedSkillId === skill.id}
                             onSelect={() => selectSkill(selectedSkillId === skill.id ? null : skill.id)}
                           />
-                          {spotlight?.id === skill.id && (
-                            <div
-                              role="tooltip"
-                              className="orbit-tip pointer-events-none absolute bottom-[28px] left-0 -translate-x-1/2 z-50 flex flex-col items-center"
-                            >
-                              <div className="relative whitespace-nowrap rounded-full border border-beige/25 bg-bgGreen/95 px-3 py-1 font-sans text-xs font-medium text-beige shadow-[0_4px_16px_rgba(0,0,0,0.5)] backdrop-blur-md">
-                                {skill.name}
-                                <span
-                                  aria-hidden="true"
-                                  className="absolute -bottom-1 left-1/2 -translate-x-1/2 h-2 w-2 rotate-45 border-b border-r border-beige/25 bg-bgGreen"
-                                />
-                              </div>
-                            </div>
-                          )}
                         </span>
                       </span>
                     </span>
@@ -321,16 +331,16 @@ export function OrbitStage({
           {/* Celestial atmospheric core glow */}
           <div
             aria-hidden="true"
-            className="pointer-events-none select-none absolute left-1/2 top-1/2 h-64 w-64 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(141,165,91,0.12)_0%,transparent_70%)] blur-2xl"
+            className="pointer-events-none select-none absolute left-1/2 top-1/2 h-56 w-56 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(141,165,91,0.14)_0%,transparent_70%)] blur-2xl"
           />
 
-          <div className="pointer-events-none select-none absolute left-1/2 top-1/2 flex h-36 w-36 -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center gap-1 rounded-full border border-beige/15 bg-mainGreen/10 text-center shadow-[0_0_35px_rgba(141,165,91,0.25)] backdrop-blur-md">
-            <span className="font-inika text-xl font-bold text-mainGreen leading-tight">{AUTHOR.name}</span>
-            <span className="px-3 text-[11px] leading-snug text-beige/80">{AUTHOR.role}</span>
+          <div className="pointer-events-none select-none absolute left-1/2 top-1/2 flex h-24 w-24 -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center gap-0.5 rounded-full border border-beige/15 bg-mainGreen/10 text-center shadow-[0_0_25px_rgba(141,165,91,0.25)] backdrop-blur-md">
+            <span className="font-inika text-sm font-bold text-mainGreen leading-tight">{AUTHOR.name}</span>
+            <span className="px-2 text-[9.5px] leading-snug text-beige/80">{AUTHOR.role}</span>
           </div>
         </div>
 
-        <p className="mt-2 flex flex-wrap justify-center gap-x-4 text-sm text-beige/70">
+        <p className="mt-4 flex flex-wrap justify-center gap-x-4 text-sm text-beige/70">
           {satellitesOf("languages", 0).map(({ skill }) => (
             <span key={skill.id} className="font-medium">
               {skill.context}
@@ -339,17 +349,35 @@ export function OrbitStage({
         </p>
       </div>
 
-      <div aria-live="polite" className="xl:sticky xl:top-24">
+      <div aria-live="polite" className="w-full max-w-2xl">
         {hudSkill ? (
           <SkillEvidence skill={hudSkill} className="shadow-[0_0_24px_rgba(141,165,91,0.12)]" />
         ) : (
-          <div className="rounded-lg border border-beige/15 bg-mainGreen/10 p-4 text-sm text-beige/60 backdrop-blur-md">
+          <div className="rounded-lg border border-beige/15 bg-mainGreen/10 p-4 text-center text-sm text-beige/60 backdrop-blur-md">
             Focus or select a satellite to spotlight its evidence.
           </div>
         )}
       </div>
 
-
+      {typeof document !== "undefined" &&
+        spotlight &&
+        createPortal(
+          <div
+            ref={tipRef}
+            role="tooltip"
+            style={{ visibility: "hidden" }}
+            className="orbit-tip pointer-events-none fixed left-0 top-0 z-[100] flex flex-col items-center"
+          >
+            <div className="relative whitespace-nowrap rounded-full border border-beige/25 bg-bgGreen/95 px-3 py-1 font-sans text-xs font-medium text-beige shadow-[0_4px_16px_rgba(0,0,0,0.5)] backdrop-blur-md">
+              {spotlight.name}
+              <span
+                aria-hidden="true"
+                className="absolute -bottom-1 left-1/2 -translate-x-1/2 h-2 w-2 rotate-45 border-b border-r border-beige/25 bg-bgGreen"
+              />
+            </div>
+          </div>,
+          document.body,
+        )}
     </div>
   );
 }

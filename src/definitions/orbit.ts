@@ -33,7 +33,7 @@ const RING_BY_CATEGORY = {
 } as const satisfies Record<OrbitRingCategory, OrbitRingId>;
 
 export const ORBIT_RINGS: readonly OrbitRingConfig[] = [
-  { id: RING_BY_CATEGORY.tools, category: "tools", sizeFactor: 0.54, direction: 1, cycleSeconds: 60, offsetDeg: 0 },
-  { id: RING_BY_CATEGORY.frontend, category: "frontend", sizeFactor: 0.76, direction: -1, cycleSeconds: 72, offsetDeg: 15 },
+  { id: RING_BY_CATEGORY.tools, category: "tools", sizeFactor: 0.58, direction: 1, cycleSeconds: 60, offsetDeg: 0 },
+  { id: RING_BY_CATEGORY.frontend, category: "frontend", sizeFactor: 0.78, direction: -1, cycleSeconds: 72, offsetDeg: 15 },
   { id: RING_BY_CATEGORY.backend, category: "backend", sizeFactor: 1, direction: 1, cycleSeconds: 84, offsetDeg: 30 },
 ] as const;
