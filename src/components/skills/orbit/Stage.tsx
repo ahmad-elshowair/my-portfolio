@@ -315,9 +315,9 @@ export function OrbitStage({
             })}
           </div>
 
-          <div className="absolute left-1/2 top-1/2 flex h-48 w-48 -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center gap-1 rounded-full border border-beige/15 bg-mainGreen/10 text-center shadow-[0_0_35px_rgba(141,165,91,0.25)] backdrop-blur-md">
-            <span className="font-inika text-2xl font-bold text-mainGreen">{AUTHOR.name}</span>
-            <span className="px-6 text-xs leading-snug text-beige/80">{AUTHOR.role}</span>
+          <div className="pointer-events-none select-none absolute left-1/2 top-1/2 flex h-36 w-36 -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center gap-1 rounded-full border border-beige/15 bg-mainGreen/10 text-center shadow-[0_0_35px_rgba(141,165,91,0.25)] backdrop-blur-md">
+            <span className="font-inika text-xl font-bold text-mainGreen leading-tight">{AUTHOR.name}</span>
+            <span className="px-3 text-[11px] leading-snug text-beige/80">{AUTHOR.role}</span>
           </div>
         </div>
 
