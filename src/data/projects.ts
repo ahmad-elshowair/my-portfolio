@@ -111,7 +111,12 @@ export const projects: ProjectCardProps[] = [
       { name: "Git", icon: "simple-icons:git" },
     ],
     githubUrl: "https://github.com/ahmad-elshowair/post-it",
-    images: [],
+    images: [
+      {
+        url: "/images/post-it-1.png",
+        alt: "Post-It register page",
+      },
+    ],
   },
 
   {
