@@ -4,18 +4,19 @@ import Iconify from "@/components/iconify";
 import { SkillEvidence } from "@/components/skills/shared";
 import { SKILL_CATEGORIES, skills } from "@/data";
 import { AUTHOR } from "@/lib/site";
-import { useDesktopViewport, usePrefersReducedMotion } from "@/hooks";
+import { useDesktopViewport, useFinePointer, usePrefersReducedMotion } from "@/hooks";
 import { useSelectSkill, useSelectedSkillId } from "@/stores/skillsLabStore";
-import { ORBIT_RINGS, type SkillItem } from "@/definitions";
+import { ORBIT_RINGS, type OrbitRingConfig, type SkillItem } from "@/definitions";
 import { cn } from "@/lib/utils";
-import { Fragment, type CSSProperties } from "react";
+import { type CSSProperties } from "react";
 
 /**
  * Orbit constellation. Concentric category rings (tools inner, front-end
- * middle, back-end outer) hold icon-only satellites on a tilted pure-CSS 3D
+ * middle, back-end outer) carry icon-only satellites on a tilted pure-CSS 3D
  * plane around the candidate orb on desktop; a static grouped grid renders
- * everywhere else. Ambient rotation, deceleration, tooltips, and the
- * spotlight HUD land in the motion phases.
+ * everywhere else. Rings rotate on the GPU compositor (transform-only,
+ * >= 60s cycles, adjacent rings counter-rotating) with every satellite
+ * counter-rotating in lockstep and dimming through the far side of the plane.
  */
 
 // Stage geometry: the outer diameter caps at 560px (≈280px reference radius)
@@ -28,6 +29,19 @@ const PLANE_TILT_DEG = 62;
 
 const MARKER_COUNT = 8;
 
+// Ambient rotation is transform-only; the depth pair keeps far-side glyphs
+// legible (opacity floor 0.5 ≈ >3:1) and shrinks only the glyph, never the
+// 44px hit box. All animations start in the same commit so the satellite
+// counter-rotations stay in lockstep with their ring.
+const ORBIT_KEYFRAMES = `
+@keyframes orbit-spin-cw { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+@keyframes orbit-spin-ccw { from { transform: rotate(0deg); } to { transform: rotate(-360deg); } }
+@keyframes orbit-depth { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
+@keyframes orbit-depth-glyph { 0%, 100% { transform: scale(0.82); } 50% { transform: scale(1); } }
+.orbit-sat { animation: orbit-depth var(--orbit-cycle) linear infinite; animation-delay: var(--orbit-depth-delay); }
+.orbit-sat svg { animation: orbit-depth-glyph var(--orbit-cycle) linear infinite; animation-delay: var(--orbit-depth-delay); }
+`;
+
 const byCategory = (category: SkillItem["category"]) =>
   skills.filter((s) => s.category === category);
 
@@ -37,18 +51,37 @@ const satellitesOf = (category: SkillItem["category"], offsetDeg: number) =>
     angleDeg: (index / all.length) * 360 - 90 + offsetDeg,
   }));
 
+const spinFor = (direction: 1 | -1) =>
+  direction === 1 ? "orbit-spin-cw" : "orbit-spin-ccw";
+
+/**
+ * Depth phase: the satellite crosses the plane's far side (top of the
+ * ellipse) when ring rotation has carried it to 270deg, so the dim cycle is
+ * delayed by that fraction of the ring period — negative delay presets the
+ * phase without JavaScript in the animation loop.
+ */
+const depthDelaySeconds = (angleDeg: number, ring: OrbitRingConfig) => {
+  const phase = ((((270 - angleDeg) / ring.direction) % 360) + 360) % 360;
+  return -(phase / 360) * ring.cycleSeconds;
+};
+
 export default function Concept016() {
   const selectedSkillId = useSelectedSkillId();
   const selectSkill = useSelectSkill();
   const prefersReducedMotion = usePrefersReducedMotion();
   const isDesktopViewport = useDesktopViewport();
-  const useOrbit = isDesktopViewport && !prefersReducedMotion;
+  const hasFinePointer = useFinePointer();
+  // Ambient motion gate (Article IX v1.4.0): desktop + fine pointer + motion
+  // allowed — fails closed on every other environment.
+  const useOrbit = isDesktopViewport && hasFinePointer && !prefersReducedMotion;
 
   const selected = selectedSkillId ? skills.find((s) => s.id === selectedSkillId) : undefined;
   const languages = byCategory("languages");
 
   return (
     <div className="flex flex-col gap-6">
+      <style>{ORBIT_KEYFRAMES}</style>
+
       <div className="flex justify-center gap-4 text-xs text-beige/60">
         {ORBIT_RINGS.map(({ id, category }) => (
           <span key={id} className="flex items-center gap-1.5">
@@ -73,11 +106,24 @@ export default function Concept016() {
               } as CSSProperties
             }
           >
-            {ORBIT_RINGS.map(({ id, category, sizeFactor, offsetDeg }) => {
+            {ORBIT_RINGS.map((ring) => {
+              const { id, sizeFactor, direction, cycleSeconds } = ring;
               const size = `calc(var(--ring-outer) * ${sizeFactor})`;
               const radius = `calc(${size} / 2)`;
               return (
-                <Fragment key={id}>
+                <div
+                  key={id}
+                  className="absolute left-1/2 top-1/2 [transform-style:preserve-3d]"
+                  style={
+                    {
+                      width: size,
+                      height: size,
+                      marginLeft: `calc(${size} / -2)`,
+                      marginTop: `calc(${size} / -2)`,
+                      animation: `${spinFor(direction)} ${cycleSeconds}s linear infinite`,
+                    } as CSSProperties
+                  }
+                >
                   <div
                     aria-hidden="true"
                     className="absolute left-1/2 top-1/2 rounded-full border border-dashed border-mainGreen/25"
@@ -93,23 +139,37 @@ export default function Concept016() {
                       />
                     ))}
                   </div>
-                  {satellitesOf(category, offsetDeg).map(({ skill, angleDeg }) => (
+                  {satellitesOf(ring.category, ring.offsetDeg).map(({ skill, angleDeg }) => (
                     <span
                       key={skill.id}
-                      className="absolute left-1/2 top-1/2 h-0 w-0"
-                      style={{
-                        transform: `rotate(${angleDeg}deg) translate(${radius}) rotate(${-angleDeg}deg) rotateX(${-PLANE_TILT_DEG}deg)`,
-                      }}
+                      className="absolute left-1/2 top-1/2 h-0 w-0 [transform-style:preserve-3d]"
+                      style={{ transform: `rotate(${angleDeg}deg) translate(${radius})` }}
                     >
-                      <SatelliteChip
-                        className="-translate-x-1/2 -translate-y-1/2"
-                        skill={skill}
-                        selected={selectedSkillId === skill.id}
-                        onSelect={() => selectSkill(selectedSkillId === skill.id ? null : skill.id)}
-                      />
+                      <span
+                        className="h-0 w-0 [transform-style:preserve-3d]"
+                        style={{ animation: `${spinFor(direction === 1 ? -1 : 1)} ${cycleSeconds}s linear infinite` }}
+                      >
+                        <span
+                          className="h-0 w-0"
+                          style={{ transform: `rotate(${-angleDeg}deg) rotateX(${-PLANE_TILT_DEG}deg)` }}
+                        >
+                          <SatelliteChip
+                            className="orbit-sat -translate-x-1/2 -translate-y-1/2"
+                            style={
+                              {
+                                "--orbit-cycle": `${cycleSeconds}s`,
+                                "--orbit-depth-delay": `${depthDelaySeconds(angleDeg, ring).toFixed(3)}s`,
+                              } as CSSProperties
+                            }
+                            skill={skill}
+                            selected={selectedSkillId === skill.id}
+                            onSelect={() => selectSkill(selectedSkillId === skill.id ? null : skill.id)}
+                          />
+                        </span>
+                      </span>
                     </span>
                   ))}
-                </Fragment>
+                </div>
               );
             })}
           </div>
@@ -162,9 +222,9 @@ export default function Concept016() {
 }
 
 /**
- * Ring placement composes the chip's centering transform through `className`;
- * flow layouts (the static grid) render the chip with none — the two views
- * share no geometry assumptions.
+ * Flow-layout chip with the visible label — the static grid keeps names
+ * on-chip (Article VI complete baseline); the orbit's icon-only variant
+ * is SatelliteChip below.
  */
 function GridChip({
   skill,
@@ -202,11 +262,13 @@ function SatelliteChip({
   selected,
   onSelect,
   className,
+  style,
 }: {
   skill: SkillItem;
   selected: boolean;
   onSelect: () => void;
   className?: string;
+  style?: CSSProperties;
 }) {
   return (
     <button
@@ -214,6 +276,7 @@ function SatelliteChip({
       aria-pressed={selected}
       aria-label={skill.name}
       onClick={onSelect}
+      style={style}
       className={cn(
         "flex h-11 w-11 items-center justify-center rounded-full border transition-colors duration-200",
         selected
