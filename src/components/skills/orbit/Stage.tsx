@@ -4,6 +4,7 @@ import { SkillEvidence } from "@/components/skills/shared";
 import { AUTHOR } from "@/lib/site";
 import { skills } from "@/data";
 import { ORBIT_RINGS } from "@/definitions";
+import { cn } from "@/lib/utils";
 import {
   MARKER_COUNT,
   ORBIT_KEYFRAMES,
@@ -193,6 +194,7 @@ export function OrbitStage({
   // HUD subject: transient hover/focus preview, else the pinned selection.
   const selected = selectedSkillId ? skills.find((s) => s.id === selectedSkillId) : undefined;
   const hudSkill = skills.find((s) => s.id === (spotlight?.id ?? selectedSkillId)) ?? selected;
+  const activeRingCategory = hudSkill?.category;
 
   return (
     <div className="grid items-start gap-6 xl:grid-cols-[minmax(0,1fr)_19rem]">
@@ -222,6 +224,7 @@ export function OrbitStage({
               const { id, sizeFactor, direction, cycleSeconds } = ring;
               const size = `calc(var(--ring-outer) * ${sizeFactor})`;
               const radius = `calc(${size} / 2)`;
+              const isRingActive = ring.category === activeRingCategory;
               return (
                 <div
                   key={id}
@@ -242,13 +245,23 @@ export function OrbitStage({
                 >
                   <div
                     aria-hidden="true"
-                    className="absolute left-1/2 top-1/2 rounded-full border border-dashed border-mainGreen/25"
+                    className={cn(
+                      "absolute left-1/2 top-1/2 rounded-full border border-dashed transition-all duration-300",
+                      isRingActive
+                        ? "border-mainGreen/70 shadow-[0_0_12px_rgba(141,165,91,0.3)]"
+                        : "border-mainGreen/25",
+                    )}
                     style={{ width: size, height: size, transform: "translate(-50%, -50%)" }}
                   >
                     {Array.from({ length: MARKER_COUNT }, (_, markerIndex) => (
                       <span
                         key={markerIndex}
-                        className="absolute left-1/2 top-1/2 h-1 w-1 -translate-x-1/2 -translate-y-1/2 rounded-full bg-mainGreen/40"
+                        className={cn(
+                          "absolute left-1/2 top-1/2 h-1 w-1 -translate-x-1/2 -translate-y-1/2 rounded-full transition-all duration-300",
+                          isRingActive
+                            ? "bg-mainGreen/90 scale-125 shadow-[0_0_6px_rgba(141,165,91,0.6)]"
+                            : "bg-mainGreen/40",
+                        )}
                         style={{
                           transform: `rotate(${(markerIndex / MARKER_COUNT) * 360 + 22.5}deg) translate(${radius})`,
                         }}
@@ -304,6 +317,12 @@ export function OrbitStage({
               );
             })}
           </div>
+
+          {/* Celestial atmospheric core glow */}
+          <div
+            aria-hidden="true"
+            className="pointer-events-none select-none absolute left-1/2 top-1/2 h-64 w-64 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(141,165,91,0.12)_0%,transparent_70%)] blur-2xl"
+          />
 
           <div className="pointer-events-none select-none absolute left-1/2 top-1/2 flex h-36 w-36 -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center gap-1 rounded-full border border-beige/15 bg-mainGreen/10 text-center shadow-[0_0_35px_rgba(141,165,91,0.25)] backdrop-blur-md">
             <span className="font-inika text-xl font-bold text-mainGreen leading-tight">{AUTHOR.name}</span>

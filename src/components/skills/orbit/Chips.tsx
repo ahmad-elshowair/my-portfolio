@@ -66,10 +66,10 @@ export function SatelliteChip({
       onClick={onSelect}
       style={style}
       className={cn(
-        "flex h-11 w-11 items-center justify-center rounded-full border transition-colors duration-200 hover:shadow-[0_0_12px_rgba(141,165,91,0.3)]",
+        "flex h-11 w-11 items-center justify-center rounded-full border transition-all duration-200 hover:shadow-[0_0_12px_rgba(141,165,91,0.3)]",
         selected
           ? "border-mainGreen bg-mainGreen/30 shadow-[0_0_12px_rgba(141,165,91,0.3)]"
-          : "border-beige/15 bg-mainGreen/10 hover:bg-mainGreen/25",
+          : "border-beige/15 bg-mainGreen/10 hover:border-mainGreen/40 hover:bg-mainGreen/25 hover:scale-105",
         className,
       )}
     >
