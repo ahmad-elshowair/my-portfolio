@@ -1,25 +1,19 @@
 import { skills } from "@/data";
 import type { OrbitRingConfig, SkillItem } from "@/definitions";
 
-/**
- * Orbit motion geometry and budgets. Ambient rotation is transform-only on
- * the GPU compositor (Article IX v1.4.0); the deceleration ramp belongs to
- * the ambient-motion class (Step 3 Option B ruling) while the tooltip
- * entrance stays inside the 150–250ms interaction tokens.
- */
-
-// Stage geometry: the outer diameter caps at 560px (≈280px reference radius)
-// and always keeps the icon-chip overhang inside the section container.
+/** Outer diameter bounded by 560px and container query width. */
 export const RING_OUTER = "min(560px, calc(100cqw - 240px))";
 
-// Plane tilt that reads the circular tracks as elliptical orbits; satellites
-// counter-tilt by the same angle to stand billboarded toward the viewer.
+/** 3D orbital plane tilt angle in degrees. */
 export const PLANE_TILT_DEG = 62;
 
-// Deceleration/resumption ramp (ambient-motion class) and tooltip entrance.
+/** Speed ramp duration in milliseconds. */
 export const RAMP_MS = 300;
+
+/** Tooltip fade duration in milliseconds. */
 export const TIP_MS = 180;
 
+/** Number of celestial marker dots on each orbital ring. */
 export const MARKER_COUNT = 8;
 
 export const ORBIT_KEYFRAMES = `
@@ -45,12 +39,7 @@ export const satellitesOf = (category: SkillItem["category"], offsetDeg: number)
 export const spinFor = (direction: 1 | -1) =>
   direction === 1 ? "orbit-spin-cw" : "orbit-spin-ccw";
 
-/**
- * Depth phase: the satellite crosses the plane's far side (top of the
- * ellipse) when ring rotation has carried it to 270deg, so the dim cycle is
- * delayed by that fraction of the ring period — negative delay presets the
- * phase without JavaScript in the animation loop.
- */
+/** Computes negative animation delay so satellite depth matches its orbital position. */
 export const depthDelaySeconds = (angleDeg: number, ring: OrbitRingConfig) => {
   const phase = ((((270 - angleDeg) / ring.direction) % 360) + 360) % 360;
   return -(phase / 360) * ring.cycleSeconds;

@@ -6,11 +6,7 @@ import { byCategory } from "./motion";
 import { GridChip } from "./Chips";
 import type { SkillItem } from "@/definitions";
 
-/**
- * The complete static baseline (Article VI): grouped category rows with
- * visible names, the Languages line, and full touch accessibility — rendered
- * everywhere the ambient-motion gate fails closed.
- */
+/** Grouped category grid used as a responsive fallback on touch/mobile viewports. */
 export function StaticGrid({
   selectedSkillId,
   onSelectSkill,
@@ -33,7 +29,9 @@ export function StaticGrid({
                 key={skill.id}
                 skill={skill}
                 selected={selectedSkillId === skill.id}
-                onSelect={() => onSelectSkill(selectedSkillId === skill.id ? null : skill.id)}
+                onSelect={() =>
+                  onSelectSkill(selectedSkillId === skill.id ? null : skill.id)
+                }
               />
             ))}
           </div>

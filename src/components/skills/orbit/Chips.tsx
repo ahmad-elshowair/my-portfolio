@@ -5,11 +5,7 @@ import type { SkillItem } from "@/definitions";
 import { cn } from "@/lib/utils";
 import type { CSSProperties } from "react";
 
-/**
- * Flow-layout chip with the visible label — the static grid keeps names
- * on-chip (Article VI complete baseline); the orbit's icon-only variant
- * is SatelliteChip below.
- */
+/** Static grid skill chip with icon and visible label. */
 export function GridChip({
   skill,
   selected,
@@ -40,7 +36,7 @@ export function GridChip({
   );
 }
 
-/** Icon-only orbit satellite: the official glyph at a 44px target, named via aria-label. */
+/** Icon-only orbital satellite chip with accessible label and active aura. */
 export function SatelliteChip({
   skill,
   selected,
