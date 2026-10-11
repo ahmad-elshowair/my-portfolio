@@ -21,7 +21,6 @@ import {
   type KeyboardEvent,
   type PointerEvent,
   useEffect,
-  useLayoutEffect,
   useRef,
   useState,
 } from "react";
@@ -36,19 +35,15 @@ import {
 interface SpotlightState {
   id: string;
   name: string;
-  /** Chip center x and top edge in viewport coordinates, captured at open. */
-  cx: number;
-  top: number;
-  ready: boolean;
 }
 
 export function OrbitStage({
-  selectedSkillId,
-  selectSkill,
+  selectedSkillId = null,
+  selectSkill = () => {},
 }: {
-  selectedSkillId: string | null;
-  selectSkill: (id: string | null) => void;
-}) {
+  selectedSkillId?: string | null;
+  selectSkill?: (id: string | null) => void;
+} = {}) {
   // Animations are read once per interaction via the ring rotator refs, then
   // ramped on cached handles; steady-state rotation never touches JS.
   const rotatorRefs = useRef(new Map<string, HTMLDivElement>());
@@ -61,7 +56,6 @@ export function OrbitStage({
   const focusedChip = useRef<HTMLElement | null>(null);
   const tipDismissedFor = useRef<string | null>(null);
   const [spotlight, setSpotlight] = useState<SpotlightState | null>(null);
-  const tipRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(
     () => () => {
@@ -122,13 +116,9 @@ export function OrbitStage({
     }
     setSpotlight((current) => {
       if (current?.id === id) return current;
-      const rect = chip.getBoundingClientRect();
       return {
         id,
         name: chip.getAttribute("aria-label") ?? id,
-        cx: rect.left + rect.width / 2,
-        top: rect.top,
-        ready: false,
       };
     });
   };
@@ -199,20 +189,6 @@ export function OrbitStage({
     setSpotlight(null);
   };
 
-  // Clamp the tooltip inside the viewport once its real size is measurable.
-  useLayoutEffect(() => {
-    if (!spotlight || spotlight.ready || !tipRef.current) return;
-    const tip = tipRef.current;
-    const x = Math.min(
-      Math.max(spotlight.cx - tip.offsetWidth / 2, 8),
-      window.innerWidth - tip.offsetWidth - 8,
-    );
-    const above = spotlight.top - tip.offsetHeight - 12;
-    const y = above >= 8 ? above : spotlight.top + 56;
-    tip.style.left = `${x}px`;
-    tip.style.top = `${y}px`;
-    setSpotlight((current) => (current ? { ...current, ready: true } : current));
-  }, [spotlight]);
 
   // HUD subject: transient hover/focus preview, else the pinned selection.
   const selected = selectedSkillId ? skills.find((s) => s.id === selectedSkillId) : undefined;
@@ -306,6 +282,20 @@ export function OrbitStage({
                             selected={selectedSkillId === skill.id}
                             onSelect={() => selectSkill(selectedSkillId === skill.id ? null : skill.id)}
                           />
+                          {spotlight?.id === skill.id && (
+                            <div
+                              role="tooltip"
+                              className="orbit-tip pointer-events-none absolute bottom-[28px] left-0 -translate-x-1/2 z-50 flex flex-col items-center"
+                            >
+                              <div className="relative whitespace-nowrap rounded-full border border-beige/25 bg-bgGreen/95 px-3 py-1 font-sans text-xs font-medium text-beige shadow-[0_4px_16px_rgba(0,0,0,0.5)] backdrop-blur-md">
+                                {skill.name}
+                                <span
+                                  aria-hidden="true"
+                                  className="absolute -bottom-1 left-1/2 -translate-x-1/2 h-2 w-2 rotate-45 border-b border-r border-beige/25 bg-bgGreen"
+                                />
+                              </div>
+                            </div>
+                          )}
                         </span>
                       </span>
                     </span>
@@ -340,20 +330,7 @@ export function OrbitStage({
         )}
       </div>
 
-      {spotlight && (
-        <div
-          ref={tipRef}
-          role="tooltip"
-          style={{
-            left: -9999,
-            top: -9999,
-            visibility: spotlight.ready ? "visible" : "hidden",
-          }}
-          className="orbit-tip pointer-events-none fixed z-50 rounded-full border border-beige/15 bg-mainGreen/10 px-3 py-1 text-xs text-beige backdrop-blur-md"
-        >
-          {spotlight.name}
-        </div>
-      )}
+
     </div>
   );
 }
