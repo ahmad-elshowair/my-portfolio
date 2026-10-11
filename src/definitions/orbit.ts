@@ -20,18 +20,20 @@ export interface OrbitRingConfig {
   offsetDeg: number;
 }
 
-export const ORBIT_RINGS: readonly OrbitRingConfig[] = [
-  { id: "inner", category: "tools", sizeFactor: 0.5, direction: 1, cycleSeconds: 60, offsetDeg: 0 },
-  { id: "middle", category: "frontend", sizeFactor: 0.73, direction: -1, cycleSeconds: 72, offsetDeg: 15 },
-  { id: "outer", category: "backend", sizeFactor: 1, direction: 1, cycleSeconds: 84, offsetDeg: 30 },
-] as const;
-
 /**
- * Exhaustive category→ring binding: the Record type makes a new dataset
- * category without a ring a compile error instead of a missing satellite.
+ * Category→ring binding: every ringed dataset category must appear — a new
+ * SkillCategoryId without an entry here is a compile error, never a silent
+ * drop from the orbit. Consumed as the source of each ring's id so the map
+ * cannot drift from ORBIT_RINGS.
  */
-export const RING_BY_CATEGORY = {
+const RING_BY_CATEGORY = {
   tools: "inner",
   frontend: "middle",
   backend: "outer",
 } as const satisfies Record<OrbitRingCategory, OrbitRingId>;
+
+export const ORBIT_RINGS: readonly OrbitRingConfig[] = [
+  { id: RING_BY_CATEGORY.tools, category: "tools", sizeFactor: 0.5, direction: 1, cycleSeconds: 60, offsetDeg: 0 },
+  { id: RING_BY_CATEGORY.frontend, category: "frontend", sizeFactor: 0.73, direction: -1, cycleSeconds: 72, offsetDeg: 15 },
+  { id: RING_BY_CATEGORY.backend, category: "backend", sizeFactor: 1, direction: 1, cycleSeconds: 84, offsetDeg: 30 },
+] as const;

@@ -46,7 +46,10 @@ export default function Concept016() {
         <StaticGrid selectedSkillId={selectedSkillId} onSelectSkill={selectSkill} />
       )}
 
-      <div aria-live="polite">
+      {/* The orbit's HUD column is the live announcer; this shared block stays
+          live only on the static variant, where it IS the HUD — one
+          announcement per change, never two. */}
+      <div aria-live={useOrbit ? undefined : "polite"}>
         {selected ? (
           <SkillEvidence skill={selected} />
         ) : (
