@@ -27,14 +27,14 @@ export function GridChip({
       aria-pressed={selected}
       onClick={onSelect}
       className={cn(
-        "flex items-center gap-1 whitespace-nowrap rounded-full border px-2.5 py-1 text-xs transition-colors duration-200 [&_svg]:text-sm",
+        "flex min-h-11 min-w-11 items-center gap-1.5 whitespace-nowrap rounded-full border px-3.5 py-2 text-xs transition-colors duration-200 [&_svg]:text-base",
         selected
           ? "border-mainGreen bg-mainGreen/30 text-beige shadow-[0_0_12px_rgba(141,165,91,0.3)]"
           : "border-beige/20 bg-bgGreen/80 text-beige/90 hover:bg-beige/10",
         className,
       )}
     >
-      <Iconify icon={skill.icon} className="h-[1em] w-[1em] shrink-0" />
+      <Iconify icon={skill.icon} className="h-[1.15em] w-[1.15em] shrink-0" />
       {skill.name}
     </button>
   );
