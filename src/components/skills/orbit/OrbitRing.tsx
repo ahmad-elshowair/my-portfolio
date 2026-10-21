@@ -50,7 +50,7 @@ export function OrbitRing({
       <div
         aria-hidden="true"
         className={cn(
-          "pointer-events-none absolute left-1/2 top-1/2 rounded-full border border-dashed transition-all duration-300",
+          "pointer-events-none absolute left-1/2 top-1/2 rounded-full border border-dashed transition-all duration-[250ms]",
           isActive
             ? "border-mainGreen/70 shadow-[0_0_12px_rgba(141,165,91,0.3)]"
             : "border-mainGreen/25",
@@ -65,7 +65,7 @@ export function OrbitRing({
           <span
             key={i}
             className={cn(
-              "absolute left-1/2 top-1/2 h-1 w-1 -translate-x-1/2 -translate-y-1/2 rounded-full transition-all duration-300",
+              "absolute left-1/2 top-1/2 h-1 w-1 -translate-x-1/2 -translate-y-1/2 rounded-full transition-all duration-[250ms]",
               isActive
                 ? "bg-mainGreen/90 scale-125 shadow-[0_0_6px_rgba(141,165,91,0.6)]"
                 : "bg-mainGreen/40",

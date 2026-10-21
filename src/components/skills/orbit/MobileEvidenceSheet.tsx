@@ -49,17 +49,17 @@ export function MobileEvidenceSheet({
                 }
           }
           transition={{
-            duration: prefersReducedMotion ? 0.15 : 0.38,
+            duration: prefersReducedMotion ? 0.15 : 0.24,
             ease: [0.16, 1, 0.3, 1],
           }}
-          className="fixed bottom-4 left-4 right-4 z-[90] mx-auto max-w-lg"
+          className="fixed bottom-4 left-4 right-4 z-50 mx-auto max-w-lg"
         >
-          <div className="relative rounded-xl border border-beige/25 bg-bgGreen/95 p-4 pr-10 shadow-[0_12px_36px_rgba(0,0,0,0.6)] backdrop-blur-md">
+          <div className="relative rounded-xl border border-beige/25 bg-bgGreen/95 p-4 pr-12 shadow-[0_12px_36px_rgba(0,0,0,0.6)] backdrop-blur-md">
             <button
               type="button"
               onClick={onClose}
               aria-label="Close evidence preview"
-              className="absolute right-3 top-3 flex h-7 w-7 items-center justify-center rounded-full text-beige/60 transition-colors hover:bg-beige/10 hover:text-beige focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-mainGreen"
+              className="absolute right-2 top-2 flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-beige/60 transition-colors hover:bg-beige/10 hover:text-beige focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-mainGreen"
             >
               <span aria-hidden="true" className="text-base leading-none">
                 ✕

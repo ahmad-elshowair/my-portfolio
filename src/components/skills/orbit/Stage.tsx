@@ -23,19 +23,31 @@ import {
 } from "react";
 
 interface OrbitStageProps {
-  selectedSkillId?: string | null;
-  selectSkill?: (id: string | null) => void;
+  selectedSkillId: string | null;
+  selectSkill: (id: string | null) => void;
 }
 
 /** Interactive desktop 3D orbit constellation stage. */
-export function OrbitStage({
-  selectedSkillId = null,
-  selectSkill = () => {},
-}: OrbitStageProps = {}) {
+export function OrbitStage({ selectedSkillId, selectSkill }: OrbitStageProps) {
   const { rotatorRefs, pauseRing, resumeRing } = useOrbitAnimation();
 
   const tipDismissedFor = useRef<string | null>(null);
+  const hoveredId = useRef<string | null>(null);
+  const focusedId = useRef<string | null>(null);
   const [spotlight, setSpotlight] = useState<SpotlightState | null>(null);
+
+  // The spotlight persists while EITHER interaction holds the chip — the
+  // same leave-AND-blur rule the ring ramp applies; the last event alone
+  // must never clear it while focus remains.
+  const spotlightFor = (id: string | null) => {
+    if (!id || tipDismissedFor.current === id) {
+      setSpotlight(null);
+      return;
+    }
+    const chip = document.querySelector<HTMLElement>(`[data-skill-id="${id}"]`);
+    const name = chip?.getAttribute("aria-label") ?? id;
+    setSpotlight((current) => (current?.id === id ? current : { id, name }));
+  };
 
   const chipFrom = (target: EventTarget | null): HTMLElement | null =>
     target instanceof HTMLElement
@@ -50,8 +62,9 @@ export function OrbitStage({
     if (!ring || !id) return;
 
     tipDismissedFor.current = null;
+    hoveredId.current = id;
     pauseRing(ring, "hover");
-    setSpotlight({ id, name: chip.getAttribute("aria-label") ?? id });
+    spotlightFor(id);
   };
 
   const onStagePointerOut = (event: PointerEvent<HTMLDivElement>) => {
@@ -63,13 +76,9 @@ export function OrbitStage({
     const nextRing = next?.dataset.ring ?? null;
     const nextId = next?.dataset.skillId ?? null;
 
+    hoveredId.current = nextId;
     resumeRing("hover", nextRing);
-
-    if (next && nextId && tipDismissedFor.current !== nextId) {
-      setSpotlight({ id: nextId, name: next.getAttribute("aria-label") ?? nextId });
-    } else {
-      setSpotlight(null);
-    }
+    spotlightFor(focusedId.current ?? nextId);
   };
 
   const onStageFocus = (event: FocusEvent<HTMLDivElement>) => {
@@ -80,8 +89,9 @@ export function OrbitStage({
     if (!ring || !id) return;
 
     tipDismissedFor.current = null;
+    focusedId.current = id;
     pauseRing(ring, "focus");
-    setSpotlight({ id, name: chip.getAttribute("aria-label") ?? id });
+    spotlightFor(id);
   };
 
   const onStageBlur = (event: FocusEvent<HTMLDivElement>) => {
@@ -91,13 +101,9 @@ export function OrbitStage({
     const nextRing = next?.dataset.ring ?? null;
     const nextId = next?.dataset.skillId ?? null;
 
+    focusedId.current = nextId;
     resumeRing("focus", nextRing);
-
-    if (next && nextId && tipDismissedFor.current !== nextId) {
-      setSpotlight({ id: nextId, name: next.getAttribute("aria-label") ?? nextId });
-    } else {
-      setSpotlight(null);
-    }
+    spotlightFor(nextId ?? hoveredId.current);
   };
 
   const onStageKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {

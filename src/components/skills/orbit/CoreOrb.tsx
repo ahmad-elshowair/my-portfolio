@@ -14,7 +14,7 @@ export function CoreOrb() {
         <span className="font-inika text-sm font-bold text-mainGreen leading-tight">
           {AUTHOR.name}
         </span>
-        <span className="px-2 text-[9.5px] leading-snug text-beige/80">
+        <span className="px-2 text-[11px] leading-snug text-beige/80">
           {AUTHOR.role}
         </span>
       </div>
