@@ -68,6 +68,7 @@ export const ZONES: BentoZoneConfig[] = [
       "performance-optimization",
       "realtime-dashboards",
       "ai-assisted",
+      "docker",
     ],
   },
   {
