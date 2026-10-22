@@ -48,8 +48,8 @@ specify/
 .zcode/
 zcode/
 
-# local spec workflow docs (specs + tracker are machine-local by convention)
-/docs/
+# local spec workflow docs (playbooks + specs + tracker are machine-local by convention)
+/playbooks/
 /specs/
 
 # zcode
