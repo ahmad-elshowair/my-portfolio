@@ -258,6 +258,14 @@ export const skills: SkillItem[] = [
     projects: ["pointcraft", "clearcargo", "post-it", "kun-min-aldhaakirin"],
   },
   {
+    id: "docker",
+    name: "Docker",
+    icon: "simple-icons:docker",
+    category: "tools",
+    context: "Docker for containerization.",
+    projects: [],
+  },
+  {
     id: "agile-remote",
     name: "Agile remote collaboration",
     icon: "lucide:users",
