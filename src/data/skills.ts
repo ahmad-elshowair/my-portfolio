@@ -108,7 +108,7 @@ export const skills: SkillItem[] = [
     icon: "streamline-ultimate:responsive-design-bold",
     category: "frontend",
     context:
-      "Accessible, theme-consistent UI across mobile and desktop viewports3.",
+      "Accessible, theme-consistent UI across mobile and desktop viewports.",
     projects: ["pointcraft", "clearcargo", "kun-min-aldhaakirin"],
   },
   {
@@ -240,7 +240,7 @@ export const skills: SkillItem[] = [
     projects: [],
   },
 
-  // Tools & Practices (9)
+  // Tools & Practices (11)
   {
     id: "git",
     name: "Git",
