@@ -58,79 +58,140 @@ export function EvidenceDrawer({
       onPointerEnter={onPointerEnter}
       onPointerLeave={onPointerLeave}
       className={cn(
-        "relative rounded-2xl border border-beige/20 bg-black/35 backdrop-blur-xl shadow-[0_15px_40px_rgba(0,0,0,0.45)]",
+        "relative rounded-2xl border-x border-b border-beige/20 bg-black/35 backdrop-blur-xl shadow-[0_15px_40px_rgba(0,0,0,0.45)]",
         isDesktop
           ? "p-6 min-h-[135px] flex flex-col justify-between w-full"
           : "my-2 p-5 col-span-2 w-full",
       )}
     >
-      {/* Desktop Integrated Caret: seamless upward extension aligned with active chip */}
+      {/* Top-Left Rounded Corner Curve (r=16px): seamlessly rounds left border into top border */}
+      <div
+        className="absolute top-0 left-0 w-4 h-4 rounded-tl-2xl border-t border-l border-beige/20 pointer-events-none"
+        aria-hidden="true"
+      />
+
+      {/* Top-Right Rounded Corner Curve (r=16px): seamlessly rounds top border into right border */}
+      <div
+        className="absolute top-0 right-0 w-4 h-4 rounded-tr-2xl border-t border-r border-beige/20 pointer-events-none"
+        aria-hidden="true"
+      />
+
+      {/* Desktop Integrated Top Border & Caret: seamless single-contour glass perimeter */}
       {isDesktop && caretOffsetPx !== undefined && (
-        <motion.div
-          className="absolute -top-[14px] w-7 h-[15px] pointer-events-none z-20"
-          animate={{ left: caretOffsetPx }}
-          transition={{ type: "spring", stiffness: 380, damping: 30 }}
-          style={{ transform: "translateX(-50%)" }}
-          aria-hidden="true"
-        >
-          {/* Translucent glass fill matching drawer interior with backdrop blur */}
-          <div
-            className="w-full h-full bg-black/35 backdrop-blur-xl"
-            style={{ clipPath: "polygon(50% 0%, 100% 100%, 0% 100%)" }}
+        <>
+          {/* Left top border segment (from r=16px corner to caret left slope) */}
+          <motion.div
+            className="absolute top-0 left-4 h-px bg-beige/20 pointer-events-none"
+            animate={{ width: Math.max(0, caretOffsetPx - 14 - 16) }}
+            transition={{ type: "spring", stiffness: 380, damping: 30 }}
           />
-          {/* 45-deg angled border strokes seamlessly meeting container top border */}
-          <svg
-            className="absolute inset-0 w-full h-full overflow-visible pointer-events-none"
-            viewBox="0 0 28 14"
-            fill="none"
+
+          {/* Integrated Caret Peak: upward triangular extension of drawer interior */}
+          <motion.div
+            className="absolute -top-[14px] w-7 h-[15px] pointer-events-none z-20"
+            animate={{ left: caretOffsetPx }}
+            transition={{ type: "spring", stiffness: 380, damping: 30 }}
+            style={{ transform: "translateX(-50%)" }}
+            aria-hidden="true"
           >
-            <polyline
-              points="0,14 14,0.5 28,14"
-              fill="none"
-              stroke="rgba(245, 230, 211, 0.2)"
-              strokeWidth="1"
-              strokeLinecap="round"
-              strokeLinejoin="round"
+            {/* Translucent glass fill matching drawer interior */}
+            <div
+              className="w-full h-full bg-black/35 backdrop-blur-xl"
+              style={{ clipPath: "polygon(50% 0%, 100% 100%, 0% 100%)" }}
             />
-          </svg>
-          {/* Seamless bridge covering container top border stroke under caret */}
-          <div className="absolute -bottom-px left-0.5 right-0.5 h-[2px] bg-[#1c2620]" />
-        </motion.div>
+            {/* 45-deg angled border strokes seamlessly meeting left and right border lines */}
+            <svg
+              className="absolute inset-0 w-full h-full overflow-visible pointer-events-none"
+              viewBox="0 0 28 14"
+              fill="none"
+            >
+              <polyline
+                points="0,14 14,0.5 28,14"
+                fill="none"
+                stroke="rgba(245, 230, 211, 0.2)"
+                strokeWidth="1"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </motion.div>
+
+          {/* Right top border segment (from caret right slope to r=16px corner) */}
+          <motion.div
+            className="absolute top-0 right-4 h-px bg-beige/20 pointer-events-none"
+            animate={{ left: caretOffsetPx + 14 }}
+            transition={{ type: "spring", stiffness: 380, damping: 30 }}
+          />
+        </>
       )}
 
-      {/* Mobile Integrated Caret: seamless upward extension aligned with column */}
-      {!isDesktop && caretColumn && (
-        <div
-          className="absolute -top-[12px] w-6 h-[13px] pointer-events-none z-20"
-          style={{
-            left: caretColumn === "left" ? "25%" : "75%",
-            transform: "translateX(-50%)",
-          }}
-          aria-hidden="true"
-        >
-          {/* Translucent glass fill matching drawer interior with backdrop blur */}
-          <div
-            className="w-full h-full bg-black/35 backdrop-blur-xl"
-            style={{ clipPath: "polygon(50% 0%, 100% 100%, 0% 100%)" }}
-          />
-          {/* 45-deg angled border strokes meeting top border */}
-          <svg
-            className="absolute inset-0 w-full h-full overflow-visible pointer-events-none"
-            viewBox="0 0 24 12"
-            fill="none"
-          >
-            <polyline
-              points="0,12 12,0.5 24,12"
-              fill="none"
-              stroke="rgba(245, 230, 211, 0.2)"
-              strokeWidth="1"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-          {/* Seamless bridge covering container top border stroke under caret */}
-          <div className="absolute -bottom-px left-0.5 right-0.5 h-[2px] bg-[#1c2620]" />
-        </div>
+      {/* Desktop fallback top border (between rounded corners) if caret offset not yet computed */}
+      {isDesktop && caretOffsetPx === undefined && (
+        <div className="absolute top-0 left-4 right-4 h-px bg-beige/20 pointer-events-none" />
+      )}
+
+      {/* Mobile Integrated Top Border & Caret: seamless single-contour glass perimeter */}
+      {!isDesktop && (
+        <>
+          {caretColumn ? (
+            <>
+              {/* Left top border segment (from r=16px corner to caret left slope) */}
+              <div
+                className="absolute top-0 left-4 h-px bg-beige/20 pointer-events-none"
+                style={{
+                  width:
+                    caretColumn === "left"
+                      ? "calc(25% - 28px)"
+                      : "calc(75% - 28px)",
+                }}
+              />
+
+              {/* Integrated Mobile Caret Peak */}
+              <div
+                className="absolute -top-[12px] w-6 h-[13px] pointer-events-none z-20"
+                style={{
+                  left: caretColumn === "left" ? "25%" : "75%",
+                  transform: "translateX(-50%)",
+                }}
+                aria-hidden="true"
+              >
+                {/* Translucent glass fill matching drawer interior */}
+                <div
+                  className="w-full h-full bg-black/35 backdrop-blur-xl"
+                  style={{ clipPath: "polygon(50% 0%, 100% 100%, 0% 100%)" }}
+                />
+                {/* 45-deg angled border strokes meeting top border lines */}
+                <svg
+                  className="absolute inset-0 w-full h-full overflow-visible pointer-events-none"
+                  viewBox="0 0 24 12"
+                  fill="none"
+                >
+                  <polyline
+                    points="0,12 12,0.5 24,12"
+                    fill="none"
+                    stroke="rgba(245, 230, 211, 0.2)"
+                    strokeWidth="1"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </div>
+
+              {/* Right top border segment (from caret right slope to r=16px corner) */}
+              <div
+                className="absolute top-0 right-4 h-px bg-beige/20 pointer-events-none"
+                style={{
+                  left:
+                    caretColumn === "left"
+                      ? "calc(25% + 12px)"
+                      : "calc(75% + 12px)",
+                }}
+              />
+            </>
+          ) : (
+            <div className="absolute top-0 left-4 right-4 h-px bg-beige/20 pointer-events-none" />
+          )}
+        </>
       )}
 
       {/* Desktop Layout (Direction B: Two-Tier Floating Telemetry) */}
