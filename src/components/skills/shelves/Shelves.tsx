@@ -51,6 +51,7 @@ export default function Shelves() {
 
   const chipRefs = useRef<Record<string, HTMLButtonElement | null>>({});
   const drawerContainerRef = useRef<HTMLDivElement | null>(null);
+  const shelvesScopeRef = useRef<HTMLDivElement | null>(null);
 
   // Determine active skill scoped to current shelf
   const rawActiveId = hover.previewId ?? selectedSkillId;
@@ -92,6 +93,22 @@ export default function Shelves() {
     window.addEventListener("resize", updateCaret);
     return () => window.removeEventListener("resize", updateCaret);
   }, [updateCaret]);
+
+  // Click-outside listener: collapse drawer when clicking outside the shelf & drawer scope
+  useEffect(() => {
+    const handlePointerDown = (event: PointerEvent) => {
+      const target = event.target as Node | null;
+      if (
+        shelvesScopeRef.current &&
+        !shelvesScopeRef.current.contains(target)
+      ) {
+        selectSkill(null);
+        hover.clearPreview();
+      }
+    };
+    window.addEventListener("pointerdown", handlePointerDown);
+    return () => window.removeEventListener("pointerdown", handlePointerDown);
+  }, [selectSkill, hover]);
 
   // Global Escape key listener: clear preview and selection
   useEffect(() => {
@@ -154,7 +171,18 @@ export default function Shelves() {
 
   return (
     <MotionConfig reducedMotion="user">
-      <div className="flex flex-col gap-4 sm:gap-6 w-full">
+      <div className="relative flex flex-col gap-4 sm:gap-6 w-full">
+        {/* Massive Diffuse Radial Green Blur Pool (matching desktop-direction.jpg) */}
+        <div
+          className="pointer-events-none absolute -inset-x-24 -top-28 h-[700px] -z-10 bg-[radial-gradient(ellipse_80%_60%_at_50%_38%,_rgba(141,165,91,0.45)_0%,_rgba(141,165,91,0.20)_42%,_rgba(141,165,91,0.05)_65%,_transparent_80%)] blur-3xl"
+          aria-hidden="true"
+        />
+        {/* Core Vibrant Spotlight Bloom behind shelf chips */}
+        <div
+          className="pointer-events-none absolute left-1/2 -translate-x-1/2 top-8 w-[650px] h-[380px] -z-10 bg-[radial-gradient(ellipse_at_center,_rgba(163,190,109,0.55)_0%,_rgba(141,165,91,0.28)_45%,_transparent_75%)] blur-2xl opacity-95"
+          aria-hidden="true"
+        />
+
         {/* Concept-level polite live region (announces exactly once) */}
         <div
           className="sr-only"
@@ -176,6 +204,7 @@ export default function Shelves() {
 
         {/* Desktop Contiguous Hover Scope: Shelf + Pull-out Drawer */}
         <div
+          ref={shelvesScopeRef}
           className="relative"
           onPointerEnter={hover.onDrawerPointerEnter}
           onPointerLeave={hover.onDrawerPointerLeave}
@@ -200,16 +229,24 @@ export default function Shelves() {
             />
           </AnimatePresence>
 
-          {/* Desktop pull-out drawer attached beneath shelf ledge */}
-          <div className="hidden md:block" ref={drawerContainerRef}>
-            <EvidenceDrawer
-              skill={drawerSkill}
-              variant="desktop-pullout"
-              caretOffsetPx={caretOffset}
-              onPillClick={handlePillClick}
-              onPointerEnter={hover.onDrawerPointerEnter}
-              onPointerLeave={hover.onDrawerPointerLeave}
-            />
+          {/* Desktop pull-out drawer layered on top of shelf ledge (a layer up) */}
+          <div
+            className="hidden md:block w-full max-w-[952px] mx-auto relative z-20 -mt-[18px]"
+            ref={drawerContainerRef}
+          >
+            <AnimatePresence>
+              {drawerSkill && (
+                <EvidenceDrawer
+                  key="desktop-drawer"
+                  skill={drawerSkill}
+                  variant="desktop-pullout"
+                  caretOffsetPx={caretOffset}
+                  onPillClick={handlePillClick}
+                  onPointerEnter={hover.onDrawerPointerEnter}
+                  onPointerLeave={hover.onDrawerPointerLeave}
+                />
+              )}
+            </AnimatePresence>
           </div>
         </div>
 

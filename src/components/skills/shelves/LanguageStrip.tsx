@@ -12,6 +12,8 @@ interface LanguageStripProps {
 
 /**
  * Slim frosted glass communication strip rendered beneath the category shelf.
+ * Matches desktop-direction.jpg & mobile-direction.jpg:
+ * Centered "Communication" section with subtle hairline wings and frosted language pills.
  * Displays only spoken languages (Arabic, English) derived verbatim from the dataset (OD7).
  */
 export function LanguageStrip({ className }: LanguageStripProps) {
@@ -20,31 +22,40 @@ export function LanguageStrip({ className }: LanguageStripProps) {
   return (
     <div
       className={cn(
-        "flex flex-wrap items-center justify-between gap-3 rounded-xl border border-beige/15 bg-mainGreen/10 backdrop-blur-md px-4 py-2.5 text-xs sm:text-sm",
+        "flex flex-col items-center justify-center gap-3 pt-2 text-xs sm:text-sm",
         className
       )}
     >
-      <div className="flex items-center gap-2">
-        <span className="text-xs uppercase tracking-wider font-semibold text-mainGreen">
+      {/* Centered Section Label with Hairline Wings */}
+      <div className="flex items-center justify-center gap-3 w-full max-w-xs">
+        <div className="h-px flex-1 bg-gradient-to-r from-transparent via-beige/20 to-beige/30" />
+        <span className="text-xs uppercase tracking-widest font-medium text-beige/70">
           Communication
         </span>
+        <div className="h-px flex-1 bg-gradient-to-l from-transparent via-beige/20 to-beige/30" />
       </div>
 
-      <div className="flex flex-wrap items-center gap-2 sm:gap-3">
-        {languages.map((skill) => (
-          <div
-            key={skill.id}
-            className="flex items-center gap-1.5 rounded-lg border border-beige/10 bg-beige/5 px-2.5 py-1 text-beige/90 text-xs sm:text-sm"
-          >
-            {skill.icon ? (
-              <Iconify
-                icon={skill.icon}
-                className="h-3.5 w-3.5 text-mainGreen shrink-0"
-              />
-            ) : null}
-            <span className="font-medium text-beige">{skill.name}</span>
-          </div>
-        ))}
+      {/* Language Badges */}
+      <div className="flex flex-wrap items-center justify-center gap-2.5 sm:gap-3">
+        {languages.map((skill) => {
+          // Format "Arabic (native)" as "Arabic · native" per mockups
+          const formattedLabel = skill.name.replace(/\s*\((.*?)\)/, " · $1");
+
+          return (
+            <div
+              key={skill.id}
+              className="flex min-h-11 items-center gap-2 rounded-full border border-beige/20 bg-black/30 backdrop-blur-md px-4 py-2 text-beige/90 text-xs sm:text-sm shadow-sm transition-colors hover:border-beige/35 hover:bg-black/40"
+            >
+              {skill.icon ? (
+                <Iconify
+                  icon={skill.icon}
+                  className="h-3.5 w-3.5 text-mainGreen shrink-0"
+                />
+              ) : null}
+              <span className="font-normal text-beige">{formattedLabel}</span>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
