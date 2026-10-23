@@ -1,153 +1,220 @@
 "use client";
 
-import Iconify from "@/components/iconify";
-import { SkillEvidence } from "@/components/skills/shared";
+/* ─── Category Shelves Concept ────────────────────────────────────────── */
+
+import { useCallback, useEffect, useRef, useState } from "react";
+import { AnimatePresence, MotionConfig } from "framer-motion";
 import {
+  SHELF_CATEGORIES,
+  SHELF_COUNTS,
   SKILL_CATEGORIES,
-  skills,
+  SKILL_CATEGORY_SHORT_LABELS,
+  SKILLS_BY_ID,
+  getSkillsByCategory,
 } from "@/data";
-import { usePrefersReducedMotion } from "@/hooks";
-import { useSelectSkill, useSelectedSkillId } from "@/stores/skillsLabStore";
-import type { SkillCategoryId, SkillItem } from "@/definitions";
-import { useRef, useState } from "react";
-import { cn } from "@/lib/utils";
-import { motion } from "framer-motion";
+import { useHoverIntent } from "@/hooks";
+import { useSelectedSkillId, useSelectSkill } from "@/stores/skillsLabStore";
+import type { ShelfCategoryId, SkillItem } from "@/definitions";
+import { SegmentedTabs } from "./SegmentedTabs";
+import { ShelfPanel } from "./ShelfPanel";
+import { EvidenceDrawer } from "./EvidenceDrawer";
+import { LanguageStrip } from "./LanguageStrip";
 
-const SHELVES: SkillCategoryId[] = ["frontend", "backend", "tools"];
-
-/** Category shelves with proof tooltips — docked evidence card, tabbed shelves. */
-export default function Concept013() {
-  const [shelf, setShelf] = useState<SkillCategoryId>("frontend");
-  const [docked, setDocked] = useState<string | null>(null);
+/**
+ * Category Shelves & Evidence Drawer.
+ * Organizes Ahmad's stack into 3 physical glass shelves with roving WAI-ARIA tabs,
+ * a desktop pull-out drawer with chip-centered caret, mobile inline row-split expansion,
+ * and a dedicated communication strip.
+ */
+export default function Shelves() {
   const selectedSkillId = useSelectedSkillId();
   const selectSkill = useSelectSkill();
-  const prefersReducedMotion = usePrefersReducedMotion();
-  const tabRefs = useRef<Partial<Record<SkillCategoryId, HTMLButtonElement | null>>>({});
+  const hover = useHoverIntent();
 
-  // Present any carried-over selection; hover/focus takes the dock when active.
-  const dockedSkill =
-    (docked ?? selectedSkillId) &&
-    skills.find((s) => s.id === (docked ?? selectedSkillId));
+  // Initialize shelf from carried-over store selection, defaulting to "frontend"
+  const [activeShelf, setActiveShelf] = useState<ShelfCategoryId>(() => {
+    if (selectedSkillId) {
+      const item = SKILLS_BY_ID.get(selectedSkillId);
+      if (
+        item &&
+        (item.category === "frontend" ||
+          item.category === "backend" ||
+          item.category === "tools")
+      ) {
+        return item.category;
+      }
+    }
+    return "frontend";
+  });
 
-  const shelfSkills = skills.filter((s) => s.category === shelf);
-  const languages = skills.filter((s) => s.category === "languages");
+  const [caretOffset, setCaretOffset] = useState<number | undefined>(undefined);
 
-  const handleTabKeys = (event: React.KeyboardEvent) => {
-    const current = SHELVES.indexOf(shelf);
-    let next: number;
-    if (event.key === "ArrowRight" || event.key === "ArrowDown") {
-      next = (current + 1) % SHELVES.length;
-    } else if (event.key === "ArrowLeft" || event.key === "ArrowUp") {
-      next = (current - 1 + SHELVES.length) % SHELVES.length;
-    } else {
+  const chipRefs = useRef<Record<string, HTMLButtonElement | null>>({});
+  const drawerContainerRef = useRef<HTMLDivElement | null>(null);
+
+  // Determine active skill scoped to current shelf
+  const rawActiveId = hover.previewId ?? selectedSkillId;
+  const rawActiveSkill: SkillItem | undefined = rawActiveId
+    ? SKILLS_BY_ID.get(rawActiveId)
+    : undefined;
+  const drawerSkill =
+    rawActiveSkill?.category === activeShelf ? rawActiveSkill : undefined;
+
+  const shelfSkills = getSkillsByCategory(activeShelf);
+
+  // Recalculate desktop caret offset relative to active chip
+  const updateCaret = useCallback(() => {
+    if (!drawerSkill) {
+      setCaretOffset(undefined);
       return;
     }
-    event.preventDefault();
-    setShelf(SHELVES[next]);
-    tabRefs.current[SHELVES[next]]?.focus();
-  };
+    const chipEl = chipRefs.current[drawerSkill.id];
+    const drawerEl = drawerContainerRef.current;
+    if (!chipEl || !drawerEl) return;
 
-  return (
-    <div className="flex flex-col gap-6">
-      <div
-        role="tablist"
-        aria-label="Skill shelves"
-        onKeyDown={handleTabKeys}
-        className="flex flex-wrap gap-2"
-      >
-        {SHELVES.map((category) => (
-          <button
-            key={category}
-            ref={(el) => {
-              tabRefs.current[category] = el;
-            }}
-            type="button"
-            role="tab"
-            aria-selected={shelf === category}
-            tabIndex={shelf === category ? 0 : -1}
-            onClick={() => setShelf(category)}
-            className={cn(
-              "min-h-[44px] rounded-full border px-4 py-2 text-sm capitalize transition-colors duration-200",
-              shelf === category
-                ? "border-mainGreen bg-mainGreen/20 font-semibold text-beige"
-                : "border-beige/20 bg-beige/5 text-beige/80 hover:bg-beige/10",
-            )}
-          >
-            {SKILL_CATEGORIES[category]}
-          </button>
-        ))}
-      </div>
+    const chipRect = chipEl.getBoundingClientRect();
+    const drawerRect = drawerEl.getBoundingClientRect();
+    const rawOffset = chipRect.left + chipRect.width / 2 - drawerRect.left;
+    const minOffset = 24;
+    const maxOffset = Math.max(minOffset, drawerRect.width - 24);
+    const clamped = Math.min(Math.max(rawOffset, minOffset), maxOffset);
+    setCaretOffset(clamped);
+  }, [drawerSkill]);
 
-      <div
-        role="tabpanel"
-        aria-label={`${SKILL_CATEGORIES[shelf]} skills`}
-        className="flex flex-wrap gap-3"
-      >
-        {shelfSkills.map((skill) => (
-          <SkillChip
-            key={skill.id}
-            skill={skill}
-            selected={selectedSkillId === skill.id}
-            reducedMotion={prefersReducedMotion}
-            onSelect={() => selectSkill(skill.id)}
-            onDock={() => setDocked(skill.id)}
-            onUndock={() => setDocked(null)}
-          />
-        ))}
-      </div>
+  useEffect(() => {
+    const rafId = requestAnimationFrame(() => {
+      updateCaret();
+    });
+    return () => cancelAnimationFrame(rafId);
+  }, [updateCaret, activeShelf]);
 
-      <p className="flex flex-wrap items-center gap-3 text-sm text-beige/80">
-        <span className="text-beige/60">Languages:</span>
-        {languages.map((skill) => (
-          <span key={skill.id} className="font-medium">
-            {skill.name}
-          </span>
-        ))}
-      </p>
+  useEffect(() => {
+    window.addEventListener("resize", updateCaret);
+    return () => window.removeEventListener("resize", updateCaret);
+  }, [updateCaret]);
 
-      {dockedSkill && <SkillEvidence skill={dockedSkill} announce />}
-    </div>
+  // Global Escape key listener: clear preview and selection
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        hover.clearPreview();
+        selectSkill(null);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [hover, selectSkill]);
+
+  const handleSelectSkill = useCallback(
+    (id: string) => {
+      if (selectedSkillId === id) {
+        selectSkill(null);
+      } else {
+        selectSkill(id);
+      }
+    },
+    [selectedSkillId, selectSkill],
   );
-}
 
-function SkillChip({
-  skill,
-  selected,
-  reducedMotion,
-  onSelect,
-  onDock,
-  onUndock,
-}: {
-  skill: SkillItem;
-  selected: boolean;
-  reducedMotion: boolean;
-  onSelect: () => void;
-  onDock: () => void;
-  onUndock: () => void;
-}) {
+  const handleShelfChange = useCallback(
+    (shelf: ShelfCategoryId) => {
+      setActiveShelf(shelf);
+      hover.clearPreview();
+    },
+    [hover],
+  );
+
+  const registerChipRef = useCallback(
+    (id: string, el: HTMLButtonElement | null) => {
+      chipRefs.current[id] = el;
+    },
+    [],
+  );
+
+  const handlePillClick = useCallback(() => {
+    if (drawerSkill) {
+      selectSkill(drawerSkill.id);
+    }
+  }, [drawerSkill, selectSkill]);
+
+  // Mobile inline drawer configuration
+  const activeIndex = shelfSkills.findIndex((s) => s.id === drawerSkill?.id);
+  const caretColumn =
+    activeIndex !== -1 ? (activeIndex % 2 === 0 ? "left" : "right") : undefined;
+
+  const mobileDrawer = drawerSkill ? (
+    <EvidenceDrawer
+      skill={drawerSkill}
+      variant="mobile-inline"
+      caretColumn={caretColumn}
+      onCollapse={() => selectSkill(null)}
+      onPillClick={handlePillClick}
+    />
+  ) : null;
+
   return (
-    <motion.button
-      type="button"
-      whileHover={reducedMotion ? undefined : { scale: 1.05 }}
-      transition={{ duration: 0.2 }}
-      onClick={onSelect}
-      onMouseEnter={onDock}
-      onMouseLeave={onUndock}
-      onFocus={onDock}
-      onBlur={onUndock}
-      onKeyDown={(event) => {
-        if (event.key === "Escape") onUndock();
-      }}
-      aria-pressed={selected}
-      className={cn(
-        "flex min-h-[44px] items-center gap-2 rounded-xl border px-4 py-2 text-sm transition-colors duration-200 [&_svg]:text-xl",
-        selected
-          ? "border-mainGreen bg-mainGreen/20 text-beige shadow-[0_0_15px_rgba(141,165,91,0.25)]"
-          : "border-beige/15 bg-beige/5 text-beige/90 hover:bg-beige/10",
-      )}
-    >
-      <Iconify icon={skill.icon} className="h-[1em] w-[1em] shrink-0" />
-      {skill.name}
-    </motion.button>
+    <MotionConfig reducedMotion="user">
+      <div className="flex flex-col gap-4 sm:gap-6 w-full">
+        {/* Concept-level polite live region (announces exactly once) */}
+        <div
+          className="sr-only"
+          role="status"
+          aria-live="polite"
+          aria-atomic="true"
+        >
+          {drawerSkill ? `${drawerSkill.name}: ${drawerSkill.context}` : ""}
+        </div>
+
+        <SegmentedTabs
+          shelves={SHELF_CATEGORIES}
+          activeShelf={activeShelf}
+          onShelfChange={handleShelfChange}
+          counts={SHELF_COUNTS}
+          shortLabels={SKILL_CATEGORY_SHORT_LABELS}
+          fullLabels={SKILL_CATEGORIES}
+        />
+
+        {/* Desktop Contiguous Hover Scope: Shelf + Pull-out Drawer */}
+        <div
+          className="relative"
+          onPointerEnter={hover.onDrawerPointerEnter}
+          onPointerLeave={hover.onDrawerPointerLeave}
+        >
+          <AnimatePresence mode="popLayout">
+            <ShelfPanel
+              key={activeShelf}
+              skills={shelfSkills}
+              selectedSkillId={selectedSkillId}
+              previewId={hover.previewId}
+              onSelectSkill={handleSelectSkill}
+              onChipPointerEnter={hover.onChipPointerEnter}
+              onChipPointerLeave={hover.onChipPointerLeave}
+              onChipFocus={hover.onChipFocus}
+              onChipBlur={hover.onChipBlur}
+              registerChipRef={registerChipRef}
+              mobileDrawerSlot={mobileDrawer}
+              id={`panel-shelves-${activeShelf}`}
+              role="tabpanel"
+              aria-labelledby={`tab-shelves-${activeShelf}`}
+              tabIndex={-1}
+            />
+          </AnimatePresence>
+
+          {/* Desktop pull-out drawer attached beneath shelf ledge */}
+          <div className="hidden md:block" ref={drawerContainerRef}>
+            <EvidenceDrawer
+              skill={drawerSkill}
+              variant="desktop-pullout"
+              caretOffsetPx={caretOffset}
+              onPillClick={handlePillClick}
+              onPointerEnter={hover.onDrawerPointerEnter}
+              onPointerLeave={hover.onDrawerPointerLeave}
+            />
+          </div>
+        </div>
+
+        <LanguageStrip />
+      </div>
+    </MotionConfig>
   );
 }
