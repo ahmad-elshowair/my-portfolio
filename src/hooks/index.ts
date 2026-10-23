@@ -5,3 +5,4 @@ export * from "./useProjectHighlight";
 export * from "./useActiveSection";
 export * from "./useSkillsSectionActive";
 export * from "./useMenuFocusTrap";
+export * from "./useRovingTabs";

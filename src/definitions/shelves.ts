@@ -1,7 +1,6 @@
 /* ─── Shelves Concept Contracts ─────────────────────────────────────── */
 
 import type React from "react";
-import type { SkillCategoryId, SkillItem } from "./index";
 
 /** The three switchable category shelves (excluding standalone "languages"). */
 export type ShelfCategoryId = "frontend" | "backend" | "tools";
@@ -42,38 +41,4 @@ export interface HoverIntentState {
   onDrawerPointerEnter: () => void;
   onDrawerPointerLeave: () => void;
   clearPreview: () => void;
-}
-
-/** SegmentedTabs component contract. */
-export interface SegmentedTabsProps {
-  shelves: readonly ShelfCategoryId[];
-  activeShelf: ShelfCategoryId;
-  onShelfChange: (shelf: ShelfCategoryId) => void;
-  counts: Readonly<Record<SkillCategoryId, number>>;
-  shortLabels: Readonly<Record<SkillCategoryId, string>>;
-  fullLabels: Readonly<Record<SkillCategoryId, string>>;
-  roving: RovingTabsState<ShelfCategoryId>;
-}
-
-/** ShelfChip component contract. */
-export interface ShelfChipProps {
-  skill: SkillItem;
-  isSelected: boolean;
-  isPreviewed: boolean;
-  onSelect: () => void;
-  onPointerEnter: () => void;
-  onPointerLeave: () => void;
-  onFocus: () => void;
-  onBlur: () => void;
-  chipRef?: (el: HTMLButtonElement | null) => void;
-}
-
-/** EvidenceDrawer presentation contract. */
-export interface EvidenceDrawerProps {
-  skill: SkillItem | undefined;
-  variant: "desktop-pullout" | "mobile-inline";
-  caretOffsetPx?: number;
-  caretColumn?: "left" | "right";
-  onCollapse?: () => void;
-  onPillClick?: () => void;
 }
