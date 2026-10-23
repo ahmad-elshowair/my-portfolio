@@ -66,15 +66,24 @@ export function ShelfPanel({
         aria-hidden="true"
       />
 
-      {/* Responsive chips layout with smooth in-place cross-fade */}
+      {/* Responsive chips layout: old chips drop onto shelf and vanish, new chips drop into place */}
       <AnimatePresence mode="wait">
         <motion.div
           key={activeShelf}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.15 }}
-          className="grid grid-cols-2 gap-2.5 md:flex md:flex-wrap md:justify-center md:gap-3 md:min-h-[92px]"
+          initial={{ opacity: 0, y: -20, scale: 0.98 }}
+          animate={{
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            transition: { duration: 0.22, ease: [0.16, 1, 0.3, 1] },
+          }}
+          exit={{
+            opacity: 0,
+            y: 20,
+            scale: 0.98,
+            transition: { duration: 0.18, ease: [0.4, 0, 1, 1] },
+          }}
+          className="grid grid-cols-2 gap-2.5 md:flex md:flex-wrap md:justify-center md:content-end md:gap-3 md:min-h-[196px] lg:min-h-[144px]"
         >
           {skills.map((skill, index) => {
             const isSelected = selectedSkillId === skill.id;
