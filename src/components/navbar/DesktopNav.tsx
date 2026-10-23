@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { NAV_SECTIONS } from "./navbar.constants";
 
-export interface DesktopNavProps {
+interface DesktopNavProps {
   activeSection: string;
   onSelectSection: (id: string) => void;
 }

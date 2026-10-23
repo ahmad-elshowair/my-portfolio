@@ -2,7 +2,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { RefObject } from "react";
 import Iconify from "@/components/iconify";
 
-export interface MobileNavToggleProps {
+interface MobileNavToggleProps {
   isOpen: boolean;
   onToggle: () => void;
   toggleRef: RefObject<HTMLButtonElement | null>;

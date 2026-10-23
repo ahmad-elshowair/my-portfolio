@@ -19,6 +19,9 @@ export default {
         bgGreen: "#2c3531",
         beige: "#F5E6D3",
       },
+      boxShadow: {
+        glow: "0 0 20px rgba(141, 165, 91, 0.25)",
+      },
       transitionTimingFunction: {
         bounce: "cubic-bezier(0.68, -0.55, 0.265, 1.55)",
       },

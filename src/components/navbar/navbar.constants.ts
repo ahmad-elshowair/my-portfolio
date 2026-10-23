@@ -1,6 +1,6 @@
 import type { Variants } from "framer-motion";
 
-export interface NavSectionItem {
+interface NavSectionItem {
   label: string;
   id: string;
 }

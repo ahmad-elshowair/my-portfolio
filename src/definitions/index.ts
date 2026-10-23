@@ -1,7 +1,7 @@
 import { ComponentType } from "react";
 import type { IconifyProps } from "@/components/iconify";
 
-export interface Project {
+interface Project {
   name: string;
   url: string;
 }
@@ -48,7 +48,7 @@ export interface SkillItem {
  * props" type keeps all eight interchangeable so adding a concept never
  * touches the host (React's key still passes through).
  */
-export type SkillConceptProps = object;
+type SkillConceptProps = object;
 
 /** Registry entry mounting one concept behind the switcher. */
 export interface SkillConceptDescriptor {
@@ -75,7 +75,7 @@ export interface ExperienceItemProps {
   companyUrl?: string;
 }
 
-export interface ProjectImage {
+interface ProjectImage {
   alt: string;
   url: string;
 }
@@ -100,3 +100,4 @@ export interface ProjectCardProps {
 
 export * from "./terminal";
 export * from "./orbit";
+export * from "./shelves";

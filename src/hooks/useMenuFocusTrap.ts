@@ -1,6 +1,6 @@
 import { RefObject, useEffect } from "react";
 
-export interface UseMenuFocusTrapOptions {
+interface UseMenuFocusTrapOptions {
   isOpen: boolean;
   onClose: () => void;
   panelRef: RefObject<HTMLElement | null>;

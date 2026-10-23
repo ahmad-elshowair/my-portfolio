@@ -19,7 +19,7 @@ function useIsClient() {
   );
 }
 
-export interface MobileTelemetryDockProps {
+interface MobileTelemetryDockProps {
   skill: SkillItem;
 }
 

@@ -129,7 +129,7 @@ export function parseCommand(raw: string): Command {
   }
 }
 
-export interface ExecutionResult {
+interface ExecutionResult {
   drafts: EntryDraft[];
   /** The skill a successful inspect should select (drives the cross-glow). */
   selectedSkillId: string | null;
