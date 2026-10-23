@@ -11,10 +11,7 @@ interface LanguageStripProps {
 }
 
 /**
- * Slim frosted glass communication strip rendered beneath the category shelf.
- * Matches desktop-direction.jpg & mobile-direction.jpg:
- * Centered "Communication" section with subtle hairline wings and frosted language pills.
- * Displays only spoken languages (Arabic, English) derived verbatim from the dataset (OD7).
+ * Frosted glass communication strip for spoken languages.
  */
 export function LanguageStrip({ className }: LanguageStripProps) {
   const languages = getSkillsByCategory("languages");
@@ -26,7 +23,7 @@ export function LanguageStrip({ className }: LanguageStripProps) {
         className
       )}
     >
-      {/* Centered Section Label with Hairline Wings */}
+      {/* Section label with hairline wings */}
       <div className="flex items-center justify-center gap-3 w-full max-w-xs">
         <div className="h-px flex-1 bg-gradient-to-r from-transparent via-beige/20 to-beige/30" />
         <span className="text-xs uppercase tracking-widest font-medium text-beige/70">
@@ -35,10 +32,10 @@ export function LanguageStrip({ className }: LanguageStripProps) {
         <div className="h-px flex-1 bg-gradient-to-l from-transparent via-beige/20 to-beige/30" />
       </div>
 
-      {/* Language Badges */}
+      {/* Language badges */}
       <div className="flex flex-wrap items-center justify-center gap-2.5 sm:gap-3">
         {languages.map((skill) => {
-          // Format "Arabic (native)" as "Arabic · native" per mockups
+          // Format "Arabic (native)" as "Arabic · native"
           const formattedLabel = skill.name.replace(/\s*\((.*?)\)/, " · $1");
 
           return (

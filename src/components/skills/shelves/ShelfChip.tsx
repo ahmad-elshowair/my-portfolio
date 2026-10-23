@@ -20,8 +20,6 @@ interface ShelfChipProps {
 
 /**
  * Single skill chip resting on the category shelf.
- * Matches desktop-direction.jpg & mobile-direction.jpg with rounded-2xl geometry,
- * prominent icon glyphs, and high-contrast illuminated active state.
  */
 export function ShelfChip({
   skill,

@@ -18,9 +18,7 @@ interface SegmentedTabsProps {
 }
 
 /**
- * Frosted-glass segmented tab control adhering to WAI-ARIA horizontal tablist.
- * Renders equal-width tabs with responsive short/full labels, tabular count badges,
- * and a sliding active indicator.
+ * Frosted-glass segmented tab control with roving tabindex and sliding indicator.
  */
 export function SegmentedTabs({
   shelves,

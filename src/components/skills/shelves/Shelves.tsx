@@ -17,14 +17,12 @@ import { useSelectedSkillId, useSelectSkill } from "@/stores/skillsLabStore";
 import type { ShelfCategoryId, SkillItem } from "@/definitions";
 import { SegmentedTabs } from "./SegmentedTabs";
 import { ShelfPanel } from "./ShelfPanel";
-import { EvidenceDrawer } from "./EvidenceDrawer";
+import { DesktopEvidenceDrawer } from "./DesktopEvidenceDrawer";
+import { MobileEvidenceDrawer } from "./MobileEvidenceDrawer";
 import { LanguageStrip } from "./LanguageStrip";
 
 /**
- * Category Shelves & Evidence Drawer.
- * Organizes Ahmad's stack into 3 physical glass shelves with roving WAI-ARIA tabs,
- * a desktop pull-out drawer with chip-centered caret, mobile inline row-split expansion,
- * and a dedicated communication strip.
+ * Category Shelves concept with roving tabs, 3D pedestal, and evidence drawers.
  */
 export default function Shelves() {
   const selectedSkillId = useSelectedSkillId();
@@ -160,9 +158,8 @@ export default function Shelves() {
     activeIndex !== -1 ? (activeIndex % 2 === 0 ? "left" : "right") : undefined;
 
   const mobileDrawer = drawerSkill ? (
-    <EvidenceDrawer
+    <MobileEvidenceDrawer
       skill={drawerSkill}
-      variant="mobile-inline"
       caretColumn={caretColumn}
       onCollapse={() => selectSkill(null)}
       onPillClick={handlePillClick}
@@ -172,18 +169,18 @@ export default function Shelves() {
   return (
     <MotionConfig reducedMotion="user">
       <div className="relative flex flex-col gap-4 sm:gap-6 w-full">
-        {/* Massive Diffuse Radial Green Blur Pool (matching desktop-direction.jpg) */}
+        {/* Ambient background glow */}
         <div
           className="pointer-events-none absolute -inset-x-24 -top-28 h-[700px] -z-10 bg-[radial-gradient(ellipse_80%_60%_at_50%_38%,_rgba(141,165,91,0.45)_0%,_rgba(141,165,91,0.20)_42%,_rgba(141,165,91,0.05)_65%,_transparent_80%)] blur-3xl"
           aria-hidden="true"
         />
-        {/* Core Vibrant Spotlight Bloom behind shelf chips */}
+        {/* Shelf spotlight glow */}
         <div
           className="pointer-events-none absolute left-1/2 -translate-x-1/2 top-8 w-[650px] h-[380px] -z-10 bg-[radial-gradient(ellipse_at_center,_rgba(163,190,109,0.55)_0%,_rgba(141,165,91,0.28)_45%,_transparent_75%)] blur-2xl opacity-95"
           aria-hidden="true"
         />
 
-        {/* Concept-level polite live region (announces exactly once) */}
+        {/* Screen reader live region */}
         <div
           className="sr-only"
           role="status"
@@ -202,44 +199,41 @@ export default function Shelves() {
           fullLabels={SKILL_CATEGORIES}
         />
 
-        {/* Desktop Contiguous Hover Scope: Shelf + Pull-out Drawer */}
+        {/* Shelf and drawer hover container */}
         <div
           ref={shelvesScopeRef}
           className="relative"
           onPointerEnter={hover.onDrawerPointerEnter}
           onPointerLeave={hover.onDrawerPointerLeave}
         >
-          <AnimatePresence mode="popLayout">
-            <ShelfPanel
-              key={activeShelf}
-              skills={shelfSkills}
-              selectedSkillId={selectedSkillId}
-              previewId={hover.previewId}
-              onSelectSkill={handleSelectSkill}
-              onChipPointerEnter={hover.onChipPointerEnter}
-              onChipPointerLeave={hover.onChipPointerLeave}
-              onChipFocus={hover.onChipFocus}
-              onChipBlur={hover.onChipBlur}
-              registerChipRef={registerChipRef}
-              mobileDrawerSlot={mobileDrawer}
-              id={`panel-shelves-${activeShelf}`}
-              role="tabpanel"
-              aria-labelledby={`tab-shelves-${activeShelf}`}
-              tabIndex={-1}
-            />
-          </AnimatePresence>
+          <ShelfPanel
+            activeShelf={activeShelf}
+            skills={shelfSkills}
+            selectedSkillId={selectedSkillId}
+            previewId={hover.previewId}
+            onSelectSkill={handleSelectSkill}
+            onChipPointerEnter={hover.onChipPointerEnter}
+            onChipPointerLeave={hover.onChipPointerLeave}
+            onChipFocus={hover.onChipFocus}
+            onChipBlur={hover.onChipBlur}
+            registerChipRef={registerChipRef}
+            mobileDrawerSlot={mobileDrawer}
+            id={`panel-shelves-${activeShelf}`}
+            role="tabpanel"
+            aria-labelledby={`tab-shelves-${activeShelf}`}
+            tabIndex={-1}
+          />
 
-          {/* Desktop pull-out drawer layered on top of shelf ledge (a layer up) */}
+          {/* Desktop pull-out drawer */}
           <div
             className="hidden md:block w-full max-w-[952px] mx-auto relative z-20 -mt-[18px]"
             ref={drawerContainerRef}
           >
             <AnimatePresence>
               {drawerSkill && (
-                <EvidenceDrawer
+                <DesktopEvidenceDrawer
                   key="desktop-drawer"
                   skill={drawerSkill}
-                  variant="desktop-pullout"
                   caretOffsetPx={caretOffset}
                   onPillClick={handlePillClick}
                   onPointerEnter={hover.onDrawerPointerEnter}
