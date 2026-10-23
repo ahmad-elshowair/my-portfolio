@@ -9,6 +9,15 @@ export const SKILL_CATEGORIES: Record<SkillCategoryId, string> = {
   languages: "Languages",
 };
 
+export const SHELF_CATEGORIES = ["frontend", "backend", "tools"] as const;
+
+export const SKILL_CATEGORY_SHORT_LABELS: Record<SkillCategoryId, string> = {
+  frontend: "Front-End",
+  backend: "Back-End",
+  tools: "Tools",
+  languages: "Languages",
+};
+
 export const SKILL_PROJECTS: Record<
   SkillProjectId,
   { name: string; anchor: string }
@@ -348,3 +357,28 @@ export const skills: SkillItem[] = [
     projects: [],
   },
 ];
+
+/* ─── Category Shelves Selectors ─────────────────────────────────────── */
+
+export const SKILLS_BY_ID: ReadonlyMap<string, SkillItem> = new Map(
+  skills.map((skill) => [skill.id, skill])
+);
+
+export const SKILLS_BY_CATEGORY: Readonly<Record<SkillCategoryId, readonly SkillItem[]>> =
+  Object.freeze({
+    frontend: skills.filter((s) => s.category === "frontend"),
+    backend: skills.filter((s) => s.category === "backend"),
+    tools: skills.filter((s) => s.category === "tools"),
+    languages: skills.filter((s) => s.category === "languages"),
+  });
+
+export function getSkillsByCategory(category: SkillCategoryId): readonly SkillItem[] {
+  return SKILLS_BY_CATEGORY[category] ?? [];
+}
+
+export const SHELF_COUNTS: Readonly<Record<SkillCategoryId, number>> = Object.freeze({
+  frontend: SKILLS_BY_CATEGORY.frontend.length,
+  backend: SKILLS_BY_CATEGORY.backend.length,
+  tools: SKILLS_BY_CATEGORY.tools.length,
+  languages: SKILLS_BY_CATEGORY.languages.length,
+});

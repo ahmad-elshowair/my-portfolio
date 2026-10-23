@@ -100,3 +100,4 @@ export interface ProjectCardProps {
 
 export * from "./terminal";
 export * from "./orbit";
+export * from "./shelves";
