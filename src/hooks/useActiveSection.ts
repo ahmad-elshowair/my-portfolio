@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-export interface NavSection {
+interface NavSection {
   label: string;
   id: string;
 }

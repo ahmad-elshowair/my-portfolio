@@ -4,7 +4,7 @@ import Iconify from "@/components/iconify";
 import type { SkillItem } from "@/definitions";
 import { cn } from "@/lib/utils";
 
-export interface SkillChipButtonProps {
+interface SkillChipButtonProps {
   skill: SkillItem;
   isSelected: boolean;
   isHero: boolean;

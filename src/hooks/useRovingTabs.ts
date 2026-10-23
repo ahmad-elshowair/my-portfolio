@@ -1,7 +1,6 @@
 "use client";
 
 import { useCallback, useRef } from "react";
-import type { RovingTabsState } from "@/definitions";
 
 interface UseRovingTabsOptions<T extends string> {
   tabs: readonly T[];
@@ -22,7 +21,7 @@ export function useRovingTabs<T extends string>({
   onChange,
   ariaLabel,
   idPrefix = "tabs",
-}: UseRovingTabsOptions<T>): RovingTabsState<T> {
+}: UseRovingTabsOptions<T>) {
   const tabRefs = useRef<Partial<Record<T, HTMLButtonElement | null>>>({});
 
   const handleKeyDown = useCallback(
@@ -83,7 +82,7 @@ export function useRovingTabs<T extends string>({
     activeTab,
     setActiveTab: onChange,
     tablistProps: {
-      role: "tablist",
+      role: "tablist" as const,
       "aria-label": ariaLabel,
       onKeyDown: handleKeyDown,
     },

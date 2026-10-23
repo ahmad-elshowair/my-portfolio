@@ -8,7 +8,7 @@ import {
   NAV_SECTIONS,
 } from "./navbar.constants";
 
-export interface MobileNavMenuProps {
+interface MobileNavMenuProps {
   isOpen: boolean;
   activeSection: string;
   onSelectSection: (id: string) => void;

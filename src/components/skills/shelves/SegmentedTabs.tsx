@@ -5,11 +5,8 @@
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { MOTION } from "@/lib/motion";
-import type {
-  RovingTabsState,
-  ShelfCategoryId,
-  SkillCategoryId,
-} from "@/definitions";
+import { useRovingTabs } from "@/hooks";
+import type { ShelfCategoryId, SkillCategoryId } from "@/definitions";
 
 interface SegmentedTabsProps {
   shelves: readonly ShelfCategoryId[];
@@ -18,7 +15,6 @@ interface SegmentedTabsProps {
   counts: Readonly<Record<SkillCategoryId, number>>;
   shortLabels: Readonly<Record<SkillCategoryId, string>>;
   fullLabels: Readonly<Record<SkillCategoryId, string>>;
-  roving: RovingTabsState<ShelfCategoryId>;
 }
 
 /**
@@ -29,25 +25,33 @@ interface SegmentedTabsProps {
 export function SegmentedTabs({
   shelves,
   activeShelf,
+  onShelfChange,
   counts,
   shortLabels,
   fullLabels,
-  roving,
 }: SegmentedTabsProps) {
+  const { tablistProps, getTabProps, tabRefs } = useRovingTabs({
+    tabs: shelves,
+    activeTab: activeShelf,
+    onChange: onShelfChange,
+    ariaLabel: "Skill categories",
+    idPrefix: "shelves",
+  });
+
   return (
     <div
-      {...roving.tablistProps}
+      {...tablistProps}
       className="relative grid grid-cols-3 p-1 rounded-full bg-mainGreen/10 border border-beige/15 backdrop-blur-md max-w-xl mx-auto w-full"
     >
       {shelves.map((category) => {
         const isActive = activeShelf === category;
-        const tabProps = roving.getTabProps(category);
+        const tabProps = getTabProps(category);
 
         return (
           <button
             key={category}
             ref={(el) => {
-              roving.tabRefs.current[category] = el;
+              tabRefs.current[category] = el;
             }}
             type="button"
             {...tabProps}

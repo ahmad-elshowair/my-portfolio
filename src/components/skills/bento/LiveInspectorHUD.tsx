@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 import { statusBadge } from "./bento.constants";
 import { ProjectJumpPill } from "./ProjectJumpPill";
 
-export interface LiveInspectorHUDProps {
+interface LiveInspectorHUDProps {
   skill: SkillItem;
 }
 
