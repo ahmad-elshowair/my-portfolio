@@ -4,7 +4,7 @@ Entry point for any coding agent working in this repository. Read this file firs
 
 ## Read before implementing
 
-1. [.specify/memory/constitution.md](.specify/memory/constitution.md): Constitution v1.4.0, Articles I–XVI. Highest authority. The stricter reading wins.
+1. [.specify/memory/constitution.md](.specify/memory/constitution.md): Constitution v1.4.1, Articles I–XVI. Highest authority. The stricter reading wins.
 2. [PRODUCT.md](PRODUCT.md): audience, value proposition, banned patterns.
 3. [DESIGN.md](DESIGN.md): palette, glass surfaces, type, motion tokens, mobile ergonomics.
 4. [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md): stack, boundaries, skills-lab data flow, folder rules.
@@ -41,7 +41,7 @@ Summarize the relevant requirements and any open decisions before you write code
 
 ## Code rules
 
-- TypeScript strict, zero `any`. Shared contracts go in `src/definitions/index.ts` (Article II).
+- TypeScript strict, zero `any`. Shared domain contracts go in `src/definitions/index.ts`. Component props and hook options stay colocated and unexported unless imported by external consumers (Article II).
 - Server Components by default. Use `"use client"` only on interactive leaves (Article XIII).
 - Copy, counts, and claims come from `src/data/` and `src/lib/site.ts`. Never hardcode counts.
 - New hooks go in `src/hooks/` and must be re-exported from `src/hooks/index.ts`.

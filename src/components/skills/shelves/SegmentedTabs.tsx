@@ -11,7 +11,7 @@ import type {
   SkillCategoryId,
 } from "@/definitions";
 
-export interface SegmentedTabsProps {
+interface SegmentedTabsProps {
   shelves: readonly ShelfCategoryId[];
   activeShelf: ShelfCategoryId;
   onShelfChange: (shelf: ShelfCategoryId) => void;
