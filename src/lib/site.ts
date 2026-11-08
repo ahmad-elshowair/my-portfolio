@@ -23,7 +23,7 @@ export const SITE_NAME = "Ahmad Elshowair Portfolio" as const;
 export const AUTHOR = {
   name: "Ahmad Elshowair",
   role: "Full-Stack Developer",
-  email: "ahmad-elshowair.dev@outlook.com",
+  email: "ahmadelshowair@proton.me",
   location: {
     city: "Hanoi",
     country: "Vietnam",

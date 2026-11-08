@@ -11,7 +11,7 @@
 Personal developer portfolio showcasing production systems, engineering craft, accessible UI design, and verified career milestones. Built with modern web standards, strict static typing, and high-performance server components.
 
 - **Live Production Deployment**: [https://ahmad-elshowair.vercel.app](https://ahmad-elshowair.vercel.app)
-- **Primary Domain & Contact**: [ahmad-elshowair.dev@outlook.com](mailto:ahmad-elshowair.dev@outlook.com)
+- **Primary Domain & Contact**: [ahmadelshowair@proton.me](mailto:ahmadelshowair@proton.me)
 
 ---
 
@@ -120,6 +120,6 @@ Every pull request and push to the `main` branch is validated automatically via 
 
 ## Connect
 
-- **Email**: [ahmad-elshowair.dev@outlook.com](mailto:ahmad-elshowair.dev@outlook.com)
+- **Email**: [ahmadelshowair@proton.me](mailto:ahmadelshowair@proton.me)
 - **LinkedIn**: [linkedin.com/in/ahmad-elshowair](https://www.linkedin.com/in/ahmad-elshowair/)
 - **GitHub**: [github.com/ahmad-elshowair](https://github.com/ahmad-elshowair)
