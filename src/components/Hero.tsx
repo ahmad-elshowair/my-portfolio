@@ -47,8 +47,8 @@ const Hero = () => {
             Open to remote roles
           </span>
           <span className="text-xs sm:text-sm text-beige/80">
-            {AUTHOR.location.city}, {AUTHOR.location.country} · available
-            remote worldwide
+            {AUTHOR.location.city}, {AUTHOR.location.country} · available remote
+            worldwide
           </span>
         </div>
       </div>
@@ -76,7 +76,8 @@ const Hero = () => {
               Currently at PointCraft
             </span>{" "}
             — shipping POS and invoice tools used daily by{" "}
-            <span className="font-semibold text-mainGreen">30+ merchants</span>.
+            <span className="font-semibold text-mainGreen">100+ merchants</span>
+            .
           </p>
         </div>
 
@@ -100,7 +101,11 @@ const Hero = () => {
             className="flex items-center justify-center gap-2 rounded-2xl bg-mainGreen px-8 py-3.5 font-semibold text-bgGreen transition-all duration-200 ease-in-out hover:brightness-95 active:scale-95 w-full sm:w-auto shadow-md"
           >
             <span>Resume</span>
-            <Iconify icon="lucide:cloud-download" className="w-5 h-5" aria-hidden="true" />
+            <Iconify
+              icon="lucide:cloud-download"
+              className="w-5 h-5"
+              aria-hidden="true"
+            />
           </a>
         </div>
       </div>
