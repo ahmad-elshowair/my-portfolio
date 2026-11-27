@@ -75,7 +75,7 @@ const Hero = () => {
             <span className="font-semibold text-beige">
               Currently at PointCraft
             </span>{" "}
-            — shipping POS and invoice tools used daily by{" "}
+            — shipping POS and tools used daily by{" "}
             <span className="font-semibold text-mainGreen">100+ merchants</span>
             .
           </p>
